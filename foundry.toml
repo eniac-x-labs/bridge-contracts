@@ -1,0 +1,17 @@
+[profile.default]
+forge-std = { git = "https://github.com/foundry-rs/forge-std" }
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
+
+[rpc_endpoints]
+scroll = "${scroll}"
+polygon = "${polygon}"
+op = "${op}"
+mainnet = "${mainnet}"
+
+
+#[etherscan]
+#scroll = { key = "${ETHERSCAN_API_KEY}" }

@@ -1,0 +1,231 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "foo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50607780601d6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063c298557814602d575b600080fd5b600060405190815260200160405180910390f3fea2646970667358221220ae59d2846d59a87af8c631274c76e05d7726ce646b32b5b6a89a8228fee3334064736f6c63430008140033",
+    "sourceMap": "64:101:55:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c8063c298557814602d575b600080fd5b600060405190815260200160405180910390f3fea2646970667358221220ae59d2846d59a87af8c631274c76e05d7726ce646b32b5b6a89a8228fee3334064736f6c63430008140033",
+    "sourceMap": "64:101:55:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;93:70;129:7;93:70;;160:25:76;;;148:2;133:18;93:70:55;;;;;;",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "foo()": "c2985578"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"foo\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/Mock/EmptyContract.sol\":\"EmptyContract\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"]},\"sources\":{\"src/Mock/EmptyContract.sol\":{\"keccak256\":\"0x0938ef4968e02a9cebf7c45e46e02cd8bb6771ed7a184cdf7e989af7142f7714\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://299ecab7d3a061f12e6e79c5ffcfbbe4845f8235fcf1cf5f2fd2278f0b105f71\",\"dweb:/ipfs/QmPiKeAjshfML1ffwzxSUiswZ1kyWQ8zygF2hv7X5cxXf6\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.20+commit.a1b79de6"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "stateMutability": "pure",
+          "type": "function",
+          "name": "foo",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/Mock/EmptyContract.sol": "EmptyContract"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/Mock/EmptyContract.sol": {
+        "keccak256": "0x0938ef4968e02a9cebf7c45e46e02cd8bb6771ed7a184cdf7e989af7142f7714",
+        "urls": [
+          "bzz-raw://299ecab7d3a061f12e6e79c5ffcfbbe4845f8235fcf1cf5f2fd2278f0b105f71",
+          "dweb:/ipfs/QmPiKeAjshfML1ffwzxSUiswZ1kyWQ8zygF2hv7X5cxXf6"
+        ],
+        "license": "UNLICENSED"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/Mock/EmptyContract.sol",
+    "id": 49883,
+    "exportedSymbols": {
+      "EmptyContract": [
+        49882
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "39:127:55",
+    "nodes": [
+      {
+        "id": 49873,
+        "nodeType": "PragmaDirective",
+        "src": "39:23:55",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".9"
+        ]
+      },
+      {
+        "id": 49882,
+        "nodeType": "ContractDefinition",
+        "src": "64:101:55",
+        "nodes": [
+          {
+            "id": 49881,
+            "nodeType": "FunctionDefinition",
+            "src": "93:70:55",
+            "nodes": [],
+            "body": {
+              "id": 49880,
+              "nodeType": "Block",
+              "src": "138:25:55",
+              "nodes": [],
+              "statements": [
+                {
+                  "expression": {
+                    "hexValue": "30",
+                    "id": 49878,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": true,
+                    "kind": "number",
+                    "lValueRequested": false,
+                    "nodeType": "Literal",
+                    "src": "155:1:55",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_rational_0_by_1",
+                      "typeString": "int_const 0"
+                    },
+                    "value": "0"
+                  },
+                  "functionReturnParameters": 49877,
+                  "id": 49879,
+                  "nodeType": "Return",
+                  "src": "148:8:55"
+                }
+              ]
+            },
+            "functionSelector": "c2985578",
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "foo",
+            "nameLocation": "102:3:55",
+            "parameters": {
+              "id": 49874,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "105:2:55"
+            },
+            "returnParameters": {
+              "id": 49877,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 49876,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 49881,
+                  "src": "129:7:55",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 49875,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "129:7:55",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "128:9:55"
+            },
+            "scope": 49882,
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "EmptyContract",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          49882
+        ],
+        "name": "EmptyContract",
+        "nameLocation": "73:13:55",
+        "scope": 49883,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 55
+}

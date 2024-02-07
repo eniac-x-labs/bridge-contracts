@@ -445,7 +445,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             address l2token = getOPL2TokenAddress(_token);
             IERC20(_token).approve(
-                ContractsAddress.OptimismL2StandardBridge,
+                ContractsAddress.OptimismL1StandardBridge,
                 _amount
             );
             IOptimismL1Bridge(ContractsAddress.OptimismL1StandardBridge)

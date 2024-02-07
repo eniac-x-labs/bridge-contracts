@@ -120,7 +120,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             WETH.approve(ContractsAddress.OptimismL2StandardBridge, _amount);
             IOptimismL2StandardBridge(ContractsAddress.OptimismL2StandardBridge)
                 .withdrawTo{value: _amount}(
-                ContractsAddress.OP_LEGACY_ERC20_ETH,
+                address(WETH),
                 _to,
                 _amount,
                 MAX_GAS_Limit,
@@ -172,6 +172,18 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 .bridgeAsset(0, _to, _amount, _token, false, "");
         } else if (Blockchain == 0xa) {
             //OP Mainnet https://chainlist.org/chain/10
+            IERC20(_token).approve(
+                ContractsAddress.OptimismL2StandardBridge,
+                _amount
+            );
+            IOptimismL2StandardBridge(ContractsAddress.OptimismL2StandardBridge)
+            .withdrawTo{value: _amount}(
+            _token,
+            _to,
+            _amount,
+            MAX_GAS_Limit,
+            ""
+            );
         } else {
             revert ErrorBlockChain();
         }

@@ -224,13 +224,13 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external payable onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
-        payable(address(this)).transfer(amount);
+        payable(to).transfer(amount);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(
@@ -254,11 +254,11 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
 
         IWETH WETH = IWETH(L2WETH());
@@ -293,11 +293,11 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
         if (!IsSupportStableCoin(ERC20Address)) {
             revert StableCoinNotSupported(ERC20Address);

@@ -337,14 +337,15 @@ abstract contract TokenBridgeBase is
 
     function L2WETH() public view returns (address) {
         uint256 Blockchain = block.chainid;
-        if (Blockchain == 0x82750) {
-            // Scroll: https://chainlist.org/chain/534352
+        if (Blockchain == 534351) {
+            // Scroll: https://chainlist.org/chain/534351
             return (ContractsAddress.ScrollWETH);
-        } else if (Blockchain == 0x44d) {
-            // Polygon zkEVM https://chainlist.org/chain/1101
-            return (ContractsAddress.PolygonZkEVMWETH);
-        } else if (Blockchain == 0xa) {
-            // OP Mainnet https://chainlist.org/chain/10
+            // @notice Polygon zkEVM is not supported Sepolia as L1
+//        } else if (Blockchain == 0x44d) {
+//            // Polygon zkEVM https://chainlist.org/chain/1101
+//            return (ContractsAddress.PolygonZkEVMWETH);
+        } else if (Blockchain == 11155420) {
+            // OP Mainnet https://chainlist.org/chain/11155420
             return (ContractsAddress.OptimismWETH);
         } else {
             revert ErrorBlockChain();

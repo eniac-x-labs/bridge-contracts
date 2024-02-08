@@ -96,7 +96,7 @@ library ContractsAddress {
         0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4;
     //https://scrollscan.com/token/0xca77eb3fefe3725dc33bccb54edefc3d9f764f97
     address public constant ScrollDAI =
-        0xcA77eB3fEFe3725Dc33bccB54eDEFc3D                                                                                                                           9f764f97;
+        0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97;                                                                                                                           9f764f97;
     //https://scrollscan.com/token/0x5300000000000000000000000000000000000004
     address public constant ScrollWETH =
         0x5300000000000000000000000000000000000004;

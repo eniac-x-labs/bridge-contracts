@@ -133,7 +133,7 @@ abstract contract TokenBridgeBase is
             block.chainid,
             destChainId,
             to,
-            msg.value,
+            amount,
             fee
         );
 

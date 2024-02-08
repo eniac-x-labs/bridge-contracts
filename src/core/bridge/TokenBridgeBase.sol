@@ -237,8 +237,8 @@ abstract contract TokenBridgeBase is
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 
@@ -269,8 +269,8 @@ abstract contract TokenBridgeBase is
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 
@@ -309,8 +309,8 @@ abstract contract TokenBridgeBase is
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 

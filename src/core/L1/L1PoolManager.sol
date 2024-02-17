@@ -24,12 +24,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
 
     uint32 public periodTime;
 
-    mapping(address => bool) public IsSupportToken;
-    mapping(address => uint256) public balances;
     mapping(address => Pool[]) public Pools;
     mapping(address => User[]) public Users;
     mapping(address => uint256) public MinStakeAmount;
-    address[] public SupportTokens;
 
     constructor() {
         _disableInitializers();
@@ -91,7 +88,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert NewPoolIsNotCreate(PoolIndex);
         }
-
+        FundingPoolBalance[_token] += _amount;
         emit StarkingERC20Event(msg.sender, _token, _amount);
     }
 
@@ -131,7 +128,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert NewPoolIsNotCreate(PoolIndex + 1);
         }
-
+        FundingPoolBalance[ContractsAddress.ETHAddress] += msg.value;
         emit StakingETHEvent(msg.sender, msg.value);
     }
 
@@ -168,7 +165,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             Pools[address(ContractsAddress.WETH)][PoolIndex]
                 .TotalAmount += amount;
         }
-
+        FundingPoolBalance[ContractsAddress.WETH] += amount;
         emit StakingWETHEvent(msg.sender, amount);
     }
 

@@ -28,10 +28,10 @@ abstract contract TokenBridgeBase is
     uint256 public PerFee; // 0.1%
 
     mapping(uint256 => bool) private IsSupportedChainId;
-    mapping(address => bool) private IsSupportedStableCoin;
-
-    mapping(address => uint256) private FundingPoolBalance;
+    mapping(address => bool) public IsSupportToken;
+    mapping(address => uint256) public FundingPoolBalance;
     mapping(address => uint256) public FeePoolValue;
+    address[] public SupportTokens;
 
     event InitiateETH(
         uint256 sourceChainId,
@@ -87,7 +87,7 @@ abstract contract TokenBridgeBase is
 
     error ChainIdNotSupported(uint256 chainId);
 
-    error StableCoinNotSupported(address ERC20Address);
+    error TokenIsNotSupported(address ERC20Address);
 
     error NotEnoughToken(address ERC20Address);
 
@@ -98,6 +98,10 @@ abstract contract TokenBridgeBase is
     error LessThanMinTransferAmount(uint256 MinTransferAmount, uint256 value);
 
     error sourceChainIdError();
+
+    fallback() external payable {
+        FundingPoolBalance[ContractsAddress.ETHAddress] += msg.value;
+    }
 
     function __TokenBridge_init(
         address _MultisigWallet,
@@ -183,8 +187,8 @@ abstract contract TokenBridgeBase is
         if (!IsSupportChainId(destChainId)) {
             revert ChainIdIsNotSupported(destChainId);
         }
-        if (!IsSupportStableCoin(ERC20Address)) {
-            revert StableCoinNotSupported(ERC20Address);
+        if (!IsSupportToken[ERC20Address]) {
+            revert TokenIsNotSupported(ERC20Address);
         }
 
         uint256 BalanceBefore = IERC20(ERC20Address).balanceOf(address(this));
@@ -293,8 +297,8 @@ abstract contract TokenBridgeBase is
         if (!IsSupportChainId(sourceChainId)) {
             revert ChainIdIsNotSupported(sourceChainId);
         }
-        if (!IsSupportStableCoin(ERC20Address)) {
-            revert StableCoinNotSupported(ERC20Address);
+        if (!IsSupportToken[ERC20Address]) {
+            revert TokenIsNotSupported(ERC20Address);
         }
         IERC20(ERC20Address).safeTransferFrom(address(this), to, amount);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
@@ -321,12 +325,6 @@ abstract contract TokenBridgeBase is
 
     function IsSupportChainId(uint256 chainId) public view returns (bool) {
         return IsSupportedChainId[chainId];
-    }
-
-    function IsSupportStableCoin(
-        address ERC20Address
-    ) public view returns (bool) {
-        return IsSupportedStableCoin[ERC20Address];
     }
 
     function L2WETH() public view returns (address) {
@@ -364,9 +362,10 @@ abstract contract TokenBridgeBase is
         address to,
         uint256 _amount
     ) internal returns (bool) {
-        if (!IsSupportStableCoin(_token)) {
-            revert StableCoinNotSupported(_token);
+        if (!IsSupportToken[_token]) {
+            revert TokenIsNotSupported(_token);
         }
+        FundingPoolBalance[_token] -= _amount;
         if (_token == address(ContractsAddress.ETHAddress)) {
             if (address(this).balance < _amount) {
                 revert NotEnoughETH();
@@ -394,11 +393,14 @@ abstract contract TokenBridgeBase is
         IsSupportedChainId[chainId] = isValid;
     }
 
-    function setSupportStableCoin(
+    function setSupportToken(
         address ERC20Address,
         bool isValid
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        IsSupportedStableCoin[ERC20Address] = isValid;
+        IsSupportToken[ERC20Address] = isValid;
+        if (isValid) {
+            SupportTokens.push(ERC20Address);
+        }
     }
 
     function setPerFee(uint256 _PerFee) external onlyRole(DEFAULT_ADMIN_ROLE) {

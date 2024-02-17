@@ -346,6 +346,9 @@ abstract contract TokenBridgeBase is
         } else if (Blockchain == 0xa) {
             // OP Mainnet https://chainlist.org/chain/10
             return (ContractsAddress.OptimismWETH);
+        } else if(Blockchain == 0x42161) {
+            // Arbitrum One https://chainlist.org/chain/42161
+            return (ContractsAddress.ArbitrumOneWETH);
         } else {
             revert ErrorBlockChain();
         }

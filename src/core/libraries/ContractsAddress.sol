@@ -19,17 +19,36 @@ library ContractsAddress {
     //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
     address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
 
-    //TODO
-    /******************
-     **** Arbitrum ****
-     *****************/
+    /**********************
+     **** Arbitrum  One****
+     *********************/
+    //https://docs.arbitrum.io/for-devs/useful-addresses
+    //https://etherscan.io/address/0x72Ce9c846789fdB6fC1f34aC4AD25Dd9ef7031ef
 
-    address public constant ArbitrumCustomerBridge =
-        0x0000000000000000000000000000000000000001; //TODO
-    //https://arbiscan.io/token/0x82af49447d8a07e3bd95bd0d56f35241523fbab1
-    address public constant ArbitrumWETH =
+    address public constant ArbitrumOneL1GatewayRouter =
+        0x72Ce9c846789fdB6fC1f34aC4AD25Dd9ef7031ef; 
+    //https://etherscan.io/address/0xd92023E9d9911199a6711321D1277285e6d4e2db
+    address public constant ArbitrumOneL1WETHGateway =
+        0xd92023E9d9911199a6711321D1277285e6d4e2db;
+    //https://etherscan.io/address/0xa3A7B6F88361F48403514059F1F16C8E78d60EeC
+    address public constant ArbitrumOneL1ERC20Gateway =
+        0xa3A7B6F88361F48403514059F1F16C8E78d60EeC;
+    //https://arbiscan.io/address/0x5288c571Fd7aD117beA99bF60FE0846C4E84F933
+    address public constant ArbitrumOneL2GatewayRouter =
+        0x5288c571Fd7aD117beA99bF60FE0846C4E84F933; 
+    //https://arbiscan.io/address/0x6c411aD3E74De3E7Bd422b94A27770f5B86C623B
+    address public constant ArbitrumOneL2WETHGateway =
+        0x6c411aD3E74De3E7Bd422b94A27770f5B86C623B;
+    //https://arbiscan.io/address/0x09e9222E96E7B4AE2a407B98d48e330053351EEe
+    address public constant ArbitrumOneL2ERC20Gateway =
+        0x09e9222E96E7B4AE2a407B98d48e330053351EEe;
+
+    //https://arbiscan.io/address/0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+    address public constant ArbitrumOneWETH =
         0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
-    //TODO
+
+
+
     /******************
      ***** Linea ******
      *****************/

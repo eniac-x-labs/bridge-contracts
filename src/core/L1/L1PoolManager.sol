@@ -13,11 +13,11 @@ import "../../interfaces/WETH.sol";
 import "../../interfaces/IScrollBridge.sol";
 import "../../interfaces/IPolygonZkEVMBridge.sol";
 import "../../interfaces/IOptimismBridge.sol";
-import "../../interfaces/IArbitrumBridge.sol";
+import "../../interfaces/IArbitrumOneBridge.sol";
+import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
-
 
 contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     using SafeERC20 for IERC20;
@@ -374,8 +374,13 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else if (Blockchain == 0xa4b1) {
             //https://chainlist.org/chain/42161
             //Arbitrum One
-            
+
             TransferAssertToArbitrumOneBridge(_token, _to, _amount);
+        } else if (Blockchain == 0xa4ba) {
+            //https://chainlist.org/chain/42170
+            //Arbitrum One
+
+            TransferAssertToArbitrumNovaBridge(_token, _to, _amount);
         } else {
             revert ErrorBlockChain();
         }
@@ -388,14 +393,95 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1GatewayRouter).outboundTransferCustomRefund{value: _amount}(ContractsAddress.ETHAddress, address(this), _to, _amount, 0, 0, "");
+            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1GatewayRouter)
+                .outboundTransferCustomRefund{value: _amount}(
+                ContractsAddress.ETHAddress,
+                address(this),
+                _to,
+                _amount,
+                0,
+                0,
+                ""
+            );
         } else if (_token == address(ContractsAddress.WETH)) {
-            IERC20(_token).approve(ContractsAddress.ArbitrumOneL1WETHGateway, _amount);
-            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1WETHGateway).outboundTransferCustomRefund(_token, address(this), _to, _amount, 0, 0, "");
-        }  
-        else {
-            IERC20(_token).approve(ContractsAddress.ArbitrumOneL1ERC20Gateway, _amount);
-            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1ERC20Gateway).outboundTransferCustomRefund(_token, address(this), _to, _amount, 0, 0, "");
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumOneL1WETHGateway,
+                _amount
+            );
+            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1WETHGateway)
+                .outboundTransferCustomRefund(
+                    _token,
+                    address(this),
+                    _to,
+                    _amount,
+                    0,
+                    0,
+                    ""
+                );
+        } else {
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumOneL1ERC20Gateway,
+                _amount
+            );
+            IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1ERC20Gateway)
+                .outboundTransferCustomRefund(
+                    _token,
+                    address(this),
+                    _to,
+                    _amount,
+                    0,
+                    0,
+                    ""
+                );
+        }
+    }
+
+    function TransferAssertToArbitrumNovaBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IArbitrumNovaL1Bridge(ContractsAddress.ArbitrumNovaL1GatewayRouter)
+                .outboundTransferCustomRefund{value: _amount}(
+                ContractsAddress.ETHAddress,
+                address(this),
+                _to,
+                _amount,
+                0,
+                0,
+                ""
+            );
+        } else if (_token == address(ContractsAddress.WETH)) {
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumNovaL1WETHGateway,
+                _amount
+            );
+            IArbitrumNovaL1Bridge(ContractsAddress.ArbitrumNovaL1WETHGateway)
+                .outboundTransferCustomRefund(
+                    _token,
+                    address(this),
+                    _to,
+                    _amount,
+                    0,
+                    0,
+                    ""
+                );
+        } else {
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumNovaL1ERC20Gateway,
+                _amount
+            );
+            IArbitrumNovaL1Bridge(ContractsAddress.ArbitrumNovaL1ERC20Gateway)
+                .outboundTransferCustomRefund(
+                    _token,
+                    address(this),
+                    _to,
+                    _amount,
+                    0,
+                    0,
+                    ""
+                );
         }
     }
 

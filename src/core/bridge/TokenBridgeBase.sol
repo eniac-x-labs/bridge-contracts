@@ -129,13 +129,7 @@ abstract contract TokenBridgeBase is
         uint256 amount = msg.value - fee;
         FeePoolValue[ContractsAddress.ETHAddress] += fee;
 
-        messageManager.sendMessage(
-            block.chainid,
-            destChainId,
-            to,
-            amount,
-            fee
-        );
+        messageManager.sendMessage(block.chainid, destChainId, to, amount, fee);
 
         emit InitiateETH(sourceChainId, destChainId, msg.sender, to, amount);
         return true;
@@ -346,9 +340,12 @@ abstract contract TokenBridgeBase is
         } else if (Blockchain == 0xa) {
             // OP Mainnet https://chainlist.org/chain/10
             return (ContractsAddress.OptimismWETH);
-        } else if(Blockchain == 0x42161) {
+        } else if (Blockchain == 0xa4b1) {
             // Arbitrum One https://chainlist.org/chain/42161
             return (ContractsAddress.ArbitrumOneWETH);
+        } else if (Blockchain == 0xa4ba) {
+            // Arbitrum Nova https://chainlist.org/chain/42170
+            return (ContractsAddress.ArbitrumNovaWETH);
         } else {
             revert ErrorBlockChain();
         }

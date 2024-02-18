@@ -100,7 +100,7 @@ library ContractsAddress {
 //        0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97;
 //    //https://scrollscan.com/token/0x5300000000000000000000000000000000000004
      address public constant ScrollWETH =
-//        0x5300000000000000000000000000000000000004;
+        0x5300000000000000000000000000000000000004;
 
     /***************************
      ***** Optimism Testnet *****

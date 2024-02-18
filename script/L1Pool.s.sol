@@ -49,8 +49,8 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.USDT, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).setSupportStableCoin(ContractsAddress.USDT, true);
+        L1PoolManager(address(proxyL1Pool)).SetSupportToken(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportStableCoin(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true);
 
         vm.stopBroadcast();
     }

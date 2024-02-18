@@ -393,10 +393,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 _amount
             );
             IScrollStandardL1WETHBridge(
-                ContractsAddress.ScrollTestnetTestnetL1StandardWETHBridge
+                ContractsAddress.ScrollTestnetL1StandardWETHBridge
             ).depositERC20(_token, _to, _amount, 20000);
         } else {
-            uint fee = IL1MessageQueue(ContractsAddress.ScrollL1MessageQueue)
+            uint fee = IL1MessageQueue(ContractsAddress.ScrollTestnetL1MessageQueue)
                 .estimateCrossDomainMessageFee(20000);
             IERC20(_token).approve(
                 ContractsAddress.ScrollTestnetL1StandardWETHBridge,
@@ -439,7 +439,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IOptimismL1Bridge(ContractsAddress.OptimismL1StandardBridge)
+            IOptimismL1Bridge(ContractsAddress.OptimismTestnetL1StandardBridge)
                 .depositETHTo{value: _amount}(_to, 0, "");
         } else {
             address l2token = getOPL2TokenAddress(_token);
@@ -447,7 +447,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 ContractsAddress.OptimismTestnetL1StandardBridge,
                 _amount
             );
-            IOptimismL1Bridge(ContractsAddress.OptimismL1StandardBridge)
+            IOptimismL1Bridge(ContractsAddress.OptimismTestnetL1StandardBridge)
                 .depositERC20To(
                     _token,
                     l2token,

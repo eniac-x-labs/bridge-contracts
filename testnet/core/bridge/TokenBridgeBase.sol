@@ -41,14 +41,6 @@ abstract contract TokenBridgeBase is
         uint256 value
     );
 
-    event InitiateWETH(
-        uint256 sourceChainId,
-        uint256 destChainId,
-        address indexed from,
-        address indexed to,
-        uint256 value
-    );
-
     event InitiateERC20(
         uint256 sourceChainId,
         uint256 destChainId,
@@ -59,14 +51,6 @@ abstract contract TokenBridgeBase is
     );
 
     event FinalizeETH(
-        uint256 sourceChainId,
-        uint256 destChainId,
-        address indexed from,
-        address indexed to,
-        uint256 value
-    );
-
-    event FinalizeWETH(
         uint256 sourceChainId,
         uint256 destChainId,
         address indexed from,
@@ -171,7 +155,14 @@ abstract contract TokenBridgeBase is
 
         messageManager.sendMessage(sourceChainId, destChainId, to, value, fee);
 
-        emit InitiateWETH(sourceChainId, destChainId, msg.sender, to, amount);
+        emit InitiateERC20(
+            sourceChainId,
+            destChainId,
+            WETH,
+            msg.sender,
+            to,
+            amount
+        );
 
         return true;
     }
@@ -274,9 +265,10 @@ abstract contract TokenBridgeBase is
             _nonce
         );
 
-        emit FinalizeWETH(
+        emit FinalizeERC20(
             sourceChainId,
             destChainId,
+            WETH,
             address(this),
             to,
             amount

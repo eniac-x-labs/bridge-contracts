@@ -158,7 +158,7 @@ abstract contract TokenBridgeBase is
         emit InitiateERC20(
             sourceChainId,
             destChainId,
-            WETH,
+            address(WETH),
             msg.sender,
             to,
             amount
@@ -268,7 +268,7 @@ abstract contract TokenBridgeBase is
         emit FinalizeERC20(
             sourceChainId,
             destChainId,
-            WETH,
+            address(WETH),
             address(this),
             to,
             amount

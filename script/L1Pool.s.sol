@@ -50,7 +50,7 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.USDT, true, startTime);
-        L2PoolManager(address(proxyL2Pool)).setSupportStableCoin(ContractsAddress.USDT, true);
+        L1PoolManager(address(proxyL1Pool)).setSupportStableCoin(ContractsAddress.USDT, true);
 
         vm.stopBroadcast();
     }

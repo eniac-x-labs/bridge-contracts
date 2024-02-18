@@ -51,7 +51,7 @@ contract L2PoolDeployer is Script {
         L2PoolManager(address(proxyL2Pool)).setValidChainId(11155111, true);  // sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(11155420, true);  // OP Sepolia
-
+        L2PoolManager(address(proxyL2Pool)).setSupportStableCoin(0xb62E70E905989DD95A5eA84af5c5f223A84a1eF2, true);
 
         vm.stopBroadcast();
     }

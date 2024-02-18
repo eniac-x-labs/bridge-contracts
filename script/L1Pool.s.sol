@@ -2,10 +2,10 @@
 pragma solidity 0.8.20;
 
 import {Script, console2} from "forge-std/Script.sol";
-import "src/core/L1/L1PoolManager.sol";
-import "src/core/Proxy.sol";
-import "src/core/ProxyTimeLockController.sol";
-import "src/core/message/MessageManager.sol";
+import "testnet/core/L1/L1PoolManager.sol";
+import "testnet/core/Proxy.sol";
+import "testnet/core/ProxyTimeLockController.sol";
+import "testnet/core/message/MessageManager.sol";
 
 
 contract l1PoolDeployer is Script {
@@ -44,10 +44,13 @@ contract l1PoolDeployer is Script {
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(1442, true);  // Polygon zkevm Testnet
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(11155420, true);  // OP Sepolia
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.USDT, true, startTime);
-        
+        L2PoolManager(address(proxyL2Pool)).setSupportStableCoin(ContractsAddress.USDT, true);
 
         vm.stopBroadcast();
     }

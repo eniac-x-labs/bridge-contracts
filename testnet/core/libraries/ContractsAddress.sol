@@ -117,8 +117,8 @@ library ContractsAddress {
 //        0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
 //
 //    //https://optimistic.etherscan.io/token/0x4200000000000000000000000000000000000006
-//    address public constant OptimismWETH =
-//        0x4200000000000000000000000000000000000006;
+    address public constant OptimismWETH =
+        0x4200000000000000000000000000000000000006;
 //
 //    //https://optimistic.etherscan.io/token/0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
 //    address public constant OptimismUSDT =

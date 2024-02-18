@@ -9,7 +9,7 @@ library ContractsAddress {
         address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
     // @notice TestWETH
 //    //https://sepolia.etherscan.io/token/0x7b79995e5f793a07bc00c21412e50ecae098e7f9
-    address public constant WETH = 0x7b79995e5f793a07bc00c21412e50ecae098e7f9;
+    address public constant WETH = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
 //
 //    //https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
 //    address public constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
@@ -99,7 +99,7 @@ library ContractsAddress {
 //    address public constant ScrollDAI =
 //        0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97;
 //    //https://scrollscan.com/token/0x5300000000000000000000000000000000000004
-//    address public constant ScrollWETH =
+     address public constant ScrollWETH =
 //        0x5300000000000000000000000000000000000004;
 
     /***************************

@@ -22,7 +22,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
 
     uint32 public periodTime;
 
-    mapping(address => bool) public IsSupportToken;
+
     mapping(address => uint256) public balances;
     mapping(address => Pool[]) public Pools;
     mapping(address => User[]) public Users;
@@ -57,7 +57,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             DepositAndStakingETH();
         } else if (_token == ContractsAddress.WETH) {
             DepositAndStakingWETH(_amount);
-        } else if (IsSupportToken[_token]) {
+        } else if (IsSupportedToken[_token]) {
             DepositAndStakingERC20(_token, _amount);
         }
     }
@@ -66,7 +66,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         address _token,
         uint256 _amount
     ) public override nonReentrant whenNotPaused {
-        if (!IsSupportToken[_token]) {
+        if (!IsSupportedToken[_token]) {
             revert TokenIsNotSupported(_token);
         }
         if (_amount < MinStakeAmount[_token]) {
@@ -352,7 +352,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         address _to,
         uint256 _amount
     ) external onlyRole(ReLayer) {
-        if (!IsSupportToken[_token]) {
+        if (!IsSupportedToken[_token]) {
             revert TokenIsNotSupported(_token);
         }
         if (Blockchain == 534351) {
@@ -475,10 +475,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         bool _isSupport,
         uint32 startTimes
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (IsSupportToken[_token]) {
+        if (IsSupportedToken[_token]) {
             revert TokenIsAlreadySupported(_token, _isSupport);
         }
-        IsSupportToken[_token] = _isSupport;
+        IsSupportedToken[_token] = _isSupport;
         //genesis pool
         Pools[_token].push(
             Pool({

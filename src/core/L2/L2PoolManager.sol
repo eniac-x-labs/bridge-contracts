@@ -187,6 +187,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert ErrorBlockChain();
         }
+        FundingPoolBalance[_token] -= _amount;
         emit WithdrawERC20toL1Success(
             block.chainid,
             block.timestamp,

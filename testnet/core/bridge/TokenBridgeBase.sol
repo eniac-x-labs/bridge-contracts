@@ -365,6 +365,7 @@ abstract contract TokenBridgeBase is
             }
             IERC20(_token).safeTransfer(to, _amount);
         }
+        FundingPoolBalance[_token] -= _amount;
         return true;
     }
 

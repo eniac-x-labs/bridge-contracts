@@ -73,6 +73,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert ErrorBlockChain();
         }
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
 
         emit WithdrawETHtoL1Success(
             block.chainid,

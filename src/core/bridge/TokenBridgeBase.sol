@@ -30,7 +30,7 @@ abstract contract TokenBridgeBase is
     mapping(uint256 => bool) private IsSupportedChainId;
     mapping(address => bool) private IsSupportedStableCoin;
 
-    mapping(address => uint256) private FundingPoolBalance;
+    mapping(address => uint256) public FundingPoolBalance;
     mapping(address => uint256) public FeePoolValue;
 
     event InitiateETH(

@@ -89,7 +89,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert NewPoolIsNotCreate(PoolIndex);
         }
-
+        FundingPoolBalance[_token] += _amount;
         emit StarkingERC20Event(msg.sender, _token, _amount);
     }
 
@@ -129,7 +129,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert NewPoolIsNotCreate(PoolIndex + 1);
         }
-
+        FundingPoolBalance[address(ContractsAddress.ETHAddress)] += msg.value;
         emit StakingETHEvent(msg.sender, msg.value);
     }
 
@@ -166,7 +166,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             Pools[address(ContractsAddress.WETH)][PoolIndex]
                 .TotalAmount += amount;
         }
-
+        FundingPoolBalance[address(ContractsAddress.WETH)] += amount;
         emit StakingWETHEvent(msg.sender, amount);
     }
 
@@ -371,6 +371,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else {
             revert ErrorBlockChain();
         }
+        FundingPoolBalance[_token] -= _amount;
         emit TransferAssertTo(Blockchain, _token, _to, _amount);
     }
 

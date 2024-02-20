@@ -344,7 +344,11 @@ abstract contract TokenBridgeBase is
         } else if (Blockchain == 0xa4ba) {
             // Arbitrum Nova https://chainlist.org/chain/42170
             return (ContractsAddress.ArbitrumNovaWETH);
-        } else {
+        }else if (Blockchain == 0x144){
+            //ZkSync Mainnet
+            return (ContractsAddress.ZkSyncWETH);
+        }
+        else {
             revert ErrorBlockChain();
         }
     }

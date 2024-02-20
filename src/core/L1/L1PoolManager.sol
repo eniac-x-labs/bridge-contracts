@@ -15,6 +15,7 @@ import "../../interfaces/IPolygonZkEVMBridge.sol";
 import "../../interfaces/IOptimismBridge.sol";
 import "../../interfaces/IArbitrumOneBridge.sol";
 import "../../interfaces/IArbitrumNovaBridge.sol";
+import "../../interfaces/IZksyncBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
@@ -378,9 +379,16 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             //Arbitrum One
 
             TransferAssertToArbitrumNovaBridge(_token, _to, _amount);
-        } else {
+        } else if (Blockchain == 0x144) {
+            //https://chainlist.org/chain/324
+            //ZkSync Mainnet
+            TransferAssertToZkSyncBridge(_token, _to, _amount);
+        }  
+        
+        else {
             revert ErrorBlockChain();
         }
+        FundingPoolBalance[_token] -= _amount;
         emit TransferAssertTo(Blockchain, _token, _to, _amount);
     }
 
@@ -566,6 +574,36 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 );
         }
     }
+
+    function TransferAssertToZkSyncBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IZkSyncBridge(ContractsAddress.ZkSyncL1Bridge).deposit{value: _amount}(
+                _to,
+                address(0),
+                _amount,
+                0,
+                0,
+                address(this)
+            );
+        } else {
+            IERC20(_token).approve(ContractsAddress.ZkSyncL1Bridge, _amount);
+            IZkSyncBridge(ContractsAddress.ZkSyncL1Bridge).deposit(
+                 _to,
+                _token,
+                _amount,
+                0,
+                0,
+                address(this)
+            );
+        }
+        
+    }
+
+
 
     function setMinStakeAmount(
         address _token,

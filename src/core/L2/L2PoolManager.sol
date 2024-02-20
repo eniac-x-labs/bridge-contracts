@@ -8,6 +8,7 @@ import "../../interfaces/IPolygonZkEVMBridge.sol";
 import "../../interfaces/IArbitrumOneBridge.sol";
 import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IOptimismBridge.sol";
+import "../../interfaces/IZksyncBridge.sol";
 import "../../interfaces/WETH.sol";
 import "../../interfaces/IL2PoolManager.sol";
 import "../libraries/ContractsAddress.sol";
@@ -89,10 +90,20 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 _amount,
                 ""
             );
-        } else {
+        }  else if (Blockchain == 0x144) {
+            //https://chainlist.org/chain/324
+            //ZkSync Mainnet
+            //https://github.com/zksync-sdk/zksync-ethers/blob/main/src/utils.ts#L92
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
+                _to,
+                address(0),
+                _amount
+            );
+        }
+        else {
             revert ErrorBlockChain();
         }
-
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
         emit WithdrawETHtoL1Success(
             block.chainid,
             block.timestamp,
@@ -156,7 +167,16 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             WETH.approve(ContractsAddress.ArbitrumNovaL2WETHGateway, _amount);
             IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL2WETHGateway)
                 .outboundTransfer(ContractsAddress.WETH, _to, _amount, "");
-        } else {
+        } else if(Blockchain == 0x144){
+            //ZkSync Mainnet
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
+                _to,
+                address(WETH),
+                _amount
+            );
+        }
+        
+        else {
             revert ErrorBlockChain();
         }
         emit WithdrawWETHtoL1Success(
@@ -165,7 +185,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             _to,
             _amount
         );
-
+        FundingPoolBalance[ContractsAddress.WETH] -= _amount;
         return true;
     }
 
@@ -231,9 +251,19 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL1ERC20Gateway)
                 .outboundTransfer(_token, _to, _amount, "");
-        } else {
+        } else if (Blockchain == 0x144) {
+            //ZkSync Mainnet
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
+                _to,
+                _token,
+                _amount
+            );
+        }
+        
+        else {
             revert ErrorBlockChain();
         }
+        FundingPoolBalance[_token] -= _amount;
         emit WithdrawERC20toL1Success(
             block.chainid,
             block.timestamp,

@@ -82,6 +82,21 @@ library ContractsAddress {
     address public constant LineaWETH =
         0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f;
 
+
+    /********************
+     ***** ZkSync *******
+     *******************/
+    //https://etherscan.io/address/0x57891966931eb4bb6fb81430e6ce0a03aabde063#readProxyContract
+    address public constant ZkSyncL1Bridge =
+        0x57891966931Eb4Bb6FB81430E6cE0A03AAbDe063;
+    //https://explorer.zksync.io/address/0x11f943b2c77b743ab90f4a0ae7d5a4e7fca3e102#contract
+    address public constant ZkSyncL2Bridge =
+        0x11f943b2c77b743AB90f4A0Ae7d5A4e7FCA3E102;
+    //https://era.zksync.network/token/0x5aea5775959fbc2557cc8789bc1bf90a239d9a91
+    address public constant ZkSyncWETH =
+        0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91;
+
+
     /*******************
      ** Polygon ZkEVM **
      *******************/

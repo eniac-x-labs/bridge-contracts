@@ -16,6 +16,7 @@ import "../../interfaces/IOptimismBridge.sol";
 import "../../interfaces/IArbitrumOneBridge.sol";
 import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IZksyncBridge.sol";
+import "../../interfaces/IMantleBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
@@ -383,8 +384,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             //https://chainlist.org/chain/324
             //ZkSync Mainnet
             TransferAssertToZkSyncBridge(_token, _to, _amount);
-        }  
-        
+        }  else if (Blockchain == 0x1388){
+            TransferAssertToMantleBridge(_token, _to, _amount);
+        }
         else {
             revert ErrorBlockChain();
         }
@@ -603,6 +605,30 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         
     }
 
+    function TransferAssertToMantleBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo(
+                _to,
+                0,
+                ""
+            );
+        } else {
+            IERC20(_token).approve(ContractsAddress.MantleL1Bridge, _amount);
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositERC20To(
+                _token,
+                getMantleL2TokenAddress(_token),
+                _to,
+                _amount,
+                0,
+                ""
+            );
+        }
+    }
+
 
 
     function setMinStakeAmount(
@@ -704,4 +730,17 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert TokenIsNotSupported(_token);
         }
     }
+    //https://github.com/mantlenetworkio/mantle-token-lists/tree/main/data
+    function getMantleL2TokenAddress(
+        address _token
+    ) internal pure returns (address) {
+        if (_token == ContractsAddress.USDT) {
+            return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
+        } else if (_token == ContractsAddress.USDC) {
+            return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
+        }  else {
+            revert TokenIsNotSupported(_token);
+        }
+
+}
 }

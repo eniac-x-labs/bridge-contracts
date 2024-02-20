@@ -87,7 +87,6 @@ interface IL1PoolManager {
     event SetSupportTokenEvent(address indexed token, bool isSupport);
 
     error NoReward();
-    error TokenIsNotSupported(address token);
     error NewPoolIsNotCreate(uint256 PoolIndex);
     error LessThanMinStakeAmount(uint256 minAmount, uint256 providedAmount);
     error PoolIsCompleted(uint256 poolIndex);

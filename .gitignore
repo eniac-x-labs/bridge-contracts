@@ -13,6 +13,7 @@ docs/
 .env
 
 lib/
+out/
 node_modules/
 
 /broadcast/

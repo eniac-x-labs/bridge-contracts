@@ -19,17 +19,59 @@ library ContractsAddress {
     //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
     address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
 
-    //TODO
-    /******************
-     **** Arbitrum ****
-     *****************/
+    /**********************
+     **** Arbitrum  One****
+     *********************/
+    //https://docs.arbitrum.io/for-devs/useful-addresses
+    //https://etherscan.io/address/0x72Ce9c846789fdB6fC1f34aC4AD25Dd9ef7031ef
 
-    address public constant ArbitrumCustomerBridge =
-        0x0000000000000000000000000000000000000001; //TODO
-    //https://arbiscan.io/token/0x82af49447d8a07e3bd95bd0d56f35241523fbab1
-    address public constant ArbitrumWETH =
+    address public constant ArbitrumOneL1GatewayRouter =
+        0x72Ce9c846789fdB6fC1f34aC4AD25Dd9ef7031ef;
+    //https://etherscan.io/address/0xd92023E9d9911199a6711321D1277285e6d4e2db
+    address public constant ArbitrumOneL1WETHGateway =
+        0xd92023E9d9911199a6711321D1277285e6d4e2db;
+    //https://etherscan.io/address/0xa3A7B6F88361F48403514059F1F16C8E78d60EeC
+    address public constant ArbitrumOneL1ERC20Gateway =
+        0xa3A7B6F88361F48403514059F1F16C8E78d60EeC;
+    //https://arbiscan.io/address/0x5288c571Fd7aD117beA99bF60FE0846C4E84F933
+    address public constant ArbitrumOneL2GatewayRouter =
+        0x5288c571Fd7aD117beA99bF60FE0846C4E84F933;
+    //https://arbiscan.io/address/0x6c411aD3E74De3E7Bd422b94A27770f5B86C623B
+    address public constant ArbitrumOneL2WETHGateway =
+        0x6c411aD3E74De3E7Bd422b94A27770f5B86C623B;
+    //https://arbiscan.io/address/0x09e9222E96E7B4AE2a407B98d48e330053351EEe
+    address public constant ArbitrumOneL2ERC20Gateway =
+        0x09e9222E96E7B4AE2a407B98d48e330053351EEe;
+
+    //https://arbiscan.io/address/0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+    address public constant ArbitrumOneWETH =
         0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
-    //TODO
+    /**********************
+     **** Arbitrum  Nova***
+     *********************/
+    //https://docs.arbitrum.io/for-devs/useful-addresses
+    //https://etherscan.io/address/0xC840838Bc438d73C16c2f8b22D2Ce3669963cD48
+    address public constant ArbitrumNovaL1GatewayRouter =
+        0xC840838Bc438d73C16c2f8b22D2Ce3669963cD48;
+    //https://etherscan.io/address/0xB2535b988dcE19f9D71dfB22dB6da744aCac21bf
+    address public constant ArbitrumNovaL1ERC20Gateway =
+        0xB2535b988dcE19f9D71dfB22dB6da744aCac21bf;
+    //https://etherscan.io/address/0xE4E2121b479017955Be0b175305B35f312330BaE
+    address public constant ArbitrumNovaL1WETHGateway =
+        0xE4E2121b479017955Be0b175305B35f312330BaE;
+    //https://nova.arbiscan.io/address/0x21903d3F8176b1a0c17E953Cd896610Be9fFDFa8
+    address public constant ArbitrumNovaL2GatewayRouter =
+        0x21903d3F8176b1a0c17E953Cd896610Be9fFDFa8;
+    //https://nova.arbiscan.io/address/0xcF9bAb7e53DDe48A6DC4f286CB14e05298799257
+    address public constant ArbitrumNovaL2ERC20Gateway =
+        0xcF9bAb7e53DDe48A6DC4f286CB14e05298799257;
+    //https://nova.arbiscan.io/address/0x7626841cB6113412F9c88D3ADC720C9FAC88D9eD
+    address public constant ArbitrumNovaL2WETHGateway =
+        0x7626841cB6113412F9c88D3ADC720C9FAC88D9eD;
+    //https://nova.arbiscan.io/address/0x722E8BdD2ce80A4422E880164f2079488e115365
+    address public constant ArbitrumNovaWETH =
+        0x722E8BdD2ce80A4422E880164f2079488e115365;
+
     /******************
      ***** Linea ******
      *****************/

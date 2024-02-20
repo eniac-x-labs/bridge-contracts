@@ -5,6 +5,8 @@ import "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 import "../../interfaces/IScrollBridge.sol";
 import "../../interfaces/IPolygonZkEVMBridge.sol";
+import "../../interfaces/IArbitrumOneBridge.sol";
+import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IOptimismBridge.sol";
 import "../../interfaces/WETH.sol";
 import "../../interfaces/IL2PoolManager.sol";
@@ -38,7 +40,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount > address(this).balance) {
             revert NotEnoughETH();
         }
-
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
         if (Blockchain == 0x82750) {
             //Scroll https://chainlist.org/chain/534352
             IScrollStandardL1ETHBridge(
@@ -69,6 +71,24 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
+        } else if (Blockchain == 0xa4b1) {
+            // Arbitrum One https://chainlist.org/chain/42161
+            IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2GatewayRouter)
+                .outboundTransfer{value: _amount}(
+                ContractsAddress.ETHAddress,
+                _to,
+                _amount,
+                ""
+            );
+        } else if (Blockchain == 0xa4ba) {
+            // Arbitrum One https://chainlist.org/chain/42170
+            IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL2GatewayRouter)
+                .outboundTransfer{value: _amount}(
+                ContractsAddress.ETHAddress,
+                _to,
+                _amount,
+                ""
+            );
         } else {
             revert ErrorBlockChain();
         }
@@ -91,7 +111,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount > WETH.balanceOf(address(this))) {
             revert NotEnoughToken(address(WETH));
         }
-
+        FundingPoolBalance[ContractsAddress.WETH] -= _amount;
         if (Blockchain == 0x82750) {
             // Scroll https://chainlist.org/chain/534352
             WETH.approve(ContractsAddress.ScrollL2StandardWETHBridge, _amount);
@@ -126,6 +146,16 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
+        } else if (Blockchain == 0xa4b1) {
+            // Arbitrum One https://chainlist.org/chain/42161
+            WETH.approve(ContractsAddress.ArbitrumOneL2WETHGateway, _amount);
+            IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2WETHGateway)
+                .outboundTransfer(ContractsAddress.WETH, _to, _amount, "");
+        } else if (Blockchain == 0xa4ba) {
+            // Arbitrum Nova https://chainlist.org/chain/42170
+            WETH.approve(ContractsAddress.ArbitrumNovaL2WETHGateway, _amount);
+            IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL2WETHGateway)
+                .outboundTransfer(ContractsAddress.WETH, _to, _amount, "");
         } else {
             revert ErrorBlockChain();
         }
@@ -145,9 +175,10 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) external payable onlyRole(ReLayer) returns (bool) {
         uint256 Blockchain = block.chainid;
-        if (!IsSupportStableCoin(_token)) {
-            revert StableCoinNotSupported(_token);
+        if (!IsSupportToken[_token]) {
+            revert TokenIsNotSupported(_token);
         }
+        FundingPoolBalance[_token] -= _amount;
         if (Blockchain == 0x82750) {
             //Scroll https://chainlist.org/chain/534352
             IERC20(_token).approve(
@@ -177,13 +208,29 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 _amount
             );
             IOptimismL2StandardBridge(ContractsAddress.OptimismL2StandardBridge)
-            .withdrawTo{value: _amount}(
-            _token,
-            _to,
-            _amount,
-            MAX_GAS_Limit,
-            ""
+                .withdrawTo{value: _amount}(
+                _token,
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
             );
+        } else if (Blockchain == 0xa4b1) {
+            // Arbitrum One https://chainlist.org/chain/42161
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumOneL2ERC20Gateway,
+                _amount
+            );
+            IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2ERC20Gateway)
+                .outboundTransfer(_token, _to, _amount, "");
+        } else if (Blockchain == 0xa4ba) {
+            // Arbitrum Nova https://chainlist.org/chain/421611
+            IERC20(_token).approve(
+                ContractsAddress.ArbitrumNovaL1ERC20Gateway,
+                _amount
+            );
+            IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL1ERC20Gateway)
+                .outboundTransfer(_token, _to, _amount, "");
         } else {
             revert ErrorBlockChain();
         }

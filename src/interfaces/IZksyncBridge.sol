@@ -15,6 +15,6 @@ interface IZkSyncBridge {
         address _l1Receiver,
         address _l2Token,
         uint256 _amount
-    ) external;
+    ) external payable;
 
 }

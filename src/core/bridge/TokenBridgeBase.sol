@@ -102,9 +102,6 @@ abstract contract TokenBridgeBase is
     error MantleNotWETH();
 
     error MantaNotWETH();
-    fallback() external payable {
-        FundingPoolBalance[ContractsAddress.ETHAddress] += msg.value;
-    }
 
     function __TokenBridge_init(
         address _MultisigWallet,

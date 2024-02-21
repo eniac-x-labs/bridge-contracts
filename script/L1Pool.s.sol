@@ -47,6 +47,9 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).setValidChainId(1442, true);  // Polygon zkevm Testnet
         L1PoolManager(address(proxyL1Pool)).setValidChainId(11155420, true);  // OP Sepolia
         L1PoolManager(address(proxyL1Pool)).setValidChainId(534351, true);    // Scroll Sepolia
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(421614, true);    // ARB Sepolia
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(84532, true);    // Base Sepolia
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(300, true);    // Zksync Sepolia
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
         L1PoolManager(address(proxyL1Pool)).SetSupportToken(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true, startTime);

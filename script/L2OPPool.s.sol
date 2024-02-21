@@ -49,8 +49,11 @@ contract L2PoolDeployer is Script {
 
     L2PoolManager(address(proxyL2Pool)).grantRole(l2PoolManager.ReLayer(), ReLayer);
         L2PoolManager(address(proxyL2Pool)).setValidChainId(11155111, true);  // sepolia
-        L2PoolManager(address(proxyL2Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(1442, true);  // Polygon zkevm Testnet
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(300, true);  // Zksync Sepolia
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(84532, true);  // Base Sepolia
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(534351, true);    // Scroll Sepolia
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(421614, true);  // ARB Sepolia
         L2PoolManager(address(proxyL2Pool)).setSupportStableCoin(0x45f3fd63F6A635Cd0249E941C54F3EB861c88F95, true);
         
 

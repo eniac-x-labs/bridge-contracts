@@ -110,6 +110,16 @@ library ContractsAddress {
     address public constant MantleETH =
         0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111;
     
+     /********************
+     ***** Manta *******
+     *******************/
+    //https://etherscan.io/address/0x3B95bC951EE0f553ba487327278cAc44f29715E5#writeProxyContract
+    address public constant MantaL1Bridge =
+        0x3B95bC951EE0f553ba487327278cAc44f29715E5;
+    //https://pacific-explorer.manta.network/address/0x4200000000000000000000000000000000000010
+    address public constant MantaL2Bridge =
+        0x4200000000000000000000000000000000000010;
+    
 
 
     /*******************

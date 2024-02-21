@@ -100,6 +100,8 @@ abstract contract TokenBridgeBase is
     error sourceChainIdError();
 
     error MantleNotWETH();
+
+    error MantaNotWETH();
     fallback() external payable {
         FundingPoolBalance[ContractsAddress.ETHAddress] += msg.value;
     }
@@ -351,6 +353,9 @@ abstract contract TokenBridgeBase is
         }else if (Blockchain == 0x1388){
             //Mantle https://chainlist.org/chain/5000
             revert MantleNotWETH();
+        } else if(Blockchain == 0xa9){
+            //Manta Pacific Mainnet https://chainlist.org/chain/169
+            revert MantaNotWETH();
         }
         else {
             revert ErrorBlockChain();

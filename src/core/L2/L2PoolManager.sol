@@ -10,6 +10,7 @@ import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IOptimismBridge.sol";
 import "../../interfaces/IZksyncBridge.sol";
 import "../../interfaces/IMantleBridge.sol";
+import "../../interfaces/IMantaBridge.sol";
 import "../../interfaces/WETH.sol";
 import "../../interfaces/IL2PoolManager.sol";
 import "../libraries/ContractsAddress.sol";
@@ -115,8 +116,17 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 ""
             );
 
-        }
-        else {
+        } else if (Blockchain == 0xa9) {
+            //Manta Pacific Mainnet https://chainlist.org/chain/169
+            IMantaL2Bridge(ContractsAddress.MantleL2Bridge)
+                .withdrawTo{value: _amount}(
+                ContractsAddress.OP_LEGACY_ERC20_ETH,
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
+            );
+        } else {
             revert ErrorBlockChain();
         }
         FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
@@ -279,6 +289,20 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             //Mantle Mainnet
             IERC20(_token).approve(ContractsAddress.MantleL2Bridge, _amount);
             IMantleL2Bridge(ContractsAddress.MantleL2Bridge).withdrawto(
+                _token,
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
+            );
+        }else if (Blockchain == 0xa9) {
+            //Manta Pacific Mainnet https://chainlist.org/chain/169
+            IERC20(_token).approve(
+                ContractsAddress.MantleL2Bridge,
+                _amount
+            );
+            IMantaL2Bridge(ContractsAddress.MantleL2Bridge)
+                .withdrawTo{value: _amount}(
                 _token,
                 _to,
                 _amount,

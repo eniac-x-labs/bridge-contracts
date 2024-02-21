@@ -16,6 +16,8 @@ import "../../interfaces/IOptimismBridge.sol";
 import "../../interfaces/IArbitrumOneBridge.sol";
 import "../../interfaces/IArbitrumNovaBridge.sol";
 import "../../interfaces/IZksyncBridge.sol";
+import "../../interfaces/IMantleBridge.sol";
+import "../../interfaces/IMantaBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
@@ -383,8 +385,14 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             //https://chainlist.org/chain/324
             //ZkSync Mainnet
             TransferAssertToZkSyncBridge(_token, _to, _amount);
-        }  
-        
+        }  else if (Blockchain == 0x1388){
+            //Mantle Mainnet https://chainlist.org/chain/5000
+            TransferAssertToMantleBridge(_token, _to, _amount);
+        }
+        else if (Blockchain == 0xa9){
+            //Manta Pacific Mainnet https://chainlist.org/chain/169
+            TransferAssertToMantaBridge(_token, _to, _amount);
+        }
         else {
             revert ErrorBlockChain();
         }
@@ -575,6 +583,32 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
+    function TransferAssertToMantaBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IMantaL1Bridge(ContractsAddress.MantaL1Bridge)
+                .depositETHTo{value: _amount}(_to, 0, "");
+        } else {
+            address l2token = getMantaL2TokenAddress(_token);
+            IERC20(_token).approve(
+                ContractsAddress.MantaL1Bridge,
+                _amount
+            );
+            IMantaL1Bridge(ContractsAddress.MantaL1Bridge)
+                .depositERC20To(
+                    _token,
+                    l2token,
+                    _to,
+                    _amount,
+                    uint32(gasleft()),
+                    ""
+                );
+        }
+    }
+
     function TransferAssertToZkSyncBridge(
         address _token,
         address _to,
@@ -601,6 +635,30 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
         }
         
+    }
+
+    function TransferAssertToMantleBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo(
+                _to,
+                0,
+                ""
+            );
+        } else {
+            IERC20(_token).approve(ContractsAddress.MantleL1Bridge, _amount);
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositERC20To(
+                _token,
+                getMantleL2TokenAddress(_token),
+                _to,
+                _amount,
+                0,
+                ""
+            );
+        }
     }
 
 
@@ -701,6 +759,34 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else if (_token == ContractsAddress.DAI) {
             return 0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
         } else {
+            revert TokenIsNotSupported(_token);
+        }
+    }
+    //https://github.com/mantlenetworkio/mantle-token-lists/tree/main/data
+    function getMantleL2TokenAddress(
+        address _token
+    ) internal pure returns (address) {
+        if (_token == ContractsAddress.USDT) {
+            return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
+        } else if (_token == ContractsAddress.USDC) {
+            return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
+        }  else {
+            revert TokenIsNotSupported(_token);
+        }
+
+}
+
+    //https://github.com/Manta-Network/manta-pacific-token-list
+    function getMantaL2TokenAddress(
+        address _token
+    ) internal pure returns (address) {
+        if (_token == ContractsAddress.USDT) {
+            return 0xf417F5A458eC102B90352F697D6e2Ac3A3d2851f;
+        } else if (_token == ContractsAddress.USDC) {
+            return 0xb73603C5d87fA094B7314C74ACE2e64D165016fb;
+        }  else if (_token == ContractsAddress.DAI){
+            return 0x1c466b9371f8aBA0D7c458bE10a62192Fcb8Aa71;
+        }else {
             revert TokenIsNotSupported(_token);
         }
     }

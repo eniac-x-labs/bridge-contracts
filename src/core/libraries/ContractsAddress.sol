@@ -96,6 +96,31 @@ library ContractsAddress {
     address public constant ZkSyncWETH =
         0x5AEa5775959fBC2557Cc8789bC1bf90A239D9a91;
 
+        
+    /********************
+     ***** Mantle *******
+     *******************/
+    //https://etherscan.io/address/0x95fC37A27a2f68e3A647CDc081F0A89bb47c3012#code
+    address public constant MantleL1Bridge =
+        0x95fC37A27a2f68e3A647CDc081F0A89bb47c3012;
+    //https://explorer.mantle.xyz/address/0x4200000000000000000000000000000000000010/contracts#address-tabs
+    address public constant MantleL2Bridge =
+        0x4200000000000000000000000000000000000010;
+    //https://explorer.mantle.xyz/token/0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111/token-transfers
+    address public constant MantleETH =
+        0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111;
+    
+     /********************
+     ***** Manta *******
+     *******************/
+    //https://etherscan.io/address/0x3B95bC951EE0f553ba487327278cAc44f29715E5#writeProxyContract
+    address public constant MantaL1Bridge =
+        0x3B95bC951EE0f553ba487327278cAc44f29715E5;
+    //https://pacific-explorer.manta.network/address/0x4200000000000000000000000000000000000010
+    address public constant MantaL2Bridge =
+        0x4200000000000000000000000000000000000010;
+    
+
 
     /*******************
      ** Polygon ZkEVM **

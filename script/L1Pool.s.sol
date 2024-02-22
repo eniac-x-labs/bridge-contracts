@@ -44,9 +44,9 @@ contract l1PoolDeployer is Script {
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.USDT, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.ETHAddress, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.WETH, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.USDT, true, startTime);
         
 
         vm.stopBroadcast();

@@ -126,6 +126,15 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
+        } else if (Blockchain == 0xa70e) {
+            // ZKFair https://chainlist.org/chain/42766
+            // ETH in ZKFair is ERC20
+            IERC20(ContractsAddress.ZKFairETH).approve(
+                ContractsAddress.ZKFairL2Bridge,
+                _amount
+            );
+            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge)
+                .bridgeAsset(0, _to, _amount, ContractsAddress.ZKFairETH, false, "");
         } else {
             revert ErrorBlockChain();
         }
@@ -309,6 +318,15 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
+        }
+        else if (Blockchain == 0xa70e) {
+            // ZKFair https://chainlist.org/chain/42766
+            IERC20(_token).approve(
+                ContractsAddress.ZKFairL2Bridge,
+                _amount
+            );
+            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge)
+                .bridgeAsset(0, _to, _amount, _token, false, "");
         }
         else {
             revert ErrorBlockChain();

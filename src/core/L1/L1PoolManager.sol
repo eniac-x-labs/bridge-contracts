@@ -561,6 +561,30 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
+    function TransferAssertToZKFairBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge)
+                .bridgeAsset{value: _amount}(
+                0x1,
+                _to,
+                _amount,
+                address(0),
+                false,
+                ""
+            );
+        } else {
+            IERC20(_token).approve(
+                ContractsAddress.ZKFairL1Bridge,
+                _amount
+            );
+            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge)
+                .bridgeAsset(0x1, _to, _amount, _token, false, "");
+        }
+    }
     function TransferAssertToOptimismBridge(
         address _token,
         address _to,

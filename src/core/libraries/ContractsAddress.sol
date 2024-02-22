@@ -211,3 +211,25 @@ library ContractsAddress {
     address public constant OptimismDAI =
         0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
 }
+
+    /*******************
+     ** ZkFAIR **
+     *******************/
+    //https://docs.zkfair.io/resources/zkfair-contracts
+
+    //https://etherscan.io/address/0x9cb4706e20a18e59a48ffa7616d700a3891e1861#readProxyContract
+    address public constant ZKFairL1Bridge =
+        0x9cb4706e20A18E59a48ffa7616d700A3891e1861;
+    //https://scan.zkfair.io/address/0x2c4813276869D93AFdaB4dd2B01Cd670342da194
+    address public constant ZKFairL2Bridge =
+        0x2c4813276869D93AFdaB4dd2B01Cd670342da194;
+    //https://scan.zkfair.io/token/0x4b21b980d0Dc7D3C0C6175b0A412694F3A1c7c6b?tab=contract
+    address public constant ZKFairETH =
+        0x4b21b980d0Dc7D3C0C6175b0A412694F3A1c7c6b;
+    //https://scan.zkfair.io/token/0x3f97bf3Cd76B5cA9D4A4E9cD8a73C24E32d6C193
+    address public constant ZKFairUSDT =
+        0x3f97bf3Cd76B5cA9D4A4E9cD8a73C24E32d6C193;
+    //https://scan.zkfair.io/token/0xa9f4EEb30dC48D4Ef77310A2108816C80457cF6F
+    address public constant ZKFairDAI =
+        0xa9f4EEb30dC48D4Ef77310A2108816C80457cF6F;
+    // ZKFair does not support USDC and WETH

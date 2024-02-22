@@ -31,7 +31,7 @@ interface IL1PoolManager {
     function ClaimAllReward() external;
     function CompletePoolAndNew(Pool[] memory CompletePools) external payable;
     function setMinStakeAmount(address _token, uint256 _amount) external;
-    function SetSupportToken(
+    function setSupportToken(
         address _token,
         bool _isSupport,
         uint32 startTimes

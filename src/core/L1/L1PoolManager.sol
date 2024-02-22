@@ -678,7 +678,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         emit SetMinStakeAmountEvent(_token, _amount);
     }
 
-    function SetSupportToken(
+    function setSupportToken(
         address _token,
         bool _isSupport,
         uint32 startTimes

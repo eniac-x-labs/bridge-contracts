@@ -403,7 +403,7 @@ abstract contract TokenBridgeBase is
         IsSupportedChainId[chainId] = isValid;
     }
 
-    function setSupportToken(
+    function setSupportERC20Token(
         address ERC20Address,
         bool isValid
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {

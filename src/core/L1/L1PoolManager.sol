@@ -47,9 +47,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         periodTime = 21 days;
     }
 
-    fallback() external payable {
-        DepositAndStaking(ContractsAddress.ETHAddress, msg.value);
-    }
+//    fallback() external payable {
+//        DepositAndStaking(ContractsAddress.ETHAddress, msg.value);
+//    }
 
     /*************************
      ***** User function *****

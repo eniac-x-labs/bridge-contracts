@@ -55,12 +55,12 @@ contract L1PoolTest is Test {
         L1PoolManager(address(l1Poolproxy)).setMinStakeAmount(address(ETHAddress), 0.1 ether);
         L1PoolManager(address(l1Poolproxy)).grantRole(l1Pool.ReLayer(), ReLayer);
 
-        L1PoolManager(address(l1Poolproxy)).SetSupportToken(address(ETHAddress), true, startTimes);
+        L1PoolManager(address(l1Poolproxy)).setSupportToken(address(ETHAddress), true, startTimes);
         assert(L1PoolManager(address(l1Poolproxy)).getPoolLength(ETHAddress) == 2);
         assert(L1PoolManager(address(l1Poolproxy)).getPool(ETHAddress,1).startTimestamp == startTimes);
         assert(L1PoolManager(address(l1Poolproxy)).getPool(ETHAddress,1).endTimestamp == startTimes + 21 * 86400);
-        L1PoolManager(address(l1Poolproxy)).SetSupportToken(address(WETH), true, startTimes);
-        L1PoolManager(address(l1Poolproxy)).SetSupportToken(address(USDT), true, startTimes);
+        L1PoolManager(address(l1Poolproxy)).setSupportToken(address(WETH), true, startTimes);
+        L1PoolManager(address(l1Poolproxy)).setSupportToken(address(USDT), true, startTimes);
         vm.stopPrank();
 
 

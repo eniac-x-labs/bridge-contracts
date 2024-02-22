@@ -324,7 +324,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         return true;
     }
     
-    function UpdateFundingPoolBalance(address token, uint256 amount) external override onlyRole(ReLayer) {
+    function UpdateFundingPoolBalance(address token, uint256 amount) external onlyRole(ReLayer) {
         FundingPoolBalance[token] = amount;
     }
 

@@ -1,0 +1,586 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_l2Receiver",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_l1Token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_l2TxGasLimit",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_l2TxGasPerPubdataByte",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_refundRecipient",
+          "type": "address"
+        }
+      ],
+      "name": "deposit",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "txHash",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_l1Receiver",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_l2Token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "deposit(address,address,uint256,uint256,uint256,address)": "e8b99b1b",
+    "withdraw(address,address,uint256)": "d9caed12"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l2Receiver\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l1Token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_l2TxGasLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_l2TxGasPerPubdataByte\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_refundRecipient\",\"type\":\"address\"}],\"name\":\"deposit\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"txHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_l1Receiver\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_l2Token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_amount\",\"type\":\"uint256\"}],\"name\":\"withdraw\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/interfaces/IZksyncBridge.sol\":\"IZkSyncBridge\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/\",\":@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/\",\":forge-std/=lib/forge-std/src/\",\":openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/\",\":openzeppelin-contracts/=lib/openzeppelin-contracts/\"]},\"sources\":{\"src/interfaces/IZksyncBridge.sol\":{\"keccak256\":\"0xbed4cb62560969e99fad398906dee8dad65ae0423cee36a555fb12a085d07c9f\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://5a8e7b0f9788dc64751ce024d65024526b8c65ae6d2fb954a548494bfe41a69c\",\"dweb:/ipfs/QmVJ9CpMLVTVozoQtjURY7eu8cKhzQNdViv4abiqvh7nau\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.20+commit.a1b79de6"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_l2Receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_l1Token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_l2TxGasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_l2TxGasPerPubdataByte",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_refundRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "deposit",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "txHash",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_l1Receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_l2Token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "withdraw"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+        "ds-test/=lib/forge-std/lib/ds-test/src/",
+        "erc4626-tests/=lib/openzeppelin-contracts-upgradeable/lib/erc4626-tests/",
+        "forge-std/=lib/forge-std/src/",
+        "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/",
+        "openzeppelin-contracts/=lib/openzeppelin-contracts/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/interfaces/IZksyncBridge.sol": "IZkSyncBridge"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/interfaces/IZksyncBridge.sol": {
+        "keccak256": "0xbed4cb62560969e99fad398906dee8dad65ae0423cee36a555fb12a085d07c9f",
+        "urls": [
+          "bzz-raw://5a8e7b0f9788dc64751ce024d65024526b8c65ae6d2fb954a548494bfe41a69c",
+          "dweb:/ipfs/QmVJ9CpMLVTVozoQtjURY7eu8cKhzQNdViv4abiqvh7nau"
+        ],
+        "license": "UNLICENSED"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/interfaces/IZksyncBridge.sol",
+    "id": 55471,
+    "exportedSymbols": {
+      "IZkSyncBridge": [
+        55470
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "39:436:75",
+    "nodes": [
+      {
+        "id": 55443,
+        "nodeType": "PragmaDirective",
+        "src": "39:23:75",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "0.8",
+          ".20"
+        ]
+      },
+      {
+        "id": 55470,
+        "nodeType": "ContractDefinition",
+        "src": "65:409:75",
+        "nodes": [
+          {
+            "id": 55460,
+            "nodeType": "FunctionDefinition",
+            "src": "95:250:75",
+            "nodes": [],
+            "functionSelector": "e8b99b1b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deposit",
+            "nameLocation": "104:7:75",
+            "parameters": {
+              "id": 55456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 55445,
+                  "mutability": "mutable",
+                  "name": "_l2Receiver",
+                  "nameLocation": "129:11:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "121:19:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 55444,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "121:7:75",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55447,
+                  "mutability": "mutable",
+                  "name": "_l1Token",
+                  "nameLocation": "158:8:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "150:16:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 55446,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "150:7:75",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55449,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "184:7:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "176:15:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55448,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "176:7:75",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55451,
+                  "mutability": "mutable",
+                  "name": "_l2TxGasLimit",
+                  "nameLocation": "209:13:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "201:21:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55450,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "201:7:75",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55453,
+                  "mutability": "mutable",
+                  "name": "_l2TxGasPerPubdataByte",
+                  "nameLocation": "240:22:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "232:30:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55452,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "232:7:75",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55455,
+                  "mutability": "mutable",
+                  "name": "_refundRecipient",
+                  "nameLocation": "280:16:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "272:24:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 55454,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "272:7:75",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "111:191:75"
+            },
+            "returnParameters": {
+              "id": 55459,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 55458,
+                  "mutability": "mutable",
+                  "name": "txHash",
+                  "nameLocation": "337:6:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55460,
+                  "src": "329:14:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 55457,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "329:7:75",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "328:16:75"
+            },
+            "scope": 55470,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 55469,
+            "nodeType": "FunctionDefinition",
+            "src": "350:121:75",
+            "nodes": [],
+            "functionSelector": "d9caed12",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "withdraw",
+            "nameLocation": "359:8:75",
+            "parameters": {
+              "id": 55467,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 55462,
+                  "mutability": "mutable",
+                  "name": "_l1Receiver",
+                  "nameLocation": "385:11:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55469,
+                  "src": "377:19:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 55461,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "377:7:75",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55464,
+                  "mutability": "mutable",
+                  "name": "_l2Token",
+                  "nameLocation": "414:8:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55469,
+                  "src": "406:16:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 55463,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "406:7:75",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 55466,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "440:7:75",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 55469,
+                  "src": "432:15:75",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 55465,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "432:7:75",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "367:86:75"
+            },
+            "returnParameters": {
+              "id": 55468,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "470:0:75"
+            },
+            "scope": 55470,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IZkSyncBridge",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          55470
+        ],
+        "name": "IZkSyncBridge",
+        "nameLocation": "75:13:75",
+        "scope": 55471,
+        "usedErrors": [],
+        "usedEvents": []
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 75
+}

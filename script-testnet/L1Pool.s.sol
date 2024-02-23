@@ -6,7 +6,7 @@ import "testnet/core/L1/L1PoolManager.sol";
 import "testnet/core/Proxy.sol";
 import "testnet/core/ProxyTimeLockController.sol";
 import "testnet/core/message/MessageManager.sol";
-
+import "testnet/core/L1/L1PoolRelayerHelper.sol";
 
 contract l1PoolDeployer is Script {
     address admin;
@@ -39,8 +39,12 @@ contract l1PoolDeployer is Script {
 //        proxyL1Pool = new Proxy(address(l1PoolManage), address(proxyTimeLockController), _data);
         proxyL1Pool = new Proxy(address(l1PoolManage), address(admin), "");
         proxyMessageManager = new Proxy(address(messageManager), address(admin), "");
+
         MessageManager(address(proxyMessageManager)).initialize(address(proxyL1Pool));
         L1PoolManager(address(proxyL1Pool)).initialize(address(admin),address(proxyMessageManager));
+
+        l1Helper = new L1PoolRelayerHelper(address(l1PoolManage));
+        L1PoolManager(address(proxyL1Pool)).setHelper(address(l1Helper));
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow
@@ -50,9 +54,9 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).setValidChainId(421614, true);    // ARB Sepolia
         L1PoolManager(address(proxyL1Pool)).setValidChainId(84532, true);    // Base Sepolia
         L1PoolManager(address(proxyL1Pool)).setValidChainId(300, true);    // Zksync Sepolia
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.ETHAddress, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(ContractsAddress.WETH, true, startTime);
-        L1PoolManager(address(proxyL1Pool)).SetSupportToken(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.ETHAddress, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.WETH, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true, startTime);
         L1PoolManager(address(proxyL1Pool)).setSupportERC20Token(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true);
 
         vm.stopBroadcast();

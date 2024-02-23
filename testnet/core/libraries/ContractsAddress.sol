@@ -131,8 +131,8 @@ library ContractsAddress {
     address public constant OptimismL2StandardBridge =
         0x4200000000000000000000000000000000000010;
     // https://docs.optimism.io/chain/tokenlist#op-sepolia
-//    address public constant OP_LEGACY_ERC20_ETH =
-//        0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
+    address public constant OP_LEGACY_ERC20_ETH =
+       0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
 //
 //    //https://optimistic.etherscan.io/token/0x4200000000000000000000000000000000000006
 //    address public constant OptimismWETH =

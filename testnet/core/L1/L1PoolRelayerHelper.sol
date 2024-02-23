@@ -3,6 +3,7 @@ pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../bridge/TokenBridgeBase.sol";
 import "../../interfaces/IL1PoolManager.sol";
@@ -19,22 +20,24 @@ import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
 
-contract L1PoolRelayerHelper  {
+contract L1PoolRelayerHelper is Ownable  {
     using SafeERC20 for IERC20;
 
-
+    
      error _ErrorBlockChain();
 
      error _TokenIsNotSupported(address ERC20Address);
     /***************************************
      ***** Relayer function *****
      ***************************************/
+    constructor(address manager) Ownable(manager) {}
+
     function TransferAssertToBridgePrev(
         uint256 Blockchain,
         address _token,
         address _to,
         uint256 _amount
-    ) internal {
+    ) public onlyOwner {
         if (Blockchain == 0x8274f) {
             //https://chainlist.org/chain/534352
             //Scroll

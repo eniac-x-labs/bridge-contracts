@@ -15,8 +15,9 @@ import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
 import "./L1PoolRelayerHelper.sol";
 
-contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase, L1PoolRelayerHelper {
+contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     using SafeERC20 for IERC20;
+    address helper;
 
     uint32 public periodTime;
 
@@ -354,7 +355,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase, 
         if (!IsSupportToken[_token]) {
             revert TokenIsNotSupported(_token);
         }
-        super.TransferAssertToBridgePrev(Blockchain, _token, _to, _amount);
+        L1PoolRelayerHelper(helper).TransferAssertToBridgePrev(Blockchain, _token, _to, _amount);
         FundingPoolBalance[_token] -= _amount;
         emit TransferAssertTo(Blockchain, _token, _to, _amount);
     }
@@ -406,6 +407,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase, 
         //Next bridge
         SupportTokens.push(_token);
         emit SetSupportTokenEvent(_token, _isSupport);
+    }
+
+    function setHelper(address _helper) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        helper = _helper;
     }
 
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {

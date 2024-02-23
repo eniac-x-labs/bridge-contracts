@@ -2,12 +2,14 @@ pragma solidity 0.8.20;
 
 import "forge-std/Test.sol";
 import "src/core/L1/L1PoolManager.sol";
+import "src/core/L1/L1PoolRelayerHelper.sol";
 import "src/core/Proxy.sol";
 import "src/core/ProxyTimeLockController.sol";
 import "src/core/message/MessageManager.sol";
 import "src/interfaces/IL1PoolManager.sol";
 import "src/Mock/mockWETH.sol";
 import "src/Mock/mockERC20.sol";
+
 
 
 contract L1PoolTest is Test {
@@ -46,10 +48,14 @@ contract L1PoolTest is Test {
         vm.startPrank(admin);
         l1Poolproxy = new Proxy(address(l1Pool), address(admin), "");
         l1Messageproxy = new Proxy(address(l1Message), address(admin), "");
+
+
+
         MessageManager(address(l1Messageproxy)).initialize(address(l1Poolproxy));
         L1PoolManager(address(l1Poolproxy)).initialize(address(admin),address(l1Messageproxy));
 
-
+        l1Helper = new L1PoolRelayerHelper(address(l1Pool));
+        L1PoolManager(address(l1Poolproxy)).setHelper(address(l1Helper));
 
         uint32 startTimes = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow
         L1PoolManager(address(l1Poolproxy)).setMinStakeAmount(address(ETHAddress), 0.1 ether);

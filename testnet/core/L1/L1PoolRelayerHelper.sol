@@ -22,6 +22,10 @@ import "../../interfaces/IL1MessageQueue.sol";
 contract L1PoolRelayerHelper  {
     using SafeERC20 for IERC20;
 
+
+     error ErrorBlockChain();
+
+     error TokenIsNotSupported(address ERC20Address);
     /***************************************
      ***** Relayer function *****
      ***************************************/

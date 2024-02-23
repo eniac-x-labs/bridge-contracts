@@ -23,9 +23,9 @@ contract L1PoolRelayerHelper  {
     using SafeERC20 for IERC20;
 
 
-     error ErrorBlockChain();
+     error _ErrorBlockChain();
 
-     error TokenIsNotSupported(address ERC20Address);
+     error _TokenIsNotSupported(address ERC20Address);
     /***************************************
      ***** Relayer function *****
      ***************************************/
@@ -75,7 +75,7 @@ contract L1PoolRelayerHelper  {
         //     TransferAssertToZKFairBridge(_token, _to, _amount);
         // } 
         else {
-            revert ErrorBlockChain();
+            revert _ErrorBlockChain();
         }
     }
 
@@ -378,7 +378,7 @@ contract L1PoolRelayerHelper  {
         } else if (_token == ContractsAddress.DAI) {
             return 0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
         } else {
-            revert TokenIsNotSupported(_token);
+            revert _TokenIsNotSupported(_token);
         }
     }
     //https://github.com/mantlenetworkio/mantle-token-lists/tree/main/data
@@ -390,7 +390,7 @@ contract L1PoolRelayerHelper  {
         } else if (_token == ContractsAddress.USDC) {
             return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
         }  else {
-            revert TokenIsNotSupported(_token);
+            revert _TokenIsNotSupported(_token);
         }
 
 }
@@ -406,7 +406,7 @@ contract L1PoolRelayerHelper  {
         }  else if (_token == ContractsAddress.DAI){
             return 0x1c466b9371f8aBA0D7c458bE10a62192Fcb8Aa71;
         }else {
-            revert TokenIsNotSupported(_token);
+            revert _TokenIsNotSupported(_token);
         }
     }
 }

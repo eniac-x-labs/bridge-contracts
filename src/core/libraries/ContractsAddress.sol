@@ -210,7 +210,7 @@ library ContractsAddress {
     //https://optimistic.etherscan.io/token/0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
     address public constant OptimismDAI =
         0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
-}
+
 
     /*******************
      ** ZkFAIR **
@@ -233,3 +233,4 @@ library ContractsAddress {
     address public constant ZKFairDAI =
         0xa9f4EEb30dC48D4Ef77310A2108816C80457cF6F;
     // ZKFair does not support USDC and WETH
+}

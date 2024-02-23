@@ -16,6 +16,7 @@ contract l1PoolDeployer is Script {
     ProxyTimeLockController proxyTimeLockController;
     L1PoolManager l1PoolManage;
     MessageManager messageManager;
+    L1PoolRelayerHelper l1Helper;
     address USDT = 0x523C8591Fbe215B5aF0bEad65e65dF783A37BCBC;
     function setUp() public {
         admin = 0x8061C28b479B846872132F593bC7cbC6b6C9D628;

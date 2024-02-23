@@ -6,6 +6,7 @@ import "src/core/L1/L1PoolManager.sol";
 import "src/core/Proxy.sol";
 import "src/core/ProxyTimeLockController.sol";
 import "src/core/message/MessageManager.sol";
+import "src/core/L1/L1PoolRelayerHelper.sol";
 
 
 contract l1PoolDeployer is Script {
@@ -15,6 +16,7 @@ contract l1PoolDeployer is Script {
     Proxy proxyMessageManager;
     ProxyTimeLockController proxyTimeLockController;
     L1PoolManager l1PoolManage;
+    L1PoolRelayerHelper l1Helper;
     MessageManager messageManager;
     address USDT = 0x523C8591Fbe215B5aF0bEad65e65dF783A37BCBC;
     function setUp() public {
@@ -39,8 +41,14 @@ contract l1PoolDeployer is Script {
 //        proxyL1Pool = new Proxy(address(l1PoolManage), address(proxyTimeLockController), _data);
         proxyL1Pool = new Proxy(address(l1PoolManage), address(admin), "");
         proxyMessageManager = new Proxy(address(messageManager), address(admin), "");
+
+
+
         MessageManager(address(proxyMessageManager)).initialize(address(proxyL1Pool));
         L1PoolManager(address(proxyL1Pool)).initialize(address(admin),address(proxyMessageManager));
+
+        l1Helper = new L1PoolRelayerHelper(address(l1PoolManage));
+        L1PoolManager(address(proxyL1Pool)).setHelper(address(l1Helper));
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow

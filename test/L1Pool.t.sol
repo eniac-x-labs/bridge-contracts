@@ -21,6 +21,7 @@ contract L1PoolTest is Test {
     Proxy l1Poolproxy;
     Proxy l1Messageproxy;
     L1PoolManager l1Pool;
+    L1PoolRelayerHelper l1Helper;
     MessageManager l1Message;
     address ETHAddress = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 //    mockWETH WETH = new mockWETH();

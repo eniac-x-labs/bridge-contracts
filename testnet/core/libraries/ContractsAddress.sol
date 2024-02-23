@@ -11,14 +11,14 @@ library ContractsAddress {
 //    //https://sepolia.etherscan.io/token/0x7b79995e5f793a07bc00c21412e50ecae098e7f9
     address public constant WETH = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
 //
-//    //https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
-//    address public constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
-//
-//    //https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
-//    address public constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-//
-//    //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
-//    address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
+   //https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
+   address public constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
+
+   //https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
+   address public constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+
+   //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
+   address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
 
     //TODO
     /******************

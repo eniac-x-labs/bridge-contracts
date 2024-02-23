@@ -13,7 +13,7 @@ import "../../interfaces/WETH.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
-import "L1PoolRelayerHelper.sol";
+import "./L1PoolRelayerHelper.sol";
 
 contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase, L1PoolRelayerHelper {
     using SafeERC20 for IERC20;

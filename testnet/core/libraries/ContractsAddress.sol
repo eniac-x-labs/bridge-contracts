@@ -3,7 +3,7 @@ pragma solidity 0.8.20;
 
 library ContractsAddress {
     /******************
-     **** Mainnet ****
+     **** Mainnet sepolia ****
      *****************/
     address public constant ETHAddress =
         address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
@@ -27,9 +27,27 @@ library ContractsAddress {
 
     address public constant ArbitrumCustomerBridge =
         0x0000000000000000000000000000000000000001; //TODO
-    //https://arbiscan.io/token/0x82af49447d8a07e3bd95bd0d56f35241523fbab1
-    address public constant ArbitrumWETH =
-        0x82aF49447D8a07e3bd95BD0d56f35241523fBab1;
+    address public constant ArbitrumOneL1GatewayRouter =
+        0xcE18836b233C83325Cc8848CA4487e94C6288264;
+    // https://sepolia.etherscan.io/address/0xA8aD8d7e13cbf556eE75CB0324c13535d8100e1E
+    address public constant ArbitrumOneL1WETHGateway =
+        0xA8aD8d7e13cbf556eE75CB0324c13535d8100e1E;
+    //https://etherscan.io/address/0xa3A7B6F88361F48403514059F1F16C8E78d60EeC
+    address public constant ArbitrumOneL1ERC20Gateway =
+        0x902b3E5f8F19571859F4AB1003B960a5dF693aFF;
+    //https://arbiscan.io/address/0x5288c571Fd7aD117beA99bF60FE0846C4E84F933
+    address public constant ArbitrumOneL2GatewayRouter =
+        0x9fDD1C4E4AA24EEc1d913FABea925594a20d43C7;
+    //https://arbiscan.io/address/0x6c411aD3E74De3E7Bd422b94A27770f5B86C623B
+    address public constant ArbitrumOneL2WETHGateway =
+        0xCFB1f08A4852699a979909e22c30263ca249556D;
+    //https://arbiscan.io/address/0x09e9222E96E7B4AE2a407B98d48e330053351EEe
+    address public constant ArbitrumOneL2ERC20Gateway =
+        0x6e244cD02BBB8a6dbd7F626f05B2ef82151Ab502;
+
+    //https://arbiscan.io/address/0x82aF49447D8a07e3bd95BD0d56f35241523fBab1
+    address public constant ArbitrumOneWETH =
+        0x980B62Da83eFf3D4576C647993b0c1D7faf17c73;
     //TODO
     /******************
      ***** Linea ******
@@ -99,8 +117,8 @@ library ContractsAddress {
 //    address public constant ScrollDAI =
 //        0xcA77eB3fEFe3725Dc33bccB54eDEFc3D9f764f97;
 //    //https://scrollscan.com/token/0x5300000000000000000000000000000000000004
-//    address public constant ScrollWETH =
-//        0x5300000000000000000000000000000000000004;
+   address public constant ScrollWETH =
+       0x5300000000000000000000000000000000000004;
 
     /***************************
      ***** Optimism Testnet *****
@@ -129,4 +147,6 @@ library ContractsAddress {
 //    //https://optimistic.etherscan.io/token/0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
 //    address public constant OptimismDAI =
 //        0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
+
+
 }

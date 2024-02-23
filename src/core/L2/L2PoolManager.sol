@@ -101,14 +101,14 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 address(0),
                 _amount
             );
-        }  else if (Blockchain == 0x144) {
+        }  else if (Blockchain == 0x1388) {
             //https://chainlist.org/chain/324
-            //ZkSync Mainnet
+            //Mantle Mainnet
             IERC20(ContractsAddress.MantleETH).approve(
-                ContractsAddress.ZkSyncL2Bridge,
+                ContractsAddress.MantleL2Bridge,
                 _amount
             );
-            IMantleL2Bridge(ContractsAddress.ZkSyncL2Bridge).withdrawto(
+            IMantleL2Bridge(ContractsAddress.MantleL2Bridge).withdrawto(
                 ContractsAddress.MantleETH,
                 _to,
                 _amount,
@@ -118,7 +118,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
 
         } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
-            IMantaL2Bridge(ContractsAddress.MantleL2Bridge)
+            IMantaL2Bridge(ContractsAddress.MantaL2Bridge)
                 .withdrawTo{value: _amount}(
                 ContractsAddress.OP_LEGACY_ERC20_ETH,
                 _to,

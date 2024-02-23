@@ -378,25 +378,25 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else if (Blockchain == 0xa4b1) {
             //https://chainlist.org/chain/42161
             //Arbitrum One
-
             TransferAssertToArbitrumOneBridge(_token, _to, _amount);
         } else if (Blockchain == 0xa4ba) {
             //https://chainlist.org/chain/42170
-            //Arbitrum One
-
+            //Arbitrum Nova
             TransferAssertToArbitrumNovaBridge(_token, _to, _amount);
         } else if (Blockchain == 0x144) {
             //https://chainlist.org/chain/324
             //ZkSync Mainnet
             TransferAssertToZkSyncBridge(_token, _to, _amount);
-        }  else if (Blockchain == 0x1388){
+        } else if (Blockchain == 0x1388){
             //Mantle Mainnet https://chainlist.org/chain/5000
             TransferAssertToMantleBridge(_token, _to, _amount);
-        }
-        else if (Blockchain == 0xa9){
+        } else if (Blockchain == 0xa9){
             //Manta Pacific Mainnet https://chainlist.org/chain/169
             TransferAssertToMantaBridge(_token, _to, _amount);
-        }
+        } else if (Blockchain == 0xa70e){
+            //ZKFair Mainnet https://chainlist.org/chain/42766
+            TransferAssertToZKFairBridge(_token, _to, _amount);
+        } 
         else {
             revert ErrorBlockChain();
         }
@@ -585,6 +585,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 .bridgeAsset(0x1, _to, _amount, _token, false, "");
         }
     }
+
     function TransferAssertToOptimismBridge(
         address _token,
         address _to,

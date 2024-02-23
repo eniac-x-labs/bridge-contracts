@@ -28,10 +28,10 @@ abstract contract TokenBridgeBase is
     uint256 public PerFee; // 0.1%
 
     mapping(uint256 => bool) private IsSupportedChainId;
-    mapping(address => bool) private IsSupportedStableCoin;
-
-    mapping(address => uint256) private FundingPoolBalance;
+    mapping(address => bool) public IsSupportToken;
+    mapping(address => uint256) public FundingPoolBalance;
     mapping(address => uint256) public FeePoolValue;
+    address[] public SupportTokens;
 
     event InitiateETH(
         uint256 sourceChainId,
@@ -87,7 +87,7 @@ abstract contract TokenBridgeBase is
 
     error ChainIdNotSupported(uint256 chainId);
 
-    error StableCoinNotSupported(address ERC20Address);
+    error TokenIsNotSupported(address ERC20Address);
 
     error NotEnoughToken(address ERC20Address);
 
@@ -98,6 +98,10 @@ abstract contract TokenBridgeBase is
     error LessThanMinTransferAmount(uint256 MinTransferAmount, uint256 value);
 
     error sourceChainIdError();
+
+    error MantleNotWETH();
+
+    error MantaNotWETH();
 
     function __TokenBridge_init(
         address _MultisigWallet,
@@ -129,13 +133,7 @@ abstract contract TokenBridgeBase is
         uint256 amount = msg.value - fee;
         FeePoolValue[ContractsAddress.ETHAddress] += fee;
 
-        messageManager.sendMessage(
-            block.chainid,
-            destChainId,
-            to,
-            msg.value,
-            fee
-        );
+        messageManager.sendMessage(block.chainid, destChainId, to, amount, fee);
 
         emit InitiateETH(sourceChainId, destChainId, msg.sender, to, amount);
         return true;
@@ -189,8 +187,8 @@ abstract contract TokenBridgeBase is
         if (!IsSupportChainId(destChainId)) {
             revert ChainIdIsNotSupported(destChainId);
         }
-        if (!IsSupportStableCoin(ERC20Address)) {
-            revert StableCoinNotSupported(ERC20Address);
+        if (!IsSupportToken[ERC20Address]) {
+            revert TokenIsNotSupported(ERC20Address);
         }
 
         uint256 BalanceBefore = IERC20(ERC20Address).balanceOf(address(this));
@@ -224,21 +222,21 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external payable onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
-        payable(address(this)).transfer(amount);
+        payable(to).transfer(amount);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 
@@ -254,11 +252,11 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
 
         IWETH WETH = IWETH(L2WETH());
@@ -269,8 +267,8 @@ abstract contract TokenBridgeBase is
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 
@@ -293,14 +291,14 @@ abstract contract TokenBridgeBase is
         uint256 _fee,
         uint256 _nonce
     ) external onlyRole(ReLayer) returns (bool) {
-        if (sourceChainId != block.chainid) {
+        if (destChainId != block.chainid) {
             revert sourceChainIdError();
         }
-        if (!IsSupportChainId(destChainId)) {
-            revert ChainIdIsNotSupported(destChainId);
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
         }
-        if (!IsSupportStableCoin(ERC20Address)) {
-            revert StableCoinNotSupported(ERC20Address);
+        if (!IsSupportToken[ERC20Address]) {
+            revert TokenIsNotSupported(ERC20Address);
         }
         IERC20(ERC20Address).safeTransferFrom(address(this), to, amount);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
@@ -309,8 +307,8 @@ abstract contract TokenBridgeBase is
             sourceChainId,
             destChainId,
             to,
-            amount,
             _fee,
+            amount,
             _nonce
         );
 
@@ -329,25 +327,37 @@ abstract contract TokenBridgeBase is
         return IsSupportedChainId[chainId];
     }
 
-    function IsSupportStableCoin(
-        address ERC20Address
-    ) public view returns (bool) {
-        return IsSupportedStableCoin[ERC20Address];
-    }
-
     function L2WETH() public view returns (address) {
         uint256 Blockchain = block.chainid;
-        if (Blockchain == 534351) {
-            // Scroll: https://chainlist.org/chain/534351
+        if (Blockchain == 0x8274f) {
+            // Scroll: https://chainlist.org/chain/534352
             return (ContractsAddress.ScrollWETH);
-            // @notice Polygon zkEVM is not supported Sepolia as L1
-//        } else if (Blockchain == 0x44d) {
-//            // Polygon zkEVM https://chainlist.org/chain/1101
-//            return (ContractsAddress.PolygonZkEVMWETH);
-        } else if (Blockchain == 11155420) {
-            // OP Mainnet https://chainlist.org/chain/11155420
-            return (ContractsAddress.OptimismWETH);
-        } else {
+        } 
+        // else if (Blockchain == 0x44d) {
+        //     // Polygon zkEVM https://chainlist.org/chain/1101
+        //     return (ContractsAddress.PolygonZkEVMWETH);
+        // } else if (Blockchain == 0xa) {
+        //     // OP Mainnet https://chainlist.org/chain/10
+        //     return (ContractsAddress.OptimismWETH);
+        // } 
+        else if (Blockchain == 0x66eee) {
+            // Arbitrum One https://chainlist.org/chain/42161
+            return (ContractsAddress.ArbitrumOneWETH);
+        } 
+        // else if (Blockchain == 0xa4ba) {
+        //     // Arbitrum Nova https://chainlist.org/chain/42170
+        //     return (ContractsAddress.ArbitrumNovaWETH);
+        // }else if (Blockchain == 0x144){
+        //     //ZkSync Mainnet https://chainlist.org/chain/324
+        //     return (ContractsAddress.ZkSyncWETH);
+        }else if (Blockchain == 0x1388){
+            //Mantle https://chainlist.org/chain/5000
+            revert MantleNotWETH();
+        } else if(Blockchain == 0xa9){
+            //Manta Pacific Mainnet https://chainlist.org/chain/169
+            revert MantaNotWETH();
+        }
+        else {
             revert ErrorBlockChain();
         }
     }
@@ -365,9 +375,10 @@ abstract contract TokenBridgeBase is
         address to,
         uint256 _amount
     ) internal returns (bool) {
-        if (!IsSupportStableCoin(_token)) {
-            revert StableCoinNotSupported(_token);
+        if (!IsSupportToken[_token]) {
+            revert TokenIsNotSupported(_token);
         }
+        FundingPoolBalance[_token] -= _amount;
         if (_token == address(ContractsAddress.ETHAddress)) {
             if (address(this).balance < _amount) {
                 revert NotEnoughETH();
@@ -395,11 +406,14 @@ abstract contract TokenBridgeBase is
         IsSupportedChainId[chainId] = isValid;
     }
 
-    function setSupportStableCoin(
+    function setSupportERC20Token(
         address ERC20Address,
         bool isValid
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        IsSupportedStableCoin[ERC20Address] = isValid;
+        IsSupportToken[ERC20Address] = isValid;
+        if (isValid) {
+            SupportTokens.push(ERC20Address);
+        }
     }
 
     function setPerFee(uint256 _PerFee) external onlyRole(DEFAULT_ADMIN_ROLE) {

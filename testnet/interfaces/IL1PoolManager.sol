@@ -31,7 +31,7 @@ interface IL1PoolManager {
     function ClaimAllReward() external;
     function CompletePoolAndNew(Pool[] memory CompletePools) external payable;
     function setMinStakeAmount(address _token, uint256 _amount) external;
-    function SetSupportToken(
+    function setSupportToken(
         address _token,
         bool _isSupport,
         uint32 startTimes
@@ -87,7 +87,6 @@ interface IL1PoolManager {
     event SetSupportTokenEvent(address indexed token, bool isSupport);
 
     error NoReward();
-    error TokenIsNotSupported(address token);
     error NewPoolIsNotCreate(uint256 PoolIndex);
     error LessThanMinStakeAmount(uint256 minAmount, uint256 providedAmount);
     error PoolIsCompleted(uint256 poolIndex);

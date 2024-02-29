@@ -163,9 +163,12 @@ library ContractsAddress {
     //https://scrollscan.com/address/0x7003E7B7186f0E6601203b99F7B8DECBfA391cf9
     address public constant ScrollL2StandardWETHBridge =
         0x7003E7B7186f0E6601203b99F7B8DECBfA391cf9;
-    //https://scrollscan.com/address/0x7F2b8C31F88B6006c382775eea88297Ec1e3E905
+    //https://etherscan.io/address/0x7F2b8C31F88B6006c382775eea88297Ec1e3E905
     address public constant ScrollL1StandardETHBridge =
         0x7F2b8C31F88B6006c382775eea88297Ec1e3E905;
+    //https://scrollscan.com/address/0x6EA73e05AdC79974B931123675ea8F78FfdacDF0
+    address public constant ScrollL2StandardETHBridge =
+        0x6EA73e05AdC79974B931123675ea8F78FfdacDF0;
     //https://scrollscan.com/token/0x5300000000000000000000000000000000000004
     address public constant ScrollL1MessageQueue =
         0x0d7E906BD9cAFa154b048cFa766Cc1E54E39AF9B;

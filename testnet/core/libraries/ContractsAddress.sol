@@ -103,6 +103,8 @@ library ContractsAddress {
     //https://sepolia.etherscan.io/address/0x8A54A2347Da2562917304141ab67324615e9866d
     address public constant ScrollL1StandardETHBridge =
         0x8A54A2347Da2562917304141ab67324615e9866d;
+    address public constant ScrollL2StandardETHBridge =
+        0x91e8ADDFe1358aCa5314c644312d38237fC1101C;
     //https://sepolia.etherscan.io/address/0xF0B2293F5D834eAe920c6974D50957A1732de763
     address public constant ScrollL1MessageQueue =
         0xF0B2293F5D834eAe920c6974D50957A1732de763;

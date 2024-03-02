@@ -46,9 +46,9 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
         if (Blockchain == 0x8274f) {
             //Scroll https://chainlist.org/chain/534352
-            IScrollStandardL1ETHBridge(
-                ContractsAddress.ScrollL2StandardWETHBridge
-            ).depositETH{gas: MAX_GAS_Limit, value: _amount}(
+            IScrollStandardL2ETHBridge(
+                ContractsAddress.ScrollL2StandardETHBridge
+            ).withdrawETH{gas: MAX_GAS_Limit, value: _amount}(
                 _to,
                 _amount,
                 uint256(MAX_GAS_Limit)

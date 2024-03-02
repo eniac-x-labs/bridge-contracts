@@ -9,16 +9,16 @@ library ContractsAddress {
         address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE);
     // @notice TestWETH
 //    //https://sepolia.etherscan.io/token/0x7b79995e5f793a07bc00c21412e50ecae098e7f9
-    address public constant WETH = 0x7b79995e5f793a07bc00c21412e50ecae098e7f9;
+    address public constant WETH = 0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9;
 //
-//    //https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
-//    address public constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
-//
-//    //https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
-//    address public constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
-//
-//    //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
-//    address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
+   //https://etherscan.io/token/0xdac17f958d2ee523a2206206994597c13d831ec7
+   address public constant USDT = 0xdAC17F958D2ee523a2206206994597C13D831ec7;
+
+   //https://etherscan.io/token/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
+   address public constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
+
+   //https://etherscan.io/token/0x6b175474e89094c44da98b954eedeac495271d0f
+   address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
 
     //TODO
     /******************
@@ -89,22 +89,24 @@ library ContractsAddress {
     // https://docs.scroll.io/en/developers/scroll-contracts/#scroll-sepolia-testnet
 
     //https://sepolia.etherscan.io/address/0x65D123d6389b900d954677c26327bfc1C3e88A13
-    address public constant ScrollTestnetL1StandardERC20Bridge =
+    address public constant ScrollL1StandardERC20Bridge =
         0x65D123d6389b900d954677c26327bfc1C3e88A13;
     //https://sepolia.etherscan.io/address/0x8A54A2347Da2562917304141ab67324615e9866d
-    address public constant ScrollTestnetL1StandardWETHBridge =
+    address public constant ScrollL1StandardWETHBridge =
         0x8A54A2347Da2562917304141ab67324615e9866d;
     //https://sepolia.scrollscan.com/address/0xaDcA915971A336EA2f5b567e662F5bd74AEf9582
-    address public constant ScrollTestnetL2StandardERC20Bridge =
+    address public constant ScrollL2StandardERC20Bridge =
         0xaDcA915971A336EA2f5b567e662F5bd74AEf9582;
     //https://sepolia.scrollscan.com/address/0x481B20A927206aF7A754dB8b904B052e2781ea27
-    address public constant ScrollTestnetL2StandardWETHBridge =
+    address public constant ScrollL2StandardWETHBridge =
      0x481B20A927206aF7A754dB8b904B052e2781ea27;
     //https://sepolia.etherscan.io/address/0x8A54A2347Da2562917304141ab67324615e9866d
-    address public constant ScrollTestnetL1StandardETHBridge =
+    address public constant ScrollL1StandardETHBridge =
         0x8A54A2347Da2562917304141ab67324615e9866d;
+    address public constant ScrollL2StandardETHBridge =
+        0x91e8ADDFe1358aCa5314c644312d38237fC1101C;
     //https://sepolia.etherscan.io/address/0xF0B2293F5D834eAe920c6974D50957A1732de763
-    address public constant ScrollTestnetL1MessageQueue =
+    address public constant ScrollL1MessageQueue =
         0xF0B2293F5D834eAe920c6974D50957A1732de763;
 
 //    //https://scrollscan.com/token/0xf55bec9cafdbe8730f096aa55dad6d22d44099df
@@ -125,14 +127,14 @@ library ContractsAddress {
      **************************/
 
     //https://sepolia.etherscan.io/address/0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1
-    address public constant OptimismTestnetL1StandardBridge =
+    address public constant OptimismL1StandardBridge =
         0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1;
     // https://sepolia-optimism.etherscan.io/address/0x4200000000000000000000000000000000000010
-    address public constant OptimismTestnetL2StandardBridge =
+    address public constant OptimismL2StandardBridge =
         0x4200000000000000000000000000000000000010;
     // https://docs.optimism.io/chain/tokenlist#op-sepolia
-//    address public constant OP_LEGACY_ERC20_ETH =
-//        0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
+    address public constant OP_LEGACY_ERC20_ETH =
+       0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
 //
 //    //https://optimistic.etherscan.io/token/0x4200000000000000000000000000000000000006
 //    address public constant OptimismWETH =

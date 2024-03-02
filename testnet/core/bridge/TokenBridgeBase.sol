@@ -350,7 +350,7 @@ abstract contract TokenBridgeBase is
         // }else if (Blockchain == 0x144){
         //     //ZkSync Mainnet https://chainlist.org/chain/324
         //     return (ContractsAddress.ZkSyncWETH);
-        }else if (Blockchain == 0x1388){
+        else if (Blockchain == 0x1388){
             //Mantle https://chainlist.org/chain/5000
             revert MantleNotWETH();
         } else if(Blockchain == 0xa9){

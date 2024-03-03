@@ -43,7 +43,6 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount > address(this).balance) {
             revert NotEnoughETH();
         }
-        FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
         if (Blockchain == 0x8274f) {
             //Scroll https://chainlist.org/chain/534352
             IScrollStandardL2ETHBridge(
@@ -153,7 +152,6 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount > WETH.balanceOf(address(this))) {
             revert NotEnoughToken(address(WETH));
         }
-        FundingPoolBalance[ContractsAddress.WETH] -= _amount;
         if (Blockchain == 0x8274f) {
             // Scroll https://chainlist.org/chain/534352
             WETH.approve(ContractsAddress.ScrollL2StandardWETHBridge, _amount);
@@ -228,7 +226,6 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (!IsSupportToken[_token]) {
             revert TokenIsNotSupported(_token);
         }
-        FundingPoolBalance[_token] -= _amount;
         if (Blockchain == 0x8274f) {
             //Scroll https://chainlist.org/chain/534352
             IERC20(_token).approve(

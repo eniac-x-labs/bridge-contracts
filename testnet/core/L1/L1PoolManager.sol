@@ -380,9 +380,11 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else if (Blockchain == 0x66eee) {
             //https://chainlist.org/chain/42161
             //Arbitrum One
-
             TransferAssertToArbitrumOneBridge(_token, _to, _amount);
-        } 
+        } else if (Blockchain == 0x14a34) {
+            //Base sepolia
+            TransferAssertToBaseBridge(_token, _to, _amount);
+        }
         //No Arbitrum Nova Testnet
         //  else if (Blockchain == 0x12c) {
         //     //https://chainlist.org/chain/324
@@ -608,6 +610,31 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
+    function TransferAssertToBaseBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IOptimismL1Bridge(ContractsAddress.BaseL1StandardBridge)
+                .depositETHTo{value: _amount}(_to, 0, "");
+        } else {
+            address l2token = getOPL2TokenAddress(_token);
+            IERC20(_token).approve(
+                ContractsAddress.BaseL1StandardBridge,
+                _amount
+            );
+            IOptimismL1Bridge(ContractsAddress.BaseL1StandardBridge)
+                .depositERC20To(
+                    _token,
+                    l2token,
+                    _to,
+                    _amount,
+                    uint32(gasleft()),
+                    ""
+                );
+        }
+    }
     // function TransferAssertToMantaBridge(
     //     address _token,
     //     address _to,

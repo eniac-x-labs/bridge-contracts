@@ -155,5 +155,18 @@ library ContractsAddress {
 //    address public constant OptimismDAI =
 //        0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1;
 
-
+    /***************************
+     ***** Base Testnet *****
+     **************************/
+     //https://sepolia.etherscan.io/address/0xfd0Bf71F60660E2f608ed56e1659C450eB113120#readProxyContract
+    address public constant BaseL1StandardBridge =
+        0xfd0Bf71F60660E2f608ed56e1659C450eB113120;
+    //https://sepolia.basescan.org/address/0x4200000000000000000000000000000000000006#code
+    address public constant BaseWETH =
+        0x4200000000000000000000000000000000000006;
+    //https://sepolia.basescan.org/address/0x4200000000000000000000000000000000000010
+    address public constant BaseL2StandardBridge =
+        0x4200000000000000000000000000000000000010;
+    address public constant BASE_LEGACY_ERC20_ETH =
+       0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
 }

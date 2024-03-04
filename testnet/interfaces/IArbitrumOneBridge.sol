@@ -13,6 +13,10 @@ interface IArbitrumOneL1Bridge {
     ) external payable returns (bytes memory);
 }
 
+interface IArbitrumOneL1ETHBridge {
+    function depositEth() external payable returns (uint256);
+}
+
 interface IArbitrumOneL2Bridge {
     function outboundTransfer(
         address _l1Token,
@@ -20,4 +24,10 @@ interface IArbitrumOneL2Bridge {
         uint256 _amount,
         bytes calldata _data
     ) external payable returns (bytes memory);
+}
+
+interface IArbitrumOneL2ETHBridge {
+    function withdrawEth(
+        address destination
+    ) external payable returns (uint256);
 }

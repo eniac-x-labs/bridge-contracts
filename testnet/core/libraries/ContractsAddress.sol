@@ -24,7 +24,12 @@ library ContractsAddress {
     /******************
      **** Arbitrum ****
      *****************/
-
+    //https://sepolia.etherscan.io/address/0xaAe29B0366299461418F5324a79Afc425BE5ae21
+    address public constant ArbitrumOneL1ETHBridge = 
+    0xaAe29B0366299461418F5324a79Afc425BE5ae21;
+    //https://sepolia.arbiscan.io/address/0x0000000000000000000000000000000000000064
+    address public constant ArbitrumOneL2ETHBridge = 
+    0x0000000000000000000000000000000000000064;
     address public constant ArbitrumCustomerBridge =
         0x0000000000000000000000000000000000000001; //TODO
     address public constant ArbitrumOneL1GatewayRouter =

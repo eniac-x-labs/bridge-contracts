@@ -77,12 +77,9 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
         } else if (Blockchain == 0x66eee) {
             // Arbitrum One https://chainlist.org/chain/42161
-            IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2GatewayRouter)
-                .outboundTransfer{value: _amount}(
-                ContractsAddress.ETHAddress,
+            IArbitrumOneL2ETHBridge(ContractsAddress.ArbitrumOneL2ETHBridge)
+                .withdrawEth{value: _amount}(
                 _to,
-                _amount,
-                ""
             );
         } 
         //No support for Arbitrum Nova

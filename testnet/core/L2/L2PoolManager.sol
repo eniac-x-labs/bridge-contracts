@@ -79,7 +79,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             // Arbitrum One https://chainlist.org/chain/42161
             IArbitrumOneL2ETHBridge(ContractsAddress.ArbitrumOneL2ETHBridge)
                 .withdrawEth{value: _amount}(
-                _to,
+                _to
             );
         } 
         //No support for Arbitrum Nova

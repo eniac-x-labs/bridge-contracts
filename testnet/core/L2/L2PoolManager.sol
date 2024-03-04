@@ -91,6 +91,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
+        }
         //No support for Arbitrum Nova
         //  else if (Blockchain == 0x12c) {
         //     //https://chainlist.org/chain/324

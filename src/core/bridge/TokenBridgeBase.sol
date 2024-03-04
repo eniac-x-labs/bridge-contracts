@@ -416,4 +416,9 @@ abstract contract TokenBridgeBase is
     function setPerFee(uint256 _PerFee) external onlyRole(DEFAULT_ADMIN_ROLE) {
         PerFee = _PerFee;
     }
+
+    function UpdateFundingPoolBalance(address token, uint256 amount) external onlyRole(ReLayer) {
+        FundingPoolBalance[token] = amount;
+    }
+
 }

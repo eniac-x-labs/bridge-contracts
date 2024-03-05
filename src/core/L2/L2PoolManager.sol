@@ -134,7 +134,18 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge)
                 .bridgeAsset(0, _to, _amount, ContractsAddress.ZKFairETH, false, "");
-        } else {
+        } else if (Blockchain == 0x2105) {
+            //Base 
+            IOptimismL2StandardBridge(ContractsAddress.BaseL2StandardBridge)
+                .withdrawTo{value: _amount}(
+                ContractsAddress.BASE_LEGACY_ERC20_ETH,
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
+            );
+        }
+        else {
             revert ErrorBlockChain();
         }
         FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
@@ -190,7 +201,19 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        } else if (Blockchain == 0xa4b1) {
+        } else if (Blockchain == 0x2105) {
+            // Base https://chainlist.org/chain/2105
+            WETH.approve(ContractsAddress.BaseL2StandardBridge, _amount);
+            IOptimismL2StandardBridge(ContractsAddress.BaseL2StandardBridge)
+                .withdrawTo{value: _amount}(
+                address(WETH),
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
+            );
+        } 
+        else if (Blockchain == 0xa4b1) {
             // Arbitrum One https://chainlist.org/chain/42161
             WETH.approve(ContractsAddress.ArbitrumOneL2WETHGateway, _amount);
             IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2WETHGateway)
@@ -268,7 +291,22 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        } else if (Blockchain == 0xa4b1) {
+        } else if (Blockchain == 0x2105) {
+            //Base
+            IERC20(_token).approve(
+                ContractsAddress.BaseL2StandardBridge,
+                _amount
+            );
+            IOptimismL2StandardBridge(ContractsAddress.BaseL2StandardBridge)
+                .withdrawTo{value: _amount}(
+                _token,
+                _to,
+                _amount,
+                MAX_GAS_Limit,
+                ""
+            );
+        } 
+        else if (Blockchain == 0xa4b1) {
             // Arbitrum One https://chainlist.org/chain/42161
             IERC20(_token).approve(
                 ContractsAddress.ArbitrumOneL2ERC20Gateway,

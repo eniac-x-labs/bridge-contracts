@@ -396,7 +396,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         } else if (Blockchain == 0xa70e){
             //ZKFair Mainnet https://chainlist.org/chain/42766
             TransferAssertToZKFairBridge(_token, _to, _amount);
-        } 
+        } else if (Blockchain == 0x2105) {
+            //Base https://chainlist.org/chain/8453
+            TransferAssertToBaseBridge(_token, _to, _amount);
+        }
         else {
             revert ErrorBlockChain();
         }
@@ -690,6 +693,31 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
+    function TransferAssertToBaseBridge(
+        address _token,
+        address _to,
+        uint256 _amount
+    ) internal {
+        if (_token == address(ContractsAddress.ETHAddress)) {
+            IOptimismL1Bridge(ContractsAddress.BaseL1StandardBridge)
+                .depositETHTo{value: _amount}(_to, 0, "");
+        } else {
+            address l2token = getOPL2TokenAddress(_token);
+            IERC20(_token).approve(
+                ContractsAddress.BaseL1StandardBridge,
+                _amount
+            );
+            IOptimismL1Bridge(ContractsAddress.BaseL1StandardBridge)
+                .depositERC20To(
+                    _token,
+                    l2token,
+                    _to,
+                    _amount,
+                    uint32(gasleft()),
+                    ""
+                );
+        }
+    }
 
 
     function setMinStakeAmount(

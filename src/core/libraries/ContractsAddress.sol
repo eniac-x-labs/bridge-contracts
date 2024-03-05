@@ -236,4 +236,19 @@ library ContractsAddress {
     address public constant ZKFairDAI =
         0xa9f4EEb30dC48D4Ef77310A2108816C80457cF6F;
     // ZKFair does not support USDC and WETH
+
+        /***************************
+     ***** Base  *****
+     **************************/
+     //https://https://etherscan.io/address/0x3154Cf16ccdb4C6d922629664174b904d80F2C35
+    address public constant BaseL1StandardBridge =
+        0x3154Cf16ccdb4C6d922629664174b904d80F2C35;
+    //https://basescan.org/address/0x4200000000000000000000000000000000000006#code
+    address public constant BaseWETH =
+        0x4200000000000000000000000000000000000006;
+    //https://basescan.org/address/0x4200000000000000000000000000000000000010
+    address public constant BaseL2StandardBridge =
+        0x4200000000000000000000000000000000000010;
+    address public constant BASE_LEGACY_ERC20_ETH =
+       0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000;
 }

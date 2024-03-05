@@ -353,6 +353,9 @@ abstract contract TokenBridgeBase is
         } else if(Blockchain == 0xa9){
             //Manta Pacific Mainnet https://chainlist.org/chain/169
             revert MantaNotWETH();
+        }else if (Blockchain == 0x2105) {
+            // basechain https://chainlist.org/chain/2105
+            return (ContractsAddress.BaseWETH);
         }
         else {
             revert ErrorBlockChain();

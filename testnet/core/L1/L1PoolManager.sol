@@ -416,13 +416,13 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
             IWETH(ContractsAddress.WETH).deposit{value: _amount}();
-            IWETH(_token).approve(
+            IWETH(ContractsAddress.WETH).approve(
                 ContractsAddress.ArbitrumOneL1GatewayRouter,
                 _amount
             );
             IArbitrumOneL1Bridge(ContractsAddress.ArbitrumOneL1GatewayRouter)
                 .outboundTransferCustomRefund(
-                    _token,
+                    ContractsAddress.WETH,
                     address(this),
                     _to,
                     _amount,

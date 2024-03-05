@@ -21,8 +21,7 @@ interface IArbitrumOneL1WETHBridge {
         uint256 _maxGas,
         uint256 _gasPriceBid,
         bytes calldata _data
-    ) public payable  returns (bytes memory) {
-    }
+    ) public payable  returns (bytes memory); 
 }
 
 interface IArbitrumOneL2Bridge {

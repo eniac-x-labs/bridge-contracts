@@ -13,8 +13,16 @@ interface IArbitrumOneL1Bridge {
     ) external payable returns (bytes memory);
 }
 
-interface IArbitrumOneL1ETHBridge {
-    function depositEth() external payable returns (uint256);
+interface IArbitrumOneL1WETHBridge {
+       function outboundTransfer(
+        address _token,
+        address _to,
+        uint256 _amount,
+        uint256 _maxGas,
+        uint256 _gasPriceBid,
+        bytes calldata _data
+    ) public payable  returns (bytes memory) {
+    }
 }
 
 interface IArbitrumOneL2Bridge {

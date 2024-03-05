@@ -245,12 +245,14 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                     Amount - Reward,
                     Reward
                 );
-            } else {
+            } 
+            }
+            else {
                 Users[_user][index].StartPoolId = EndPoolId;
                 SendAssertToUser(_token, _user, Amount);
                 emit ClaimReward(_user, startPoolId, EndPoolId, _token, Reward);
             }
-        }
+        
     }
 
     function WithdrawOrClaimBySimpleAsset(
@@ -308,7 +310,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                             Amount - Reward,
                             Reward
                         );
-                    } else {
+                    } 
+                    }
+                    else {
                         Users[_user][index].StartPoolId = EndPoolId;
                         SendAssertToUser(_token, _user, Amount);
                         emit ClaimReward(
@@ -319,7 +323,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                             Reward
                         );
                     }
-                }
+                
             }
         }
     }

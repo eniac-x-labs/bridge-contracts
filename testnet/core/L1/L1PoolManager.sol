@@ -232,7 +232,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         Users[_user][index].isWithdrawed = true;
         if (IsWithdraw) {
             Users[_user][index].isWithdrawed = true;
-            SendAssertToUser(_token, _user, Reward);
+            SendAssertToUser(_token, _user, Amount);
             if (Users[_user].length > 1) {
                 Users[_user][index] = Users[_user][Users[_user].length - 1];
                 Users[_user].pop();
@@ -249,7 +249,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             }
             else {
                 Users[_user][index].StartPoolId = EndPoolId;
-                SendAssertToUser(_token, _user, Amount);
+                SendAssertToUser(_token, _user, Reward);
                 emit ClaimReward(_user, startPoolId, EndPoolId, _token, Reward);
             }
         
@@ -295,7 +295,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
 
                 if (IsWithdraw) {
                     Users[_user][index].isWithdrawed = true;
-                    SendAssertToUser(_token, _user, Reward);
+                    SendAssertToUser(_token, _user, Amount);
                     if (Users[_user].length > 1) {
                         Users[_user][index] = Users[_user][
                             Users[_user].length - 1
@@ -314,7 +314,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                     }
                     else {
                         Users[_user][index].StartPoolId = EndPoolId;
-                        SendAssertToUser(_token, _user, Amount);
+                        SendAssertToUser(_token, _user, Reward);
                         emit ClaimReward(
                             _user,
                             startPoolId,

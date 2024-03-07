@@ -56,7 +56,7 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).setSupportERC20Token(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true);
         uint256 amount = 1000000000000000000;
         L1PoolManager(address(proxyL1Pool)).DepositAndStakingETH{value: amount}();
-        L1PoolManager(address(proxyL1Pool)).BridgeInitiateETH(11155111, 11155420, 0x8061C28b479B846872132F593bC7cbC6b6C9D628){value: amount};
+        L1PoolManager(address(proxyL1Pool)).BridgeInitiateETH{value: amount}(11155111, 11155420, 0x8061C28b479B846872132F593bC7cbC6b6C9D628);
 
         vm.stopBroadcast();
     }

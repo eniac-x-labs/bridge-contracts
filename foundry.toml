@@ -3,7 +3,7 @@ forge-std = { git = "https://github.com/foundry-rs/forge-std" }
 src = "src,testnet"
 out = "out"
 libs = ["lib"]
-
+via_ir = true
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
 
 [rpc_endpoints]

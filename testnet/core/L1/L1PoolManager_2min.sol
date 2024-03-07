@@ -44,7 +44,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         __Pausable_init();
 
         TokenBridgeBase.__TokenBridge_init(_MultisigWallet, _messageManager);
-        periodTime = 2 minutes;
+        periodTime = 10 minutes;
     }
 
 //    fallback() external payable {
@@ -338,8 +338,11 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         for (uint256 i = 0; i < CompletePools.length; i++) {
             address _token = CompletePools[i].token;
             uint PoolIndex = Pools[_token].length - 1;
-            Pools[_token][PoolIndex].IsCompleted = true;
-            Pools[_token][PoolIndex].TotalFee = CompletePools[i].TotalFee;
+            Pools[_token][PoolIndex-1].IsCompleted = true;
+            if (PoolIndex-1 != 0){
+                Pools[_token][PoolIndex-1].TotalFee = FeePoolValue[_token];
+                FeePoolValue[_token] = 0;
+            }
             uint32 startTimes = Pools[_token][PoolIndex].endTimestamp;
             Pools[_token].push(
                 Pool({

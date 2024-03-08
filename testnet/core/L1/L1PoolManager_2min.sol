@@ -891,8 +891,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 }
                 uint256 EndPoolId = Pools[SupportTokens[i]].length - 1;
                 
-                uint256 Amount = Users[_user][j].Amount;
-                uint256 startPoolId = Users[_user][j].StartPoolId;
+                uint256 Amount = Users[msg.sender][j].Amount;
+                uint256 startPoolId = Users[msg.sender][j].StartPoolId;
                 if (startPoolId > EndPoolId) {
                     continue;
                 }

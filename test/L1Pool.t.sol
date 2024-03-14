@@ -65,8 +65,13 @@ contract L1PoolTest is Test {
         L1PoolManager(address(l1Poolproxy)).setValidChainId(42161, true);
         L1PoolManager(address(l1Poolproxy)).setSupportToken(address(WETH), true, startTimes);
         L1PoolManager(address(l1Poolproxy)).setSupportToken(address(USDT), true, startTimes);
+        L1PoolManager(address(l1Poolproxy)).setSupportERC20Token(address(USDT), true);
         vm.stopPrank();
 
+        vm.startPrank(ReLayer);
+        WETH.deposit{value: 10 ether}();
+        USDT.mint(ReLayer, 100000000);
+        vm.stopPrank();
     }
 
 
@@ -273,6 +278,11 @@ contract L1PoolTest is Test {
         L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0xa, address(ETHAddress), admin, 1 ether);
     }
 
-
+    function test_BridgeERC20() public {
+        vm.chainId(1);
+        vm.prank(ReLayer);
+        L1PoolManager(address(l1Poolproxy)).BridgeInitiateERC20(1,42161,address(ReLayer),address(USDT),10);
+        console.log("bridge erc20 success");
+    }
 
 }

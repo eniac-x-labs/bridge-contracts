@@ -30,7 +30,7 @@ contract L1PoolTest is Test {
     receive() external payable {}
 
     function setUp() public {
-
+        console.log("start");
         admin = makeAddr("admin");
         ReLayer = makeAddr("ReLayer");
         vm.deal(address(this), 10 ether);
@@ -48,26 +48,23 @@ contract L1PoolTest is Test {
         l1Messageproxy = new Proxy(address(l1Message), address(admin), "");
         MessageManager(address(l1Messageproxy)).initialize(address(l1Poolproxy));
         L1PoolManager(address(l1Poolproxy)).initialize(address(admin),address(l1Messageproxy));
+        console.log("initiliaze successful");
 
-
-
+        vm.warp(1710262665);
         uint32 startTimes = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow
+        console.log("%d",startTimes);
         L1PoolManager(address(l1Poolproxy)).setMinStakeAmount(address(ETHAddress), 0.1 ether);
         L1PoolManager(address(l1Poolproxy)).grantRole(l1Pool.ReLayer(), ReLayer);
-
+        console.log("grant role success");
         L1PoolManager(address(l1Poolproxy)).setSupportToken(address(ETHAddress), true, startTimes);
+        console.log("setsupporttoken success");
         assert(L1PoolManager(address(l1Poolproxy)).getPoolLength(ETHAddress) == 2);
         assert(L1PoolManager(address(l1Poolproxy)).getPool(ETHAddress,1).startTimestamp == startTimes);
         assert(L1PoolManager(address(l1Poolproxy)).getPool(ETHAddress,1).endTimestamp == startTimes + 21 * 86400);
+        console.log("pool check pass");
+        L1PoolManager(address(l1Poolproxy)).setValidChainId(42161, true);
         L1PoolManager(address(l1Poolproxy)).setSupportToken(address(WETH), true, startTimes);
         L1PoolManager(address(l1Poolproxy)).setSupportToken(address(USDT), true, startTimes);
-        vm.stopPrank();
-
-
-
-        vm.startPrank(ReLayer);
-        WETH.deposit{value: 10 ether}();
-        USDT.mint(ReLayer, 100000000);
         vm.stopPrank();
 
     }
@@ -147,6 +144,37 @@ contract L1PoolTest is Test {
         console.log("balanceBefore", balanceBefore);
         console.log("balanceAfter", balanceAfter);
 
+    }
+
+     function test_ClaimallRewardETH() public {
+
+        uint balanceBefore = address(ReLayer).balance;
+        console.log("balanceBefore", balanceBefore);
+        vm.prank(ReLayer);
+        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
+        vm.prank(admin);
+        vm.deal(admin, 5 ether);
+        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 0.1 ether}();
+        uint balanceafterstake = address(ReLayer).balance;
+        uint contractbalance = address(this).balance;
+        console.log("contract balance",contractbalance);
+        console.log("stake success",balanceafterstake);
+        CompleteETHPoolAndNew(address(ETHAddress), 0);
+        vm.chainId(1);
+        vm.prank(ReLayer);
+        L1PoolManager(address(l1Poolproxy)).BridgeInitiateETH{value: 0.1 ether}(1,42161,address(ReLayer));
+        uint balanceafterbridge = address(ReLayer).balance;
+        uint balanceaftercontract = address(this).balance;
+        console.log("contract balance after",balanceaftercontract);
+        console.log("bridge success",balanceafterbridge);
+        CompleteETHPoolAndNew(address(ETHAddress), 0);
+        console.log("complete pool success");
+        vm.prank(ReLayer);
+//        L1PoolManager(address(l1Poolproxy)).ClaimSimpleAsset(ETHAddress);
+        L1PoolManager(address(l1Poolproxy)).ClaimAllReward();
+        console.log("claim reward success");
+        uint balanceAfter = address(ReLayer).balance;
+        console.log("balanceAfter", balanceAfter);
     }
 
     function test_ClaimWETH() public{

@@ -301,7 +301,7 @@ abstract contract TokenBridgeBase is
             revert TokenIsNotSupported(ERC20Address);
         }
         IERC20(ERC20Address).safeTransferFrom(address(this), to, amount);
-        FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
+        FundingPoolBalance[ERC20Address] -= amount;
 
         messageManager.claimMessage(
             sourceChainId,

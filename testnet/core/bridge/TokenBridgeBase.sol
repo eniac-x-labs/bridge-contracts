@@ -229,7 +229,7 @@ abstract contract TokenBridgeBase is
             revert ChainIdIsNotSupported(sourceChainId);
         }
         payable(to).transfer(amount);
-        FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
+        FundingPoolBalance[ERC20] -= amount;
 
         messageManager.claimMessage(
             sourceChainId,

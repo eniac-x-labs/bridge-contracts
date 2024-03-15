@@ -195,7 +195,7 @@ abstract contract TokenBridgeBase is
         IERC20(ERC20Address).safeTransferFrom(msg.sender, address(this), value);
         uint256 BalanceAfter = IERC20(ERC20Address).balanceOf(address(this));
         uint256 amount = BalanceAfter - BalanceBefore;
-        FundingPoolBalance[ContractsAddress.ETHAddress] += value;
+        FundingPoolBalance[ERC20Address] += value;
         uint256 fee = (amount * PerFee) / 1_000_000;
         amount -= fee;
         FeePoolValue[ERC20Address] += fee;

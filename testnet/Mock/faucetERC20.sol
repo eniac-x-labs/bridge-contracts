@@ -15,6 +15,6 @@ contract faucetToken is ERC20 {
     function faucet() external {
         require(isClaimed[msg.sender] == false, "Already Claimed");
         isClaimed[msg.sender] = true;
-        _mint(msg.sender, 1);
+        _mint(msg.sender, 1 * 10 ** decimals());
     }
 }

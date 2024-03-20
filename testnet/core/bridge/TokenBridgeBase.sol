@@ -167,7 +167,7 @@ abstract contract TokenBridgeBase is
         amount -= fee;
         FeePoolValue[ContractsAddress.WETH] += fee;
 
-        messageManager.sendMessage(sourceChainId, destChainId, to, value, fee);
+        messageManager.sendMessage(sourceChainId, destChainId, to, amount, fee);
 
         emit InitiateWETH(sourceChainId, destChainId, msg.sender, to, amount);
 
@@ -200,7 +200,7 @@ abstract contract TokenBridgeBase is
         amount -= fee;
         FeePoolValue[ERC20Address] += fee;
 
-        messageManager.sendMessage(sourceChainId, destChainId, to, value, fee);
+        messageManager.sendMessage(sourceChainId, destChainId, to, amount, fee);
 
         emit InitiateERC20(
             sourceChainId,

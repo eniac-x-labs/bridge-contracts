@@ -260,7 +260,7 @@ abstract contract TokenBridgeBase is
         }
 
         IWETH WETH = IWETH(L2WETH());
-        WETH.transferFrom(address(this), to, amount);
+        WETH.transfer(to, amount);
         FundingPoolBalance[ContractsAddress.WETH] -= amount;
 
         messageManager.claimMessage(
@@ -300,7 +300,7 @@ abstract contract TokenBridgeBase is
         if (!IsSupportToken[ERC20Address]) {
             revert TokenIsNotSupported(ERC20Address);
         }
-        IERC20(ERC20Address).safeTransferFrom(address(this), to, amount);
+        IERC20(ERC20Address).safeTransfer(to, amount);
         FundingPoolBalance[ERC20Address] -= amount;
 
         messageManager.claimMessage(

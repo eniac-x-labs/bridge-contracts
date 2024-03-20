@@ -53,8 +53,11 @@ contract l1PoolDeployer is Script {
         L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.ETHAddress, true, startTime);
         L1PoolManager(address(proxyL1Pool)).setSupportToken(ContractsAddress.WETH, true, startTime);
         L1PoolManager(address(proxyL1Pool)).setSupportToken(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(0x02859DC18CaA9C4c61A421D299D53cB1F121DC86, true, startTime);
+        L1PoolManager(address(proxyL1Pool)).setSupportToken(0xb05c00cBCe6F2C7c6e2d79f393c8A07656CE55Ad, true, startTime);
         L1PoolManager(address(proxyL1Pool)).setSupportERC20Token(0xEB0684E79Ac35D64cDef3cCFB09f899ddACb5a54, true);
-
+        L1PoolManager(address(proxyL1Pool)).setSupportERC20Token(0x02859DC18CaA9C4c61A421D299D53cB1F121DC86, true);
+        L1PoolManager(address(proxyL1Pool)).setSupportERC20Token(0xb05c00cBCe6F2C7c6e2d79f393c8A07656CE55Ad, true);
         vm.stopBroadcast();
     }
 }

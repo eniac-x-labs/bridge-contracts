@@ -854,4 +854,61 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert TokenIsNotSupported(_token);
         }
     }
+
+        function getPrincipal() public view returns (KeyValuePair[] memory){
+        KeyValuePair[] memory result = new KeyValuePair[](SupportTokens.length);
+        for (uint256 i = 0; i < SupportTokens.length; i++) {
+            uint256 Amount = 0;
+            for (uint256 j = 0; j < Users[msg.sender].length; j++) {
+            if (Users[msg.sender][j].token == SupportTokens[i]) {
+                if (Users[msg.sender][j].isWithdrawed) {
+                    continue;
+                }
+                Amount += Users[msg.sender][j].Amount;               
+            }
+        }
+        result[i] = KeyValuePair({
+                key: SupportTokens[i],
+                value: Amount
+            });
+     }
+         return result;
+    }
+
+    function getReward() public view returns (KeyValuePair[] memory){
+        KeyValuePair[] memory result = new KeyValuePair[](SupportTokens.length);
+        for (uint256 i = 0; i < SupportTokens.length; i++) {
+            uint256 Reward = 0;
+            for (uint256 j = 0; j < Users[msg.sender].length; j++) {
+            if (Users[msg.sender][j].token == SupportTokens[i]) {
+                if (Users[msg.sender][j].isWithdrawed) {
+                    continue;
+                }
+                uint256 EndPoolId = Pools[SupportTokens[i]].length - 1;
+                
+                uint256 Amount = Users[msg.sender][j].Amount;
+                uint256 startPoolId = Users[msg.sender][j].StartPoolId;
+                if (startPoolId > EndPoolId) {
+                    continue;
+                }
+
+                for (uint256 k = startPoolId; k < EndPoolId; k++) {
+                    if (k > Pools[SupportTokens[i]].length - 1) {
+                        revert NewPoolIsNotCreate(k);
+                    }
+                    uint256 _Reward = (Amount * Pools[SupportTokens[i]][k].TotalFee) /
+                        Pools[SupportTokens[i]][k].TotalAmount;
+                    Reward += _Reward;
+                }
+           
+            }
+
+        }
+        result[i] = KeyValuePair({
+                key: SupportTokens[i],
+                value: Reward
+            });
+     }
+         return result;
+    }
 }

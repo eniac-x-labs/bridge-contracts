@@ -21,6 +21,11 @@ interface IL1PoolManager {
         uint256 Amount;
     }
 
+    struct KeyValuePair {
+        address key;
+        uint value;
+    }
+
     function DepositAndStaking(
         address _token,
         uint256 _amount

@@ -167,7 +167,7 @@ abstract contract TokenBridgeBase is
         amount -= fee;
         FeePoolValue[ContractsAddress.WETH] += fee;
 
-        messageManager.sendMessage(sourceChainId, destChainId, to, value, fee);
+        messageManager.sendMessage(sourceChainId, destChainId, to, amount, fee);
 
         emit InitiateWETH(sourceChainId, destChainId, msg.sender, to, amount);
 
@@ -195,12 +195,12 @@ abstract contract TokenBridgeBase is
         IERC20(ERC20Address).safeTransferFrom(msg.sender, address(this), value);
         uint256 BalanceAfter = IERC20(ERC20Address).balanceOf(address(this));
         uint256 amount = BalanceAfter - BalanceBefore;
-        FundingPoolBalance[ContractsAddress.ETHAddress] += value;
+        FundingPoolBalance[ERC20Address] += value;
         uint256 fee = (amount * PerFee) / 1_000_000;
         amount -= fee;
         FeePoolValue[ERC20Address] += fee;
 
-        messageManager.sendMessage(sourceChainId, destChainId, to, value, fee);
+        messageManager.sendMessage(sourceChainId, destChainId, to, amount, fee);
 
         emit InitiateERC20(
             sourceChainId,
@@ -260,7 +260,7 @@ abstract contract TokenBridgeBase is
         }
 
         IWETH WETH = IWETH(L2WETH());
-        WETH.transferFrom(address(this), to, amount);
+        WETH.transfer(to, amount);
         FundingPoolBalance[ContractsAddress.WETH] -= amount;
 
         messageManager.claimMessage(
@@ -300,7 +300,7 @@ abstract contract TokenBridgeBase is
         if (!IsSupportToken[ERC20Address]) {
             revert TokenIsNotSupported(ERC20Address);
         }
-        IERC20(ERC20Address).safeTransferFrom(address(this), to, amount);
+        IERC20(ERC20Address).safeTransfer(to, amount);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(

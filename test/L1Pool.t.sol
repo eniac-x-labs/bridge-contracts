@@ -285,4 +285,15 @@ contract L1PoolTest is Test {
         console.log("bridge erc20 success");
     }
 
+    function test_finalizeERC20() public {
+        vm.prank(ReLayer);
+        USDT.approve(address(l1Poolproxy), 10000);
+        vm.prank(ReLayer);
+        L1PoolManager(address(l1Poolproxy)).DepositAndStakingERC20(address(USDT), 10000);
+        vm.chainId(1);
+        vm.prank(ReLayer);
+        L1PoolManager(address(l1Poolproxy)).BridgeFinalizeERC20(42161,1,address(ReLayer),address(USDT),10,100,1);
+        console.log("bridge erc20 success");
+    }
+
 }

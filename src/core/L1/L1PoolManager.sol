@@ -360,14 +360,35 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
-    function BridgeInitiateETHForStaking(
+    function BridgeFinalizeETHForStaking(
         uint256 sourceChainId,
         uint256 destChainId,
         address to,
+        uint256 amount,
+        uint256 _fee,
+        uint256 _nonce
         address stakingManager
     ) external payable onlyRole(ReLayer){
-        super.BridgeInitiateETH(sourceChainId, destChainId, to);
+        if (destChainId != block.chainid) {
+            revert sourceChainIdError();
+        }
+        if (!IsSupportChainId(sourceChainId)) {
+            revert ChainIdIsNotSupported(sourceChainId);
+        }
+
         IStakingManager(stakingManager).stake{value: msg.value}(msg.value);
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
+
+        messageManager.claimMessage(
+            sourceChainId,
+            destChainId,
+            to,
+            _fee,
+            amount,
+            _nonce
+        );
+
+        emit FinalizeETH(sourceChainId, destChainId, address(this), to, amount);
     }
 
     function TransferAssertToBridge(

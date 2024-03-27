@@ -21,6 +21,7 @@ import "../../interfaces/IMantaBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
+import "../../interfaces/IStakingManager.sol";
 
 contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     using SafeERC20 for IERC20;
@@ -357,6 +358,16 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             emit CompletePoolEvent(_token, PoolIndex);
         }
+    }
+
+    function BridgeInitiateETHForStaking(
+        uint256 sourceChainId,
+        uint256 destChainId,
+        address to,
+        address stakingManager
+    ) external payable onlyRole(ReLayer){
+        super.BridgeInitiateETH(sourceChainId, destChainId, to);
+        IStakingManager(stakingManager).stake{value: msg.value}(msg.value);
     }
 
     function TransferAssertToBridge(

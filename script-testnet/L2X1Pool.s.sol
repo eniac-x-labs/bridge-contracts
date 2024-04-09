@@ -55,6 +55,10 @@ contract L2PoolDeployer is Script {
         L2PoolManager(address(proxyL2Pool)).setValidChainId(84532, true);  // Base Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(421614, true);  // ARB Sepolia
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(5003, true);  // mantle
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(3441006, true);  // manta
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(43851, true);  // zkfair
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(168587773, true);  // blast
         vm.stopBroadcast();
     }
 }

@@ -20,6 +20,13 @@ import "../../interfaces/IMessageManager.sol";
 contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
     uint32 public MAX_GAS_Limit;
 
+    event BridgeInitiateETHForStaking(
+        bytes32 indexed messageHash
+    );
+    event BridgeInitiateERC20ForStaking(
+        bytes32 indexed messageHash
+    );
+
     constructor() {
         _disableInitializers();
     }
@@ -361,6 +368,46 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         return true;
     }
 
+    function BridgeInitiateETHForStaking (
+        uint256 sourceChainId,
+        uint256 destChainId,
+        address to,
+        uint256 nonce
+    )external payable returns (bool){
+        BridgeInitiateETH(sourceChainId, destChainId, to);
+        bytes32 messageHash = keccak256(
+            abi.encode(
+                sourceChainId,
+                destChainId,
+                nonce
+            )
+        );
+        emit BridgeInitiateETHForStakingSuccess(
+            messageHash
+        );
+    }
+
+    function BridgeInitiateERC20ForStaking(
+        uint256 sourceChainId,
+        uint256 destChainId,
+        address to,
+        address ERC20Address,
+        uint256 value
+        uint256 nonce
+    )external returns (bool){
+        BridgeInitiateERC20(sourceChainId, destChainId, to, ERC20Address, value);
+        bytes32 messageHash = keccak256(
+            abi.encode(
+                sourceChainId,
+                destChainId,
+                nonce
+            )
+        );
+        emit BridgeInitiateERC20ForStakingSuccess(
+            messageHash
+        );
+    }
+    
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }

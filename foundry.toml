@@ -1,6 +1,6 @@
 [profile.default]
 forge-std = { git = "https://github.com/foundry-rs/forge-std" }
-src = "src,testnet"
+src = "testnet"
 out = "out"
 libs = ["lib"]
 via_ir = true

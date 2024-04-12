@@ -22,6 +22,7 @@ import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
 import "../../interfaces/IStakingManager.sol";
+import {IDETH} from "../../interfaces/IDETH.sol";
 
 contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     using SafeERC20 for IERC20;
@@ -367,7 +368,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 amount,
         uint256 _fee,
         uint256 _nonce,
-        address stakingManager
+        address stakingManager,
+        IDETH.BatchMint[] calldata batcher
     ) external payable onlyRole(ReLayer){
         if (destChainId != block.chainid) {
             revert sourceChainIdError();
@@ -376,7 +378,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert ChainIdIsNotSupported(sourceChainId);
         }
 
-        IStakingManager(stakingManager).stake{value: msg.value}(msg.value);
+        require(amount / 32e18 > 0, "Eth not enough to stake");
+        IStakingManager(stakingManager).stake{value: amount}(amount, batcher);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(

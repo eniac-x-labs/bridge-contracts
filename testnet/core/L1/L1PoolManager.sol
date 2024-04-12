@@ -379,7 +379,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
         require(amount / 32e18 > 0, "Eth not enough to stake");
         IStakingManager(stakingManager).stake{value: amount}(amount, batcher);
-        // FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(
             sourceChainId,

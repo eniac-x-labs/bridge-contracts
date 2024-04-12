@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.20;
 
+import {IDETH} from"./IDETH.sol";
 interface IStakingManagerInitiationRead {
     function totalDepositedInValidators() external view returns (uint256);
 
@@ -15,7 +16,7 @@ interface IStakingManagerReturnsWrite {
 }
 
 interface IStakingManager is IStakingManagerInitiationRead, IStakingManagerReturnsWrite {
-    function stake(uint256 stakeAmount) external payable;
+    function stake(uint256 stakeAmount,IDETH.BatchMint[] calldata batcher) external payable;
     error DoesNotReceiveETH();
     error InvalidConfiguration();
     error MaximumValidatorDepositExceeded();

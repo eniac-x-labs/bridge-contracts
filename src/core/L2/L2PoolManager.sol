@@ -401,6 +401,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         emit BridgeInitiateETHForStakingSuccess(
             messageHash
         );
+        return true;
     }
 
     function BridgeInitiateERC20ForStaking(
@@ -408,7 +409,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 destChainId,
         address to,
         address ERC20Address,
-        uint256 value
+        uint256 value,
         uint256 nonce
     )external returns (bool){
         BridgeInitiateERC20(sourceChainId, destChainId, to, ERC20Address, value);
@@ -422,6 +423,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         emit BridgeInitiateERC20ForStakingSuccess(
             messageHash
         );
+        return true;
     }
 
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {

@@ -20,10 +20,10 @@ import "../../interfaces/IMessageManager.sol";
 contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
     uint32 public MAX_GAS_Limit;
 
-    event BridgeInitiateETHForStaking(
+    event BridgeInitiateETHForStakingSuccess(
         bytes32 indexed messageHash
     );
-    event BridgeInitiateERC20ForStaking(
+    event BridgeInitiateERC20ForStakingSuccess(
         bytes32 indexed messageHash
     );
 

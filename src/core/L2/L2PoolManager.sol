@@ -390,7 +390,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         address to,
         uint256 nonce
     )external payable returns (bool){
-        super.BridgeInitiateETH(sourceChainId, destChainId, to);
+        this.BridgeInitiateETH(sourceChainId, destChainId, to);
         bytes32 messageHash = keccak256(
             abi.encode(
                 sourceChainId,
@@ -412,7 +412,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 value,
         uint256 nonce
     )external returns (bool){
-        super.BridgeInitiateERC20(sourceChainId, destChainId, to, ERC20Address, value);
+        this.BridgeInitiateERC20(sourceChainId, destChainId, to, ERC20Address, value);
         bytes32 messageHash = keccak256(
             abi.encode(
                 sourceChainId,

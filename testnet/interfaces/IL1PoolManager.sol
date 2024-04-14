@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.20;
-
+import {IDETH} from "./IDETH.sol";
 interface IL1PoolManager {
     //    enum status {Active, Pending, };
     struct Pool {
@@ -56,6 +56,9 @@ interface IL1PoolManager {
     );
     event StakingETHEvent(address indexed user, uint256 amount);
     event StakingWETHEvent(address indexed user, uint256 amount);
+
+    event BridgeFinalizeETHForStakingEvent(uint256 amount, address stakingManager, IDETH.BatchMint[]  batcher);
+
     event ClaimEvent(
         address indexed user,
         uint256 startPoolId,

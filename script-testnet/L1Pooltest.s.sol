@@ -44,7 +44,7 @@ contract l1PoolDeployer is Script {
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp + 5 * 60); // 5min later
-        L1PoolManager(address(proxyL1Pool)).setValidChainId(1442, true);  // Polygon zkevm Testnet
+        L1PoolManager(address(proxyL1Pool)).setValidChainId(2442, true);  // Polygon zkevm Testnet
         L1PoolManager(address(proxyL1Pool)).setValidChainId(11155420, true);  // OP Sepolia
         L1PoolManager(address(proxyL1Pool)).setValidChainId(534351, true);    // Scroll Sepolia
         L1PoolManager(address(proxyL1Pool)).setValidChainId(421614, true);    // ARB Sepolia

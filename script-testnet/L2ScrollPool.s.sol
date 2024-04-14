@@ -49,11 +49,16 @@ contract L2PoolDeployer is Script {
 
     L2PoolManager(address(proxyL2Pool)).grantRole(l2PoolManager.ReLayer(), ReLayer);
         L2PoolManager(address(proxyL2Pool)).setValidChainId(11155111, true);  // sepolia
-        L2PoolManager(address(proxyL2Pool)).setValidChainId(1442, true);  // Polygon zkevm Testnet
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(2442, true);  // Polygon zkevm Testnet
         L2PoolManager(address(proxyL2Pool)).setValidChainId(11155420, true);  // OP Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(300, true);  // Zksync Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(84532, true);  // Base Sepolia
         L2PoolManager(address(proxyL2Pool)).setValidChainId(421614, true);  // ARB Sepolia
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(195, true);  // x1
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(5003, true);  // mantle
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(3441006, true);  // manta
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(43851, true);  // zkfair
+        L2PoolManager(address(proxyL2Pool)).setValidChainId(168587773, true);  // blast
         L2PoolManager(address(proxyL2Pool)).setSupportERC20Token(0xa15165F0923D3BFab6E532b2177Df64BDa5A6533, true);
         
         vm.stopBroadcast();

@@ -360,7 +360,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         );
         return true;
     }
-
+    
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }

@@ -21,6 +21,8 @@ import "../../interfaces/IMantaBridge.sol";
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
 import "../../interfaces/IL1MessageQueue.sol";
+import "../../interfaces/IStakingManager.sol";
+import {IDETH} from "../../interfaces/IDETH.sol";
 
 contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     using SafeERC20 for IERC20;
@@ -357,6 +359,18 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             emit CompletePoolEvent(_token, PoolIndex);
         }
+    }
+
+    function BridgeFinalizeETHForStaking(
+        uint256 amount,
+        address stakingManager,
+        IDETH.BatchMint[] calldata batcher
+    ) external onlyRole(ReLayer){
+        require(amount / 32e18 > 0, "Eth not enough to stake");
+        IStakingManager(stakingManager).stake{value: amount}(amount, batcher);
+        FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
+
+        emit BridgeFinalizeETHForStakingEvent(amount, stakingManager, batcher);
     }
 
     function TransferAssertToBridge(
@@ -916,4 +930,6 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
      }
          return result;
     }
+
+
 }

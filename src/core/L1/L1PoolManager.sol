@@ -362,36 +362,15 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     }
 
     function BridgeFinalizeETHForStaking(
-        uint256 sourceChainId,
-        uint256 destChainId,
-        address to,
         uint256 amount,
-        uint256 _fee,
-        uint256 _nonce,
         address stakingManager,
         IDETH.BatchMint[] calldata batcher
-    ) external payable onlyRole(ReLayer){
-        if (destChainId != block.chainid) {
-            revert sourceChainIdError();
-        }
-        if (!IsSupportChainId(sourceChainId)) {
-            revert ChainIdIsNotSupported(sourceChainId);
-        }
-
+    ) external onlyRole(ReLayer){
         require(amount / 32e18 > 0, "Eth not enough to stake");
         IStakingManager(stakingManager).stake{value: amount}(amount, batcher);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
-        messageManager.claimMessage(
-            sourceChainId,
-            destChainId,
-            to,
-            _fee,
-            amount,
-            _nonce
-        );
-
-        emit FinalizeETH(sourceChainId, destChainId, address(this), to, amount);
+        emit BridgeFinalizeETHForStakingEvent(amount, stakingManager, batcher);
     }
 
     function TransferAssertToBridge(

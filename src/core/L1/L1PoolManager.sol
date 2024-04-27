@@ -869,7 +869,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
-        function getPrincipal() public view returns (KeyValuePair[] memory){
+    function getPrincipal() public view returns (KeyValuePair[] memory){
         KeyValuePair[] memory result = new KeyValuePair[](SupportTokens.length);
         for (uint256 i = 0; i < SupportTokens.length; i++) {
             uint256 Amount = 0;

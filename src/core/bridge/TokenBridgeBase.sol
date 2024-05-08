@@ -384,7 +384,7 @@ abstract contract TokenBridgeBase is
             shareAddress,
             gasLimit,
             0,
-            abi.encodeWithSignature("TransferShareTo(address,address,uint256)", from, to, shares)
+            abi.encodeWithSignature("TransferShareTo(address,address,uint256, uint256)", from, to, shares, stakeMessageNonce)
         );
         require(success, "TokenBridge.BridgeFinalizeStakingMessage: call failed");
         emit FinalizeStakingMessage(

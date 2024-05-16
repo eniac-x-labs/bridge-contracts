@@ -96,6 +96,7 @@ abstract contract TokenBridgeBase is
     event FinalizeStakingMessage(
         address indexed from,
         address indexed to,
+        address shareAddress,
         uint256 shares,
         uint256 stakeMessageNonce,
         bytes32 stakeMessageHash
@@ -392,6 +393,7 @@ abstract contract TokenBridgeBase is
         emit FinalizeStakingMessage(
             from,
             to,
+            shareAddress,
             shares,
             stakeMessageNonce,
             stakingMessageHash

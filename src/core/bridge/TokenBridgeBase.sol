@@ -64,6 +64,7 @@ abstract contract TokenBridgeBase is
         address indexed from,
         address indexed to,
         uint256 shares,
+        uint256 stakeMessageNonce,
         bytes32 indexed stakeMessageHash
     );
 
@@ -237,7 +238,7 @@ abstract contract TokenBridgeBase is
         address to,
         uint256 shares
     ) external returns (bool) {
-        bytes32 sakingMessageHash = keccak256(
+        bytes32 stakingMessageHash = keccak256(
             abi.encode(
                 from,
                 to,
@@ -250,7 +251,8 @@ abstract contract TokenBridgeBase is
             from,
             to,
             shares,
-            sakingMessageHash
+            stakingMessageNumber,
+            stakingMessageHash
         );
         return true;
     }
@@ -372,7 +374,7 @@ abstract contract TokenBridgeBase is
         uint256 stakeMessageNonce,
         uint256 gasLimit
     ) external returns (bool) {
-        bytes32 sakingMessageHash = keccak256(
+        bytes32 stakingMessageHash = keccak256(
             abi.encode(
                 from,
                 to,
@@ -384,7 +386,7 @@ abstract contract TokenBridgeBase is
             shareAddress,
             gasLimit,
             0,
-            abi.encodeWithSignature("TransferShareTo(address,address,uint256)", from, to, shares)
+            abi.encodeWithSignature("TransferShareTo(address,address,uint256, uint256)", from, to, shares, stakeMessageNonce)
         );
         require(success, "TokenBridge.BridgeFinalizeStakingMessage: call failed");
         emit FinalizeStakingMessage(
@@ -392,7 +394,7 @@ abstract contract TokenBridgeBase is
             to,
             shares,
             stakeMessageNonce,
-            sakingMessageHash
+            stakingMessageHash
         );
        return true;
     }

@@ -247,7 +247,6 @@ abstract contract TokenBridgeBase is
                 stakingMessageNumber
             )
         );
-        stakingMessageNumber++;
         emit InitiateStakingMessage(
             from,
             to,
@@ -255,6 +254,7 @@ abstract contract TokenBridgeBase is
             stakingMessageNumber,
             stakingMessageHash
         );
+        stakingMessageNumber++;
         return true;
     }
 

@@ -224,9 +224,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             if (j > Pools[_token].length - 1) {
                 revert NewPoolIsNotCreate(j);
             }
-            uint256 _Reward = (Amount * Pools[_token][j].TotalFee) /
+            uint256 _Reward = (Amount * Pools[_token][j].TotalFee * 1e18) /
                 Pools[_token][j].TotalAmount;
-            Reward += _Reward;
+            Reward += _Reward / 1e18;
             Pools[_token][j].TotalFeeClaimed += _Reward;
         }
         require(Reward > 0, "No Reward");
@@ -287,9 +287,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                     if (j > Pools[_token].length - 1) {
                         revert NewPoolIsNotCreate(j);
                     }
-                    uint256 _Reward = (Amount * Pools[_token][j].TotalFee) /
+                    uint256 _Reward = (Amount * Pools[_token][j].TotalFee * 1e18) /
                         Pools[_token][j].TotalAmount;
-                    Reward += _Reward;
+                    Reward += _Reward / 1e18;
                     Pools[_token][j].TotalFeeClaimed += _Reward;
                 }
                 require(Reward > 0, "No Reward");

@@ -211,7 +211,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     ) internal {
         address _token = Users[_user][index].token;
         uint256 EndPoolId = Pools[_token].length - 1;
-        Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
+        
 
         uint256 Reward = 0;
         uint256 Amount = Users[_user][index].Amount;
@@ -233,6 +233,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         Amount += Reward;
         Users[_user][index].isWithdrawed = true;
         if (IsWithdraw) {
+            Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
             Users[_user][index].isWithdrawed = true;
             SendAssertToUser(_token, _user, Amount);
             if (Users[_user].length > 1) {
@@ -273,8 +274,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 }
 
                 uint256 EndPoolId = Pools[_token].length - 1;
-                Pools[_token][EndPoolId].TotalAmount -= Users[_user][index]
-                    .Amount;
+                
 
                 uint256 Reward = 0;
                 uint256 Amount = Users[_user][index].Amount;
@@ -296,6 +296,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 Amount += Reward;
 
                 if (IsWithdraw) {
+                    Pools[_token][EndPoolId].TotalAmount -= Users[_user][index]
+                    .Amount;
                     Users[_user][index].isWithdrawed = true;
                     SendAssertToUser(_token, _user, Amount);
                     if (Users[_user].length > 1) {

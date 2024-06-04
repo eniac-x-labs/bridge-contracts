@@ -229,7 +229,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             Reward += _Reward / 1e18;
             Pools[_token][j].TotalFeeClaimed += _Reward;
         }
-        require(Reward > 0, "No Reward");
+        //require(Reward > 0, "No Reward");
         Amount += Reward;
         Users[_user][index].isWithdrawed = true;
         if (IsWithdraw) {
@@ -292,7 +292,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                     Reward += _Reward / 1e18;
                     Pools[_token][j].TotalFeeClaimed += _Reward;
                 }
-                require(Reward > 0, "No Reward");
+                //require(Reward > 0, "No Reward");
                 Amount += Reward;
 
                 if (IsWithdraw) {

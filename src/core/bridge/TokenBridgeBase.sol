@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../../interfaces/IMessageManager.sol";
 import "../libraries/ContractsAddress.sol";
+import "../libraries/SafeCall.sol";
 import "../../interfaces/WETH.sol";
 
 abstract contract TokenBridgeBase is
@@ -32,6 +33,7 @@ abstract contract TokenBridgeBase is
     mapping(address => uint256) public FundingPoolBalance;
     mapping(address => uint256) public FeePoolValue;
     address[] public SupportTokens;
+    uint256 public stakingMessageNumber;
 
     event InitiateETH(
         uint256 sourceChainId,
@@ -58,6 +60,14 @@ abstract contract TokenBridgeBase is
         uint256 value
     );
 
+    event InitiateStakingMessage(
+        address indexed from,
+        address indexed to,
+        uint256 shares,
+        uint256 stakeMessageNonce,
+        bytes32 indexed stakeMessageHash
+    );
+
     event FinalizeETH(
         uint256 sourceChainId,
         uint256 destChainId,
@@ -81,6 +91,15 @@ abstract contract TokenBridgeBase is
         address indexed from,
         address indexed to,
         uint256 value
+    );
+
+    event FinalizeStakingMessage(
+        address indexed from,
+        address indexed to,
+        address shareAddress,
+        uint256 shares,
+        uint256 stakeMessageNonce,
+        bytes32 stakeMessageHash
     );
 
     error ChainIdIsNotSupported(uint256 id);
@@ -111,6 +130,7 @@ abstract contract TokenBridgeBase is
         PerFee = 10000; // 1%
         _grantRole(DEFAULT_ADMIN_ROLE, _MultisigWallet);
         messageManager = IMessageManager(_messageManager);
+        stakingMessageNumber = 1;
     }
 
     function BridgeInitiateETH(
@@ -211,6 +231,30 @@ abstract contract TokenBridgeBase is
             amount
         );
 
+        return true;
+    }
+
+    function BridgeInitiateStakingMessage(
+        address from,
+        address to,
+        uint256 shares
+    ) external returns (bool) {
+        bytes32 stakingMessageHash = keccak256(
+            abi.encode(
+                from,
+                to,
+                shares,
+                stakingMessageNumber
+            )
+        );
+        stakingMessageNumber++;
+        emit InitiateStakingMessage(
+            from,
+            to,
+            shares,
+            stakingMessageNumber,
+            stakingMessageHash
+        );
         return true;
     }
 
@@ -321,6 +365,40 @@ abstract contract TokenBridgeBase is
             amount
         );
         return true;
+    }
+
+    function BridgeFinalizeStakingMessage(
+        address shareAddress,
+        address from,
+        address to,
+        uint256 shares,
+        uint256 stakeMessageNonce,
+        uint256 gasLimit
+    ) external returns (bool) {
+        bytes32 stakingMessageHash = keccak256(
+            abi.encode(
+                from,
+                to,
+                shares,
+                stakeMessageNonce
+            )
+        );
+        bool success = SafeCall.callWithMinGas(
+            shareAddress,
+            gasLimit,
+            0,
+            abi.encodeWithSignature("TransferShareTo(address,address,uint256, uint256)", from, to, shares, stakeMessageNonce)
+        );
+        require(success, "TokenBridge.BridgeFinalizeStakingMessage: call failed");
+        emit FinalizeStakingMessage(
+            from,
+            to,
+            shareAddress,
+            shares,
+            stakeMessageNonce,
+            stakingMessageHash
+        );
+       return true;
     }
 
     function IsSupportChainId(uint256 chainId) public view returns (bool) {

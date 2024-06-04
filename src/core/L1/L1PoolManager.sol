@@ -236,7 +236,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
             Users[_user][index].isWithdrawed = true;
             SendAssertToUser(_token, _user, Amount);
-            if (Users[_user].length > 1) {
+            if (Users[_user].length > 0) {
                 Users[_user][index] = Users[_user][Users[_user].length - 1];
                 Users[_user].pop();
 
@@ -300,7 +300,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                     .Amount;
                     Users[_user][index].isWithdrawed = true;
                     SendAssertToUser(_token, _user, Amount);
-                    if (Users[_user].length > 1) {
+                    if (Users[_user].length > 0) {
                         Users[_user][index] = Users[_user][
                             Users[_user].length - 1
                         ];

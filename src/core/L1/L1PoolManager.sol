@@ -240,7 +240,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         Users[_user][index].isWithdrawed = true;
         if (IsWithdraw) {
             Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
-            Users[_user][index].isWithdrawed = true;
+            //Users[_user][index].isWithdrawed = true;
             SendAssertToUser(_token, _user, Amount);
             if (Users[_user].length > 0) {
                 Users[_user][index] = Users[_user][Users[_user].length - 1];
@@ -687,11 +687,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo(
-                _to,
-                0,
-                ""
-            );
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo{
+                value: _amount
+            }(_to, 0, "");
         } else {
             IERC20(_token).approve(ContractsAddress.MantleL1Bridge, _amount);
             IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositERC20To(

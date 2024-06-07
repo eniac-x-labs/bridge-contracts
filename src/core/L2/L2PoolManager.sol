@@ -38,7 +38,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
     function WithdrawETHtoL1(
         address _to,
         uint256 _amount
-    ) external payable onlyRole(ReLayer) returns (bool) {
+    ) external payable whenNotPaused onlyRole(ReLayer) returns (bool) {
         uint256 Blockchain = block.chainid;
         if (_amount > address(this).balance) {
             revert NotEnoughETH();
@@ -91,16 +91,14 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 _amount,
                 ""
             );
-        }  else if (Blockchain == 0x144) {
+        } else if (Blockchain == 0x144) {
             //https://chainlist.org/chain/324
             //ZkSync Mainnet
             //https://github.com/zksync-sdk/zksync-ethers/blob/main/src/utils.ts#L92
-            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
-                _to,
-                address(0),
-                _amount
-            );
-        }  else if (Blockchain == 0x1388) {
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{
+                value: _amount
+            }(_to, address(0), _amount);
+        } else if (Blockchain == 0x1388) {
             //https://chainlist.org/chain/324
             //Mantle Mainnet
             IERC20(ContractsAddress.MantleETH).approve(
@@ -114,11 +112,11 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-
         } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
-            IMantaL2Bridge(ContractsAddress.MantaL2Bridge)
-                .withdrawTo{value: _amount}(
+            IMantaL2Bridge(ContractsAddress.MantaL2Bridge).withdrawTo{
+                value: _amount
+            }(
                 ContractsAddress.OP_LEGACY_ERC20_ETH,
                 _to,
                 _amount,
@@ -132,10 +130,16 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 ContractsAddress.ZKFairL2Bridge,
                 _amount
             );
-            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge)
-                .bridgeAsset(0, _to, _amount, ContractsAddress.ZKFairETH, false, "");
+            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge).bridgeAsset(
+                0,
+                _to,
+                _amount,
+                ContractsAddress.ZKFairETH,
+                false,
+                ""
+            );
         } else if (Blockchain == 0x2105) {
-            //Base 
+            //Base
             IOptimismL2StandardBridge(ContractsAddress.BaseL2StandardBridge)
                 .withdrawTo{value: _amount}(
                 ContractsAddress.BASE_LEGACY_ERC20_ETH,
@@ -144,8 +148,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        }
-        else {
+        } else {
             revert ErrorBlockChain();
         }
         FundingPoolBalance[ContractsAddress.ETHAddress] -= _amount;
@@ -161,7 +164,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
     function WithdrawWETHToL1(
         address _to,
         uint256 _amount
-    ) external payable onlyRole(ReLayer) returns (bool) {
+    ) external payable whenNotPaused onlyRole(ReLayer) returns (bool) {
         uint256 Blockchain = block.chainid;
         IWETH WETH = IWETH(L2WETH());
         if (_amount > WETH.balanceOf(address(this))) {
@@ -212,8 +215,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        } 
-        else if (Blockchain == 0xa4b1) {
+        } else if (Blockchain == 0xa4b1) {
             // Arbitrum One https://chainlist.org/chain/42161
             WETH.approve(ContractsAddress.ArbitrumOneL2WETHGateway, _amount);
             IArbitrumOneL2Bridge(ContractsAddress.ArbitrumOneL2WETHGateway)
@@ -223,17 +225,12 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
             WETH.approve(ContractsAddress.ArbitrumNovaL2WETHGateway, _amount);
             IArbitrumNovaL2Bridge(ContractsAddress.ArbitrumNovaL2WETHGateway)
                 .outboundTransfer(ContractsAddress.WETH, _to, _amount, "");
-        } else if(Blockchain == 0x144){
+        } else if (Blockchain == 0x144) {
             //ZkSync Mainnet
-            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
-                _to,
-                address(WETH),
-                _amount
-            );
-        }
-        
-        
-        else {
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{
+                value: _amount
+            }(_to, address(WETH), _amount);
+        } else {
             revert ErrorBlockChain();
         }
         emit WithdrawWETHtoL1Success(
@@ -250,7 +247,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
         address _token,
         address _to,
         uint256 _amount
-    ) external payable onlyRole(ReLayer) returns (bool) {
+    ) external payable whenNotPaused onlyRole(ReLayer) returns (bool) {
         uint256 Blockchain = block.chainid;
         if (!IsSupportToken[_token]) {
             revert TokenIsNotSupported(_token);
@@ -305,8 +302,7 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        } 
-        else if (Blockchain == 0xa4b1) {
+        } else if (Blockchain == 0xa4b1) {
             // Arbitrum One https://chainlist.org/chain/42161
             IERC20(_token).approve(
                 ContractsAddress.ArbitrumOneL2ERC20Gateway,
@@ -324,12 +320,10 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 .outboundTransfer(_token, _to, _amount, "");
         } else if (Blockchain == 0x144) {
             //ZkSync Mainnet https://chainlist.org/chain/324
-            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{value: _amount}(
-                _to,
-                _token,
-                _amount
-            );
-        } else if (Blockchain == 0x1388){
+            IZkSyncBridge(ContractsAddress.ZkSyncL2Bridge).withdraw{
+                value: _amount
+            }(_to, _token, _amount);
+        } else if (Blockchain == 0x1388) {
             //Mantle Mainnet
             IERC20(_token).approve(ContractsAddress.MantleL2Bridge, _amount);
             IMantleL2Bridge(ContractsAddress.MantleL2Bridge).withdrawto(
@@ -339,31 +333,24 @@ contract L2PoolManager is IL2PoolManager, PausableUpgradeable, TokenBridgeBase {
                 MAX_GAS_Limit,
                 ""
             );
-        }else if (Blockchain == 0xa9) {
+        } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
-            IERC20(_token).approve(
-                ContractsAddress.MantleL2Bridge,
-                _amount
-            );
-            IMantaL2Bridge(ContractsAddress.MantleL2Bridge)
-                .withdrawTo{value: _amount}(
-                _token,
+            IERC20(_token).approve(ContractsAddress.MantleL2Bridge, _amount);
+            IMantaL2Bridge(ContractsAddress.MantleL2Bridge).withdrawTo{
+                value: _amount
+            }(_token, _to, _amount, MAX_GAS_Limit, "");
+        } else if (Blockchain == 0xa70e) {
+            // ZKFair https://chainlist.org/chain/42766
+            IERC20(_token).approve(ContractsAddress.ZKFairL2Bridge, _amount);
+            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge).bridgeAsset(
+                0,
                 _to,
                 _amount,
-                MAX_GAS_Limit,
+                _token,
+                false,
                 ""
             );
-        }
-        else if (Blockchain == 0xa70e) {
-            // ZKFair https://chainlist.org/chain/42766
-            IERC20(_token).approve(
-                ContractsAddress.ZKFairL2Bridge,
-                _amount
-            );
-            IPolygonZkEVML2Bridge(ContractsAddress.ZKFairL2Bridge)
-                .bridgeAsset(0, _to, _amount, _token, false, "");
-        }
-        else {
+        } else {
             revert ErrorBlockChain();
         }
         FundingPoolBalance[_token] -= _amount;

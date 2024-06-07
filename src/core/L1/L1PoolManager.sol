@@ -80,8 +80,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount < MinStakeAmount[_token]) {
             revert LessThanMinStakeAmount(MinStakeAmount[_token], _amount);
         }
-
+        uint256 BalanceBefore = IERC20(_token).balanceOf(address(this));
         IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
+        uint256 BalanceAfter = IERC20(_token).balanceOf(address(this));
+        _amount = BalanceAfter - BalanceBefore;
         uint256 PoolIndex = Pools[_token].length - 1;
         if (Pools[_token][PoolIndex].startTimestamp > block.timestamp) {
             Users[msg.sender].push(

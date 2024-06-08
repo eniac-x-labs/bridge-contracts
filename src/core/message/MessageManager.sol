@@ -81,6 +81,7 @@ contract MessageManager is
         bytes32 messageHash = keccak256(
             abi.encode(sourceChainId, destChainId, _to, _fee, _value, _nonce)
         );
+        require(!cliamMessageStatus[messageHash], "Message not found!");
         cliamMessageStatus[messageHash] = true;
         emit MessageClaimed(sourceChainId, destChainId, messageHash);
     }

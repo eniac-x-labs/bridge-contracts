@@ -103,6 +103,8 @@ abstract contract TokenBridgeBase is
 
     error MantaNotWETH();
 
+    error TransferETHFailed();
+
     function __TokenBridge_init(
         address _MultisigWallet,
         address _messageManager
@@ -332,32 +334,31 @@ abstract contract TokenBridgeBase is
         if (Blockchain == 0x8274f) {
             // Scroll: https://chainlist.org/chain/534352
             return (ContractsAddress.ScrollWETH);
-        } 
+        }
         // else if (Blockchain == 0x44d) {
         //     // Polygon zkEVM https://chainlist.org/chain/1101
         //     return (ContractsAddress.PolygonZkEVMWETH);
         // } else if (Blockchain == 0xa) {
         //     // OP Mainnet https://chainlist.org/chain/10
         //     return (ContractsAddress.OptimismWETH);
-        // } 
+        // }
         else if (Blockchain == 0x66eee) {
             // Arbitrum One https://chainlist.org/chain/42161
             return (ContractsAddress.ArbitrumOneWETH);
-        } 
+        }
         // else if (Blockchain == 0xa4ba) {
         //     // Arbitrum Nova https://chainlist.org/chain/42170
         //     return (ContractsAddress.ArbitrumNovaWETH);
         // }else if (Blockchain == 0x144){
         //     //ZkSync Mainnet https://chainlist.org/chain/324
         //     return (ContractsAddress.ZkSyncWETH);
-        else if (Blockchain == 0x1388){
+        else if (Blockchain == 0x1388) {
             //Mantle https://chainlist.org/chain/5000
             revert MantleNotWETH();
-        } else if(Blockchain == 0xa9){
+        } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
             revert MantaNotWETH();
-        }
-        else {
+        } else {
             revert ErrorBlockChain();
         }
     }
@@ -383,7 +384,10 @@ abstract contract TokenBridgeBase is
             if (address(this).balance < _amount) {
                 revert NotEnoughETH();
             }
-            payable(to).transfer(_amount);
+            (bool _ret, ) = payable(to).call{value: _amount}("");
+            if (!_ret) {
+                revert TransferETHFailed();
+            }
         } else {
             if (IERC20(_token).balanceOf(address(this)) < _amount) {
                 revert NotEnoughToken(_token);
@@ -420,8 +424,10 @@ abstract contract TokenBridgeBase is
         PerFee = _PerFee;
     }
 
-    function UpdateFundingPoolBalance(address token, uint256 amount) external onlyRole(ReLayer) {
+    function UpdateFundingPoolBalance(
+        address token,
+        uint256 amount
+    ) external onlyRole(ReLayer) {
         FundingPoolBalance[token] = amount;
     }
-    
 }

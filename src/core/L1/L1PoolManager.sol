@@ -85,10 +85,13 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 BalanceAfter = IERC20(_token).balanceOf(address(this));
         _amount = BalanceAfter - BalanceBefore;
 
-        if (Pools[address(ContractsAddress.ETHAddress)].length == 0) {
+        if (Pools[_token].length == 0) {
             revert NewPoolIsNotCreate(1);
         }
         uint256 PoolIndex = Pools[_token].length - 1;
+        if (Pools[_token][PoolIndex].IsCompleted) {
+            revert PoolIsCompleted(PoolIndex);
+        }
         if (Pools[_token][PoolIndex].startTimestamp > block.timestamp) {
             Users[msg.sender].push(
                 User({
@@ -127,6 +130,11 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 PoolIndex = Pools[address(ContractsAddress.ETHAddress)].length -
             1;
         if (
+            Pools[address(ContractsAddress.ETHAddress)][PoolIndex].IsCompleted
+        ) {
+            revert PoolIsCompleted(PoolIndex);
+        }
+        if (
             Pools[address(ContractsAddress.ETHAddress)][PoolIndex]
                 .startTimestamp > block.timestamp
         ) {
@@ -161,7 +169,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             amount
         );
 
-        if (Pools[address(ContractsAddress.ETHAddress)].length == 0) {
+        if (Pools[address(ContractsAddress.WETH)].length == 0) {
             revert NewPoolIsNotCreate(1);
         }
         uint256 PoolIndex = Pools[address(ContractsAddress.WETH)].length - 1;

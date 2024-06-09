@@ -741,8 +741,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         address _token,
         uint256 _amount
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (_amount < 0) {
-            revert LessThanZero(_amount);
+        if (_amount == 0) {
+            revert Zero(_amount);
         }
         MinStakeAmount[_token] = _amount;
         emit SetMinStakeAmountEvent(_token, _amount);

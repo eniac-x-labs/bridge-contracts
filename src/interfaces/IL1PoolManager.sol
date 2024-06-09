@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.8.20;
 import {IDETH} from "./IDETH.sol";
+
 interface IL1PoolManager {
     //    enum status {Active, Pending, };
     struct Pool {
@@ -30,17 +31,25 @@ interface IL1PoolManager {
         address _token,
         uint256 _amount
     ) external payable;
+
     function DepositAndStakingERC20(address _token, uint256 _amount) external;
+
     function DepositAndStakingETH() external payable;
+
     function DepositAndStakingWETH(uint256 amount) external;
+
     function ClaimAllReward() external;
+
     function CompletePoolAndNew(Pool[] memory CompletePools) external payable;
+
     function setMinStakeAmount(address _token, uint256 _amount) external;
+
     function setSupportToken(
         address _token,
         bool _isSupport,
         uint32 startTimes
     ) external;
+
     function TransferAssertToBridge(
         uint256 Blockchain,
         address _token,
@@ -57,7 +66,11 @@ interface IL1PoolManager {
     event StakingETHEvent(address indexed user, uint256 amount);
     event StakingWETHEvent(address indexed user, uint256 amount);
 
-    event BridgeFinalizeETHForStakingEvent(uint256 amount, address stakingManager, IDETH.BatchMint[]  batcher);
+    event BridgeFinalizeETHForStakingEvent(
+        uint256 amount,
+        address stakingManager,
+        IDETH.BatchMint[] batcher
+    );
 
     event ClaimEvent(
         address indexed user,
@@ -100,6 +113,7 @@ interface IL1PoolManager {
     error PoolIsCompleted(uint256 poolIndex);
     error AlreadyClaimed();
     error LessThanZero(uint256 amount);
+    error Zero(uint256 amount);
     error TokenIsAlreadySupported(address token, bool isSupported);
 
     error OutOfRange(uint256 PoolId, uint256 PoolLength);

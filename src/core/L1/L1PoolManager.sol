@@ -278,8 +278,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (Pools[_token].length == 0) {
             revert NewPoolIsNotCreate(0);
         }
-        for (int256 i = 0; uint256(i) < Users[_user].length; i++) {
-            uint256 index = uint256(i);
+        for (uint256 index = 0; index < Users[_user].length; index++) {
             if (Users[_user][index].token == _token) {
                 if (Users[_user][index].isWithdrawed) {
                     continue;

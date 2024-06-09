@@ -261,16 +261,15 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             if (Users[_user].length > 0) {
                 Users[_user][index] = Users[_user][Users[_user].length - 1];
                 Users[_user].pop();
-
-                emit Withdraw(
-                    _user,
-                    startPoolId,
-                    EndPoolId,
-                    _token,
-                    Amount - Reward,
-                    Reward
-                );
             }
+            emit Withdraw(
+                _user,
+                startPoolId,
+                EndPoolId,
+                _token,
+                Amount - Reward,
+                Reward
+            );
         } else {
             Users[_user][index].StartPoolId = EndPoolId;
             SendAssertToUser(_token, _user, Reward);
@@ -324,8 +323,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                             Users[_user].length - 1
                         ];
                         Users[_user].pop();
-                        i--;
-                        emit Withdraw(
+                        index--;
+                        
+                    }
+                    emit Withdraw(
                             _user,
                             startPoolId,
                             EndPoolId,
@@ -333,7 +334,6 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                             Amount - Reward,
                             Reward
                         );
-                    }
                 } else {
                     Users[_user][index].StartPoolId = EndPoolId;
                     SendAssertToUser(_token, _user, Reward);

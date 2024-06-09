@@ -25,7 +25,8 @@ contract MessageManager is
     function initialize(address _poolManagerAddress) public initializer {
         poolManagerAddress = _poolManagerAddress;
         nextMessageNumber = 1;
-
+        __AccessControl_init();
+        __ReentrancyGuard_init();
     }
 
     modifier onlyTokenBridge() {

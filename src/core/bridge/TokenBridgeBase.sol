@@ -122,6 +122,8 @@ abstract contract TokenBridgeBase is
 
     error MantaNotWETH();
 
+    error TransferETHFailed();
+
     function __TokenBridge_init(
         address _MultisigWallet,
         address _messageManager
@@ -240,12 +242,7 @@ abstract contract TokenBridgeBase is
         uint256 shares
     ) external returns (bool) {
         bytes32 stakingMessageHash = keccak256(
-            abi.encode(
-                from,
-                to,
-                shares,
-                stakingMessageNumber
-            )
+            abi.encode(from, to, shares, stakingMessageNumber)
         );
         emit InitiateStakingMessage(
             from,
@@ -376,20 +373,24 @@ abstract contract TokenBridgeBase is
         uint256 gasLimit
     ) external returns (bool) {
         bytes32 stakingMessageHash = keccak256(
-            abi.encode(
+            abi.encode(from, to, shares, stakeMessageNonce)
+        );
+        bool success = SafeCall.callWithMinGas(
+            shareAddress,
+            gasLimit,
+            0,
+            abi.encodeWithSignature(
+                "TransferShareTo(address,address,uint256, uint256)",
                 from,
                 to,
                 shares,
                 stakeMessageNonce
             )
         );
-        bool success = SafeCall.callWithMinGas(
-            shareAddress,
-            gasLimit,
-            0,
-            abi.encodeWithSignature("TransferShareTo(address,address,uint256, uint256)", from, to, shares, stakeMessageNonce)
+        require(
+            success,
+            "TokenBridge.BridgeFinalizeStakingMessage: call failed"
         );
-        require(success, "TokenBridge.BridgeFinalizeStakingMessage: call failed");
         emit FinalizeStakingMessage(
             from,
             to,
@@ -398,7 +399,7 @@ abstract contract TokenBridgeBase is
             stakeMessageNonce,
             stakingMessageHash
         );
-       return true;
+        return true;
     }
 
     function IsSupportChainId(uint256 chainId) public view returns (bool) {
@@ -422,20 +423,19 @@ abstract contract TokenBridgeBase is
         } else if (Blockchain == 0xa4ba) {
             // Arbitrum Nova https://chainlist.org/chain/42170
             return (ContractsAddress.ArbitrumNovaWETH);
-        }else if (Blockchain == 0x144){
+        } else if (Blockchain == 0x144) {
             //ZkSync Mainnet https://chainlist.org/chain/324
             return (ContractsAddress.ZkSyncWETH);
-        }else if (Blockchain == 0x1388){
+        } else if (Blockchain == 0x1388) {
             //Mantle https://chainlist.org/chain/5000
             revert MantleNotWETH();
-        } else if(Blockchain == 0xa9){
+        } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
             revert MantaNotWETH();
-        }else if (Blockchain == 0x2105) {
+        } else if (Blockchain == 0x2105) {
             // basechain https://chainlist.org/chain/2105
             return (ContractsAddress.BaseWETH);
-        }
-        else {
+        } else {
             revert ErrorBlockChain();
         }
     }
@@ -461,7 +461,10 @@ abstract contract TokenBridgeBase is
             if (address(this).balance < _amount) {
                 revert NotEnoughETH();
             }
-            payable(to).transfer(_amount);
+            (bool _ret, ) = payable(to).call{value: _amount}("");
+            if (!_ret) {
+                revert TransferETHFailed();
+            }
         } else {
             if (IERC20(_token).balanceOf(address(this)) < _amount) {
                 revert NotEnoughToken(_token);
@@ -498,8 +501,10 @@ abstract contract TokenBridgeBase is
         PerFee = _PerFee;
     }
 
-    function UpdateFundingPoolBalance(address token, uint256 amount) external onlyRole(ReLayer) {
+    function UpdateFundingPoolBalance(
+        address token,
+        uint256 amount
+    ) external onlyRole(ReLayer) {
         FundingPoolBalance[token] = amount;
     }
-
 }

@@ -160,7 +160,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 amount
     ) public override nonReentrant whenNotPaused {
         if (amount < MinStakeAmount[address(ContractsAddress.WETH)]) {
-            revert LessThanMinStakeAmount(MinStakeAmount[address(0)], amount);
+            revert LessThanMinStakeAmount(MinStakeAmount[address(ContractsAddress.WETH)], amount);
         }
 
         IWETH(ContractsAddress.WETH).transferFrom(

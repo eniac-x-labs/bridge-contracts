@@ -89,9 +89,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert NewPoolIsNotCreate(1);
         }
         uint256 PoolIndex = Pools[_token].length - 1;
+        /*
         if (Pools[_token][PoolIndex].IsCompleted) {
             revert PoolIsCompleted(PoolIndex);
-        }
+        }*/
         if (Pools[_token][PoolIndex].startTimestamp > block.timestamp) {
             Users[msg.sender].push(
                 User({
@@ -104,7 +105,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             Pools[_token][PoolIndex].TotalAmount += _amount;
         } else {
-            revert NewPoolIsNotCreate(PoolIndex+1);
+            revert NewPoolIsNotCreate(PoolIndex + 1);
         }
         FundingPoolBalance[_token] += _amount;
         emit StarkingERC20Event(msg.sender, _token, _amount);
@@ -129,11 +130,11 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
         uint256 PoolIndex = Pools[address(ContractsAddress.ETHAddress)].length -
             1;
-        if (
+        /*if (
             Pools[address(ContractsAddress.ETHAddress)][PoolIndex].IsCompleted
         ) {
             revert PoolIsCompleted(PoolIndex);
-        }
+        }*/
         if (
             Pools[address(ContractsAddress.ETHAddress)][PoolIndex]
                 .startTimestamp > block.timestamp
@@ -160,7 +161,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 amount
     ) public override nonReentrant whenNotPaused {
         if (amount < MinStakeAmount[address(ContractsAddress.WETH)]) {
-            revert LessThanMinStakeAmount(MinStakeAmount[address(ContractsAddress.WETH)], amount);
+            revert LessThanMinStakeAmount(
+                MinStakeAmount[address(ContractsAddress.WETH)],
+                amount
+            );
         }
 
         IWETH(ContractsAddress.WETH).transferFrom(
@@ -173,9 +177,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert NewPoolIsNotCreate(1);
         }
         uint256 PoolIndex = Pools[address(ContractsAddress.WETH)].length - 1;
-        if (Pools[address(ContractsAddress.WETH)][PoolIndex].IsCompleted) {
+        /*if (Pools[address(ContractsAddress.WETH)][PoolIndex].IsCompleted) {
             revert PoolIsCompleted(PoolIndex);
-        }
+        }*/
         if (
             Pools[address(ContractsAddress.WETH)][PoolIndex].startTimestamp >
             block.timestamp
@@ -235,17 +239,14 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 Reward = 0;
         uint256 Amount = Users[_user][index].Amount;
         uint256 startPoolId = Users[_user][index].StartPoolId;
-        if (startPoolId > EndPoolId) {
+        /*if (startPoolId > EndPoolId) {
             revert NoReward();
-        }
+        }*/
         if (Users[_user][index].isWithdrawed) {
             revert NoReward();
         }
 
         for (uint256 j = startPoolId; j < EndPoolId; j++) {
-            if (j > Pools[_token].length - 1) {
-                revert NewPoolIsNotCreate(j);
-            }
             uint256 _Reward = (Amount * Pools[_token][j].TotalFee * 1e18) /
                 Pools[_token][j].TotalAmount;
             Reward += _Reward / 1e18;
@@ -296,14 +297,11 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 uint256 Reward = 0;
                 uint256 Amount = Users[_user][index].Amount;
                 uint256 startPoolId = Users[_user][index].StartPoolId;
-                if (startPoolId > EndPoolId) {
+                /*if (startPoolId > EndPoolId) {
                     revert NoReward();
-                }
+                }*/
 
                 for (uint256 j = startPoolId; j < EndPoolId; j++) {
-                    if (j > Pools[_token].length - 1) {
-                        revert NewPoolIsNotCreate(j);
-                    }
                     uint256 _Reward = (Amount *
                         Pools[_token][j].TotalFee *
                         1e18) / Pools[_token][j].TotalAmount;
@@ -324,16 +322,15 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                         ];
                         Users[_user].pop();
                         index--;
-                        
                     }
                     emit Withdraw(
-                            _user,
-                            startPoolId,
-                            EndPoolId,
-                            _token,
-                            Amount - Reward,
-                            Reward
-                        );
+                        _user,
+                        startPoolId,
+                        EndPoolId,
+                        _token,
+                        Amount - Reward,
+                        Reward
+                    );
                 } else {
                     Users[_user][index].StartPoolId = EndPoolId;
                     SendAssertToUser(_token, _user, Reward);

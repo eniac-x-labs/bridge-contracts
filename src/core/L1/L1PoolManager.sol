@@ -104,7 +104,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             Pools[_token][PoolIndex].TotalAmount += _amount;
         } else {
-            revert NewPoolIsNotCreate(PoolIndex);
+            revert NewPoolIsNotCreate(PoolIndex+1);
         }
         FundingPoolBalance[_token] += _amount;
         emit StarkingERC20Event(msg.sender, _token, _amount);

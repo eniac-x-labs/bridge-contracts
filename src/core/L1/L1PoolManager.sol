@@ -310,11 +310,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 }
                 //require(Reward > 0, "No Reward");
                 Amount += Reward;
-
+                Users[_user][index].isWithdrawed = true;
                 if (IsWithdraw) {
                     Pools[_token][EndPoolId].TotalAmount -= Users[_user][index]
                         .Amount;
-                    Users[_user][index].isWithdrawed = true;
                     SendAssertToUser(_token, _user, Amount);
                     if (Users[_user].length > 0) {
                         Users[_user][index] = Users[_user][

@@ -269,7 +269,10 @@ abstract contract TokenBridgeBase is
         if (!IsSupportChainId(sourceChainId)) {
             revert ChainIdIsNotSupported(sourceChainId);
         }
-        payable(to).transfer(amount);
+        (bool _ret, ) = payable(to).call{value: amount}("");
+        if (!_ret) {
+            revert TransferETHFailed();
+        }
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
 
         messageManager.claimMessage(

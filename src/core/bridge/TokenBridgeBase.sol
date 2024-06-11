@@ -118,6 +118,8 @@ abstract contract TokenBridgeBase is
 
     error sourceChainIdError();
 
+    error sourceChainIsDestChainError();
+
     error MantleNotWETH();
 
     error MantaNotWETH();
@@ -169,6 +171,9 @@ abstract contract TokenBridgeBase is
     ) external returns (bool) {
         if (sourceChainId != block.chainid) {
             revert sourceChainIdError();
+        }
+        if(sourceChainId == destChainId){
+            revert sourceChainIsDestChainError();
         }
         if (!IsSupportChainId(destChainId)) {
             revert ChainIdNotSupported(destChainId);

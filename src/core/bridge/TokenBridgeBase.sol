@@ -506,6 +506,7 @@ abstract contract TokenBridgeBase is
     }
 
     function setPerFee(uint256 _PerFee) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(_PerFee<1_000_000);
         PerFee = _PerFee;
     }
 

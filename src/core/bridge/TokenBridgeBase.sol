@@ -464,6 +464,7 @@ abstract contract TokenBridgeBase is
         if (!IsSupportToken[_token]) {
             revert TokenIsNotSupported(_token);
         }
+        require((FundingPoolBalance[_token]>=_amount),"Not enough balance");
         FundingPoolBalance[_token] -= _amount;
         if (_token == address(ContractsAddress.ETHAddress)) {
             if (address(this).balance < _amount) {

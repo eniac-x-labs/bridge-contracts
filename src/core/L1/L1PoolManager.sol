@@ -49,9 +49,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         periodTime = 21 days;
     }
 
-//    fallback() external payable {
-//        DepositAndStaking(ContractsAddress.ETHAddress, msg.value);
-//    }
+    //    fallback() external payable {
+    //        DepositAndStaking(ContractsAddress.ETHAddress, msg.value);
+    //    }
 
     /*************************
      ***** User function *****
@@ -80,9 +80,19 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (_amount < MinStakeAmount[_token]) {
             revert LessThanMinStakeAmount(MinStakeAmount[_token], _amount);
         }
-
+        uint256 BalanceBefore = IERC20(_token).balanceOf(address(this));
         IERC20(_token).safeTransferFrom(msg.sender, address(this), _amount);
+        uint256 BalanceAfter = IERC20(_token).balanceOf(address(this));
+        _amount = BalanceAfter - BalanceBefore;
+
+        if (Pools[_token].length == 0) {
+            revert NewPoolIsNotCreate(1);
+        }
         uint256 PoolIndex = Pools[_token].length - 1;
+        /*
+        if (Pools[_token][PoolIndex].IsCompleted) {
+            revert PoolIsCompleted(PoolIndex);
+        }*/
         if (Pools[_token][PoolIndex].startTimestamp > block.timestamp) {
             Users[msg.sender].push(
                 User({
@@ -95,7 +105,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             Pools[_token][PoolIndex].TotalAmount += _amount;
         } else {
-            revert NewPoolIsNotCreate(PoolIndex);
+            revert NewPoolIsNotCreate(PoolIndex + 1);
         }
         FundingPoolBalance[_token] += _amount;
         emit StarkingERC20Event(msg.sender, _token, _amount);
@@ -114,11 +124,17 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 msg.value
             );
         }
-        uint256 PoolIndex = Pools[address(ContractsAddress.ETHAddress)].length -
-            1;
+
         if (Pools[address(ContractsAddress.ETHAddress)].length == 0) {
             revert NewPoolIsNotCreate(1);
         }
+        uint256 PoolIndex = Pools[address(ContractsAddress.ETHAddress)].length -
+            1;
+        /*if (
+            Pools[address(ContractsAddress.ETHAddress)][PoolIndex].IsCompleted
+        ) {
+            revert PoolIsCompleted(PoolIndex);
+        }*/
         if (
             Pools[address(ContractsAddress.ETHAddress)][PoolIndex]
                 .startTimestamp > block.timestamp
@@ -145,7 +161,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 amount
     ) public override nonReentrant whenNotPaused {
         if (amount < MinStakeAmount[address(ContractsAddress.WETH)]) {
-            revert LessThanMinStakeAmount(MinStakeAmount[address(0)], amount);
+            revert LessThanMinStakeAmount(
+                MinStakeAmount[address(ContractsAddress.WETH)],
+                amount
+            );
         }
 
         IWETH(ContractsAddress.WETH).transferFrom(
@@ -154,10 +173,13 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             amount
         );
 
-        uint256 PoolIndex = Pools[address(ContractsAddress.WETH)].length - 1;
-        if (Pools[address(ContractsAddress.WETH)][PoolIndex].IsCompleted) {
-            revert PoolIsCompleted(PoolIndex);
+        if (Pools[address(ContractsAddress.WETH)].length == 0) {
+            revert NewPoolIsNotCreate(1);
         }
+        uint256 PoolIndex = Pools[address(ContractsAddress.WETH)].length - 1;
+        /*if (Pools[address(ContractsAddress.WETH)][PoolIndex].IsCompleted) {
+            revert PoolIsCompleted(PoolIndex);
+        }*/
         if (
             Pools[address(ContractsAddress.WETH)][PoolIndex].startTimestamp >
             block.timestamp
@@ -173,6 +195,8 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             );
             Pools[address(ContractsAddress.WETH)][PoolIndex]
                 .TotalAmount += amount;
+        } else {
+            revert NewPoolIsNotCreate(PoolIndex + 1);
         }
         FundingPoolBalance[ContractsAddress.WETH] += amount;
         emit StakingWETHEvent(msg.sender, amount);
@@ -211,50 +235,47 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
     ) internal {
         address _token = Users[_user][index].token;
         uint256 EndPoolId = Pools[_token].length - 1;
-        Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
 
         uint256 Reward = 0;
         uint256 Amount = Users[_user][index].Amount;
         uint256 startPoolId = Users[_user][index].StartPoolId;
-        if (startPoolId > EndPoolId) {
+        /*if (startPoolId > EndPoolId) {
+            revert NoReward();
+        }*/
+        if (Users[_user][index].isWithdrawed) {
             revert NoReward();
         }
 
         for (uint256 j = startPoolId; j < EndPoolId; j++) {
-            if (j > Pools[_token].length - 1) {
-                revert NewPoolIsNotCreate(j);
-            }
-            uint256 _Reward = (Amount * Pools[_token][j].TotalFee) /
+            uint256 _Reward = (Amount * Pools[_token][j].TotalFee * 1e18) /
                 Pools[_token][j].TotalAmount;
-            Reward += _Reward;
+            Reward += _Reward / 1e18;
             Pools[_token][j].TotalFeeClaimed += _Reward;
         }
-        require(Reward > 0, "No Reward");
+        //require(Reward > 0, "No Reward");
         Amount += Reward;
         Users[_user][index].isWithdrawed = true;
         if (IsWithdraw) {
-            Users[_user][index].isWithdrawed = true;
+            Pools[_token][EndPoolId].TotalAmount -= Users[_user][index].Amount;
+            //Users[_user][index].isWithdrawed = true;
             SendAssertToUser(_token, _user, Amount);
-            if (Users[_user].length > 1) {
+            if (Users[_user].length > 0) {
                 Users[_user][index] = Users[_user][Users[_user].length - 1];
                 Users[_user].pop();
-
-                emit Withdraw(
-                    _user,
-                    startPoolId,
-                    EndPoolId,
-                    _token,
-                    Amount - Reward,
-                    Reward
-                );
-            } 
             }
-            else {
-                Users[_user][index].StartPoolId = EndPoolId;
-                SendAssertToUser(_token, _user, Reward);
-                emit ClaimReward(_user, startPoolId, EndPoolId, _token, Reward);
-            }
-        
+            emit Withdraw(
+                _user,
+                startPoolId,
+                EndPoolId,
+                _token,
+                Amount - Reward,
+                Reward
+            );
+        } else {
+            Users[_user][index].StartPoolId = EndPoolId;
+            SendAssertToUser(_token, _user, Reward);
+            emit ClaimReward(_user, startPoolId, EndPoolId, _token, Reward);
+        }
     }
 
     function WithdrawOrClaimBySimpleAsset(
@@ -265,67 +286,61 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         if (Pools[_token].length == 0) {
             revert NewPoolIsNotCreate(0);
         }
-        for (int256 i = 0; uint256(i) < Users[_user].length; i++) {
-            uint256 index = uint256(i);
+        for (uint256 index = 0; index < Users[_user].length; index++) {
             if (Users[_user][index].token == _token) {
                 if (Users[_user][index].isWithdrawed) {
                     continue;
                 }
 
                 uint256 EndPoolId = Pools[_token].length - 1;
-                Pools[_token][EndPoolId].TotalAmount -= Users[_user][index]
-                    .Amount;
 
                 uint256 Reward = 0;
                 uint256 Amount = Users[_user][index].Amount;
                 uint256 startPoolId = Users[_user][index].StartPoolId;
-                if (startPoolId > EndPoolId) {
+                /*if (startPoolId > EndPoolId) {
                     revert NoReward();
-                }
+                }*/
 
                 for (uint256 j = startPoolId; j < EndPoolId; j++) {
-                    if (j > Pools[_token].length - 1) {
-                        revert NewPoolIsNotCreate(j);
-                    }
-                    uint256 _Reward = (Amount * Pools[_token][j].TotalFee) /
-                        Pools[_token][j].TotalAmount;
-                    Reward += _Reward;
+                    uint256 _Reward = (Amount *
+                        Pools[_token][j].TotalFee *
+                        1e18) / Pools[_token][j].TotalAmount;
+                    Reward += _Reward / 1e18;
                     Pools[_token][j].TotalFeeClaimed += _Reward;
                 }
-                require(Reward > 0, "No Reward");
+                //require(Reward > 0, "No Reward");
                 Amount += Reward;
-
+                Users[_user][index].isWithdrawed = true;
                 if (IsWithdraw) {
-                    Users[_user][index].isWithdrawed = true;
+                    Pools[_token][EndPoolId].TotalAmount -= Users[_user][index]
+                        .Amount;
                     SendAssertToUser(_token, _user, Amount);
-                    if (Users[_user].length > 1) {
+                    if (Users[_user].length > 0) {
                         Users[_user][index] = Users[_user][
                             Users[_user].length - 1
                         ];
                         Users[_user].pop();
-                        i--;
-                        emit Withdraw(
-                            _user,
-                            startPoolId,
-                            EndPoolId,
-                            _token,
-                            Amount - Reward,
-                            Reward
-                        );
-                    } 
+                        index--;
                     }
-                    else {
-                        Users[_user][index].StartPoolId = EndPoolId;
-                        SendAssertToUser(_token, _user, Reward);
-                        emit ClaimReward(
-                            _user,
-                            startPoolId,
-                            EndPoolId,
-                            _token,
-                            Reward
-                        );
-                    }
-                
+                    emit Withdraw(
+                        _user,
+                        startPoolId,
+                        EndPoolId,
+                        _token,
+                        Amount - Reward,
+                        Reward
+                    );
+                } else {
+                    Users[_user][index].StartPoolId = EndPoolId;
+                    SendAssertToUser(_token, _user, Reward);
+                    emit ClaimReward(
+                        _user,
+                        startPoolId,
+                        EndPoolId,
+                        _token,
+                        Reward
+                    );
+                }
             }
         }
     }
@@ -340,9 +355,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         for (uint256 i = 0; i < CompletePools.length; i++) {
             address _token = CompletePools[i].token;
             uint PoolIndex = Pools[_token].length - 1;
-            Pools[_token][PoolIndex-1].IsCompleted = true;
-            if (PoolIndex-1 != 0){
-                Pools[_token][PoolIndex-1].TotalFee = FeePoolValue[_token];
+            Pools[_token][PoolIndex - 1].IsCompleted = true;
+            if (PoolIndex - 1 != 0) {
+                Pools[_token][PoolIndex - 1].TotalFee = FeePoolValue[_token];
                 FeePoolValue[_token] = 0;
             }
             uint32 startTimes = Pools[_token][PoolIndex].endTimestamp;
@@ -365,7 +380,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 amount,
         address stakingManager,
         IDETH.BatchMint[] calldata batcher
-    ) external onlyRole(ReLayer){
+    ) external onlyRole(ReLayer) {
         require(amount / 32e18 > 0, "Eth not enough to stake");
         IStakingManager(stakingManager).stake{value: amount}(amount, batcher);
         FundingPoolBalance[ContractsAddress.ETHAddress] -= amount;
@@ -408,20 +423,19 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             //https://chainlist.org/chain/324
             //ZkSync Mainnet
             TransferAssertToZkSyncBridge(_token, _to, _amount);
-        } else if (Blockchain == 0x1388){
+        } else if (Blockchain == 0x1388) {
             //Mantle Mainnet https://chainlist.org/chain/5000
             TransferAssertToMantleBridge(_token, _to, _amount);
-        } else if (Blockchain == 0xa9){
+        } else if (Blockchain == 0xa9) {
             //Manta Pacific Mainnet https://chainlist.org/chain/169
             TransferAssertToMantaBridge(_token, _to, _amount);
-        } else if (Blockchain == 0xa70e){
+        } else if (Blockchain == 0xa70e) {
             //ZKFair Mainnet https://chainlist.org/chain/42766
             TransferAssertToZKFairBridge(_token, _to, _amount);
         } else if (Blockchain == 0x2105) {
             //Base https://chainlist.org/chain/8453
             TransferAssertToBaseBridge(_token, _to, _amount);
-        }
-        else {
+        } else {
             revert ErrorBlockChain();
         }
         FundingPoolBalance[_token] -= _amount;
@@ -591,22 +605,19 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge)
-                .bridgeAsset{value: _amount}(
+            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge).bridgeAsset{
+                value: _amount
+            }(0x1, _to, _amount, address(0), false, "");
+        } else {
+            IERC20(_token).approve(ContractsAddress.ZKFairL1Bridge, _amount);
+            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge).bridgeAsset(
                 0x1,
                 _to,
                 _amount,
-                address(0),
+                _token,
                 false,
                 ""
             );
-        } else {
-            IERC20(_token).approve(
-                ContractsAddress.ZKFairL1Bridge,
-                _amount
-            );
-            IPolygonZkEVML1Bridge(ContractsAddress.ZKFairL1Bridge)
-                .bridgeAsset(0x1, _to, _amount, _token, false, "");
         }
     }
 
@@ -642,23 +653,20 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IMantaL1Bridge(ContractsAddress.MantaL1Bridge)
-                .depositETHTo{value: _amount}(_to, 0, "");
+            IMantaL1Bridge(ContractsAddress.MantaL1Bridge).depositETHTo{
+                value: _amount
+            }(_to, 0, "");
         } else {
             address l2token = getMantaL2TokenAddress(_token);
-            IERC20(_token).approve(
-                ContractsAddress.MantaL1Bridge,
-                _amount
+            IERC20(_token).approve(ContractsAddress.MantaL1Bridge, _amount);
+            IMantaL1Bridge(ContractsAddress.MantaL1Bridge).depositERC20To(
+                _token,
+                l2token,
+                _to,
+                _amount,
+                uint32(gasleft()),
+                ""
             );
-            IMantaL1Bridge(ContractsAddress.MantaL1Bridge)
-                .depositERC20To(
-                    _token,
-                    l2token,
-                    _to,
-                    _amount,
-                    uint32(gasleft()),
-                    ""
-                );
         }
     }
 
@@ -668,18 +676,13 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IZkSyncBridge(ContractsAddress.ZkSyncL1Bridge).deposit{value: _amount}(
-                _to,
-                address(0),
-                _amount,
-                0,
-                0,
-                address(this)
-            );
+            IZkSyncBridge(ContractsAddress.ZkSyncL1Bridge).deposit{
+                value: _amount
+            }(_to, address(0), _amount, 0, 0, address(this));
         } else {
             IERC20(_token).approve(ContractsAddress.ZkSyncL1Bridge, _amount);
             IZkSyncBridge(ContractsAddress.ZkSyncL1Bridge).deposit(
-                 _to,
+                _to,
                 _token,
                 _amount,
                 0,
@@ -687,7 +690,6 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
                 address(this)
             );
         }
-
     }
 
     function TransferAssertToMantleBridge(
@@ -696,11 +698,9 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         uint256 _amount
     ) internal {
         if (_token == address(ContractsAddress.ETHAddress)) {
-            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo(
-                _to,
-                0,
-                ""
-            );
+            IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositETHTo{
+                value: _amount
+            }(_to, 0, "");
         } else {
             IERC20(_token).approve(ContractsAddress.MantleL1Bridge, _amount);
             IMantleL1Bridge(ContractsAddress.MantleL1Bridge).depositERC20To(
@@ -740,13 +740,12 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
         }
     }
 
-
     function setMinStakeAmount(
         address _token,
         uint256 _amount
     ) external override onlyRole(DEFAULT_ADMIN_ROLE) {
-        if (_amount < 0) {
-            revert LessThanZero(_amount);
+        if (_amount == 0) {
+            revert Zero(_amount);
         }
         MinStakeAmount[_token] = _amount;
         emit SetMinStakeAmountEvent(_token, _amount);
@@ -840,6 +839,7 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             revert TokenIsNotSupported(_token);
         }
     }
+
     //https://github.com/mantlenetworkio/mantle-token-lists/tree/main/data
     function getMantleL2TokenAddress(
         address _token
@@ -848,11 +848,10 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
         } else if (_token == ContractsAddress.USDC) {
             return 0x201EBa5CC46D216Ce6DC03F6a759e8E766e956aE;
-        }  else {
+        } else {
             revert TokenIsNotSupported(_token);
         }
-
-}
+    }
 
     //https://github.com/Manta-Network/manta-pacific-token-list
     function getMantaL2TokenAddress(
@@ -862,67 +861,60 @@ contract L1PoolManager is IL1PoolManager, PausableUpgradeable, TokenBridgeBase {
             return 0xf417F5A458eC102B90352F697D6e2Ac3A3d2851f;
         } else if (_token == ContractsAddress.USDC) {
             return 0xb73603C5d87fA094B7314C74ACE2e64D165016fb;
-        }  else if (_token == ContractsAddress.DAI){
+        } else if (_token == ContractsAddress.DAI) {
             return 0x1c466b9371f8aBA0D7c458bE10a62192Fcb8Aa71;
-        }else {
+        } else {
             revert TokenIsNotSupported(_token);
         }
     }
 
-    function getPrincipal() public view returns (KeyValuePair[] memory){
+    function getPrincipal() public view returns (KeyValuePair[] memory) {
         KeyValuePair[] memory result = new KeyValuePair[](SupportTokens.length);
         for (uint256 i = 0; i < SupportTokens.length; i++) {
             uint256 Amount = 0;
             for (uint256 j = 0; j < Users[msg.sender].length; j++) {
-            if (Users[msg.sender][j].token == SupportTokens[i]) {
-                if (Users[msg.sender][j].isWithdrawed) {
-                    continue;
+                if (Users[msg.sender][j].token == SupportTokens[i]) {
+                    if (Users[msg.sender][j].isWithdrawed) {
+                        continue;
+                    }
+                    Amount += Users[msg.sender][j].Amount;
                 }
-                Amount += Users[msg.sender][j].Amount;               
             }
+            result[i] = KeyValuePair({key: SupportTokens[i], value: Amount});
         }
-        result[i] = KeyValuePair({
-                key: SupportTokens[i],
-                value: Amount
-            });
-     }
-         return result;
+        return result;
     }
 
-    function getReward() public view returns (KeyValuePair[] memory){
+    function getReward() public view returns (KeyValuePair[] memory) {
         KeyValuePair[] memory result = new KeyValuePair[](SupportTokens.length);
         for (uint256 i = 0; i < SupportTokens.length; i++) {
             uint256 Reward = 0;
             for (uint256 j = 0; j < Users[msg.sender].length; j++) {
-            if (Users[msg.sender][j].token == SupportTokens[i]) {
-                if (Users[msg.sender][j].isWithdrawed) {
-                    continue;
-                }
-                uint256 EndPoolId = Pools[SupportTokens[i]].length - 1;
-                
-                uint256 Amount = Users[msg.sender][j].Amount;
-                uint256 startPoolId = Users[msg.sender][j].StartPoolId;
-                if (startPoolId > EndPoolId) {
-                    continue;
-                }
-
-                for (uint256 k = startPoolId; k < EndPoolId; k++) {
-                    if (k > Pools[SupportTokens[i]].length - 1) {
-                        revert NewPoolIsNotCreate(k);
+                if (Users[msg.sender][j].token == SupportTokens[i]) {
+                    if (Users[msg.sender][j].isWithdrawed) {
+                        continue;
                     }
-                    uint256 _Reward = (Amount * Pools[SupportTokens[i]][k].TotalFee) /
-                        Pools[SupportTokens[i]][k].TotalAmount;
-                    Reward += _Reward;
-                }
-           
-            }
+                    uint256 EndPoolId = Pools[SupportTokens[i]].length - 1;
 
+                    uint256 Amount = Users[msg.sender][j].Amount;
+                    uint256 startPoolId = Users[msg.sender][j].StartPoolId;
+                    if (startPoolId > EndPoolId) {
+                        continue;
+                    }
+
+                    for (uint256 k = startPoolId; k < EndPoolId; k++) {
+                        if (k > Pools[SupportTokens[i]].length - 1) {
+                            revert NewPoolIsNotCreate(k);
+                        }
+                        uint256 _Reward = (Amount *
+                            Pools[SupportTokens[i]][k].TotalFee) /
+                            Pools[SupportTokens[i]][k].TotalAmount;
+                        Reward += _Reward;
+                    }
+                }
+            }
+            result[i] = KeyValuePair({key: SupportTokens[i], value: Reward});
         }
-        result[i] = KeyValuePair({
-                key: SupportTokens[i],
-                value: Reward
-            });
-     }
-         return result;
+        return result;
     }
 }

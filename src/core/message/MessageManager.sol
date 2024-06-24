@@ -25,6 +25,8 @@ contract MessageManager is
     function initialize(address _poolManagerAddress) public initializer {
         poolManagerAddress = _poolManagerAddress;
         nextMessageNumber = 1;
+        __AccessControl_init();
+        __ReentrancyGuard_init();
     }
 
     modifier onlyTokenBridge() {
@@ -81,6 +83,7 @@ contract MessageManager is
         bytes32 messageHash = keccak256(
             abi.encode(sourceChainId, destChainId, _to, _fee, _value, _nonce)
         );
+        require(!cliamMessageStatus[messageHash], "Message not found!");
         cliamMessageStatus[messageHash] = true;
         emit MessageClaimed(sourceChainId, destChainId, messageHash);
     }

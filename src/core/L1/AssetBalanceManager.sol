@@ -215,8 +215,8 @@ contract AssetBalanceManager is Initializable, AccessControlUpgradeable, Pausabl
                 ContractsAddress.ScrollL1StandardETHBridge
             ).depositETH{value: _amount + fee}(_to, _amount, 170000);
         } else if (_token == address(ContractsAddress.WETH)) {
-            uint fee = IL1MessageQueue(ContractsAddress.ScrollL1MessageQueue)
-                .estimateCrossDomainMessageFee(20000);
+//            uint fee = IL1MessageQueue(ContractsAddress.ScrollL1MessageQueue)
+//                .estimateCrossDomainMessageFee(20000);
             IERC20(_token).approve(
                 ContractsAddress.ScrollL1StandardWETHBridge,
                 _amount
@@ -225,8 +225,8 @@ contract AssetBalanceManager is Initializable, AccessControlUpgradeable, Pausabl
                 ContractsAddress.ScrollL1StandardWETHBridge
             ).depositERC20(_token, _to, _amount, 20000);
         } else {
-            uint fee = IL1MessageQueue(ContractsAddress.ScrollL1MessageQueue)
-                .estimateCrossDomainMessageFee(20000);
+//            uint fee = IL1MessageQueue(ContractsAddress.ScrollL1MessageQueue)
+//                .estimateCrossDomainMessageFee(20000);
             IERC20(_token).approve(
                 ContractsAddress.ScrollL1StandardWETHBridge,
                 _amount

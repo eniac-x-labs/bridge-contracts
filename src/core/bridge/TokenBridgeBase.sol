@@ -511,7 +511,7 @@ abstract contract TokenBridgeBase is
         PerFee = _PerFee;
     }
 
-    function UpdateFundingPoolBalance(
+    function setFundingPoolBalance(
         address token,
         uint256 amount
     ) external onlyRole(ReLayer) {

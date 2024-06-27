@@ -50,12 +50,14 @@ interface IL1PoolManager {
         uint32 startTimes
     ) external;
 
-    function TransferAssertToBridge(
-        uint256 Blockchain,
-        address _token,
-        address _to,
-        uint256 _amount
+    function updateFundingPoolBalance(
+        address token,
+        uint256 amount
     ) external;
+
+    function fetchFundingPoolBalance(
+        address token
+    ) external view returns(uint256);
 
     // 定义事件
     event StarkingERC20Event(
@@ -80,12 +82,6 @@ interface IL1PoolManager {
         uint256 amount,
         uint256 fee
     );
-    event TransferAssertTo(
-        uint256 Blockchain,
-        address indexed token,
-        address indexed to,
-        uint256 amount
-    );
 
     event ClaimReward(
         address _user,
@@ -94,6 +90,7 @@ interface IL1PoolManager {
         address _token,
         uint Reward
     );
+
     event Withdraw(
         address _user,
         uint256 startPoolId,

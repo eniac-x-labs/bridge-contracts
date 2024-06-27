@@ -6,6 +6,8 @@ import "src/core/L1/L1PoolManager.sol";
 import "src/core/Proxy.sol";
 import "src/core/ProxyTimeLockController.sol";
 import "src/core/message/MessageManager.sol";
+import "src/core/L1/AssetBalanceManager.sol";
+
 
 
 contract l1PoolDeployer is Script {
@@ -13,9 +15,12 @@ contract l1PoolDeployer is Script {
     address ReLayer;
     Proxy proxyL1Pool;
     Proxy proxyMessageManager;
+    Proxy proxyAssetBalanceManager;
+
     ProxyTimeLockController proxyTimeLockController;
     L1PoolManager l1PoolManage;
     MessageManager messageManager;
+    AssetBalanceManager assetBalanceManager;
     address USDT = 0x523C8591Fbe215B5aF0bEad65e65dF783A37BCBC;
     function setUp() public {
         admin = 0x8061C28b479B846872132F593bC7cbC6b6C9D628;
@@ -31,6 +36,7 @@ contract l1PoolDeployer is Script {
 
         l1PoolManage = new L1PoolManager();
         messageManager = new MessageManager();
+        assetBalanceManager = new AssetBalanceManager();
 //        bytes memory messageData = abi.encodeWithSignature("initialize()");
 //
 //        proxyMessageManager = new Proxy(address(messageManager), address(proxyTimeLockController), messageData);
@@ -39,8 +45,11 @@ contract l1PoolDeployer is Script {
 //        proxyL1Pool = new Proxy(address(l1PoolManage), address(proxyTimeLockController), _data);
         proxyL1Pool = new Proxy(address(l1PoolManage), address(admin), "");
         proxyMessageManager = new Proxy(address(messageManager), address(admin), "");
+        proxyAssetBalanceManager = new Proxy(address(assetBalanceManager), address(admin), "");
         MessageManager(address(proxyMessageManager)).initialize(address(proxyL1Pool));
-        L1PoolManager(address(proxyL1Pool)).initialize(address(admin),address(proxyMessageManager));
+        L1PoolManager(address(proxyL1Pool)).initialize(address(admin),address(proxyMessageManager), address(proxyMessageManager));
+        AssetBalanceManager(address(proxyAssetBalanceManager)).initialize(address(proxyL1Pool));
+
 
         L1PoolManager(address(proxyL1Pool)).grantRole(l1PoolManage.ReLayer(), ReLayer);
         uint32 startTime = uint32(block.timestamp - block.timestamp % 86400 + 86400); // tomorrow

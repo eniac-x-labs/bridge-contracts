@@ -67,7 +67,4 @@ contract L1PoolTest is Test {
         vm.startPrank(ReLayer);
         L2PoolManager(address(l2Poolproxy)).WithdrawETHtoL1(address(this), 0.1 ether);
     }
-
-
-
 }

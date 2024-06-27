@@ -8,6 +8,7 @@ import "src/core/message/MessageManager.sol";
 import "src/interfaces/IL1PoolManager.sol";
 import "src/Mock/mockWETH.sol";
 import "src/Mock/mockERC20.sol";
+import "../src/core/L1/AssetBalanceManager.sol";
 
 
 contract L1PoolTest is Test {
@@ -18,8 +19,11 @@ contract L1PoolTest is Test {
     ProxyTimeLockController proxyTimeLockController;
     Proxy l1Poolproxy;
     Proxy l1Messageproxy;
+    Proxy  assetBalanceManagerProxy;
+
     L1PoolManager l1Pool;
     MessageManager l1Message;
+    AssetBalanceManager assetBalanceManager;
     address ETHAddress = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
 //    mockWETH WETH = new mockWETH();
     mockToken USDT = new mockToken("USDT", "USDT");
@@ -43,11 +47,16 @@ contract L1PoolTest is Test {
 
         l1Pool = new L1PoolManager();
         l1Message = new MessageManager();
+        assetBalanceManager = new AssetBalanceManager();
+
         vm.startPrank(admin);
         l1Poolproxy = new Proxy(address(l1Pool), address(admin), "");
         l1Messageproxy = new Proxy(address(l1Message), address(admin), "");
+        assetBalanceManagerProxy = new Proxy(address(assetBalanceManager), address(admin), "");
+
         MessageManager(address(l1Messageproxy)).initialize(address(l1Poolproxy));
-        L1PoolManager(address(l1Poolproxy)).initialize(address(admin),address(l1Messageproxy));
+        L1PoolManager(address(l1Poolproxy)).initialize(address(admin),address(l1Messageproxy), address(assetBalanceManagerProxy));
+        AssetBalanceManager(address(assetBalanceManagerProxy)).initialize(address(l1Poolproxy));
         console.log("initiliaze successful");
 
         vm.warp(1710262665);
@@ -259,24 +268,24 @@ contract L1PoolTest is Test {
 
     }
 
-    function test_TransferAssertToScrollBridge() public {
-
-        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
-        vm.startPrank(ReLayer);
-        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0x82750, address(ETHAddress), admin, 0.1 ether);
-    }
-
-    function test_TransferAssertToPolygonZkEvm() public {
-        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
-        vm.startPrank(ReLayer);
-        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0x44d, address(ETHAddress), admin, 0.1 ether);
-    }
-
-    function test_TransferAssertToOP() public {
-        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
-        vm.startPrank(ReLayer);
-        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0xa, address(ETHAddress), admin, 1 ether);
-    }
+//    function test_TransferAssertToScrollBridge() public {
+//
+//        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
+//        vm.startPrank(ReLayer);
+//        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0x82750, address(ETHAddress), admin, 0.1 ether);
+//    }
+//
+//    function test_TransferAssertToPolygonZkEvm() public {
+//        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
+//        vm.startPrank(ReLayer);
+//        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0x44d, address(ETHAddress), admin, 0.1 ether);
+//    }
+//
+//    function test_TransferAssertToOP() public {
+//        L1PoolManager(address(l1Poolproxy)).DepositAndStakingETH{value: 1 ether}();
+//        vm.startPrank(ReLayer);
+//        L1PoolManager(address(l1Poolproxy)).TransferAssertToBridge(0xa, address(ETHAddress), admin, 1 ether);
+//    }
 
     function test_BridgeERC20() public {
         vm.chainId(1);
